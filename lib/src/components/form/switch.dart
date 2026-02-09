@@ -132,8 +132,9 @@ class DSwitch extends StatelessComponent {
         input(
           type: InputType.checkbox,
           name: name,
+          id: name != null ? 'switch-$name' : null,
           disabled: disabled,
-          classes: 'sr-only',
+          classes: 'sr-only peer',
           attributes: {
             if (checked) 'checked': 'true',
             if (required) 'required': 'true',
