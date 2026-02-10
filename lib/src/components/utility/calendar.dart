@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import 'icon.dart';
 
 /// DuxtUI Calendar component - Date picker grid
@@ -51,9 +52,9 @@ class DCalendar extends StatelessComponent {
     final displayMonth = initialMonth ?? now.month;
     final displayYear = initialYear ?? now.year;
 
-    return div(
+    return Div(
       id: _calendarId,
-      classes:
+      className:
           'p-4 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-700 ${classes ?? ""}',
       attributes: {
         'data-calendar': 'true',
@@ -64,32 +65,32 @@ class DCalendar extends StatelessComponent {
         if (maxDate != null) 'data-max': maxDate!,
         if (selectedDate != null) 'data-selected': selectedDate!,
       },
-      [
+      children: [
         // Header with month/year navigation
-        div(
-          classes: 'flex items-center justify-between mb-4',
+        Div(
+          className: 'flex items-center justify-between mb-4',
           attributes: {'data-header': 'true'},
-          [
-            button(
-              type: ButtonType.button,
-              classes:
+          children: [
+            Button(
+              type: 'button',
+              className:
                   'p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors',
               attributes: {'data-action': 'prev', 'aria-label': 'Previous month'},
-              [
+              children: [
                 DIcon(name: DIconNames.chevronLeft, size: DIconSize.sm),
               ],
             ),
-            span(
-              classes: 'font-semibold text-gray-900 dark:text-white',
+            Span(
+              className: 'font-semibold text-gray-900 dark:text-white',
               attributes: {'data-month-label': 'true'},
-              [Component.text(_getMonthName(displayMonth) + ' $displayYear')],
+              children: [Text(_getMonthName(displayMonth) + ' $displayYear')],
             ),
-            button(
-              type: ButtonType.button,
-              classes:
+            Button(
+              type: 'button',
+              className:
                   'p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors',
               attributes: {'data-action': 'next', 'aria-label': 'Next month'},
-              [
+              children: [
                 DIcon(name: DIconNames.chevronRight, size: DIconSize.sm),
               ],
             ),
@@ -97,29 +98,29 @@ class DCalendar extends StatelessComponent {
         ),
 
         // Weekday headers
-        div(
-          classes: 'grid grid-cols-7 gap-1 mb-2',
-          [
+        Div(
+          className: 'grid grid-cols-7 gap-1 mb-2',
+          children: [
             for (final label in _getWeekdayLabels())
-              div(
-                classes:
+              Div(
+                className:
                     'text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2',
-                [Component.text(label)],
+                children: [Text(label)],
               ),
           ],
         ),
 
         // Days grid (will be populated by JS)
-        div(
-          classes: 'grid grid-cols-7 gap-1',
+        Div(
+          className: 'grid grid-cols-7 gap-1',
           attributes: {'data-days': 'true'},
-          _buildInitialDays(displayMonth, displayYear),
+          children: _buildInitialDays(displayMonth, displayYear),
         ),
 
         // Hidden input for form submission
         if (name != null)
-          input(
-            type: InputType.hidden,
+          Input(
+            type: 'hidden',
             name: name,
             value: selectedDate ?? '',
             attributes: {'data-date-input': 'true'},
@@ -246,7 +247,7 @@ if (!window._calendarInit) {
 
     // Empty cells for offset
     for (var i = 0; i < startDay; i++) {
-      cells.add(div(classes: 'p-2', []));
+      cells.add(Div(className: 'p-2', children: []));
     }
 
     // Day cells
@@ -269,12 +270,12 @@ if (!window._calendarInit) {
         cellClasses += 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer';
       }
 
-      cells.add(button(
-        type: ButtonType.button,
+      cells.add(Button(
+        type: 'button',
         disabled: isDisabled,
-        classes: cellClasses,
+        className: cellClasses,
         attributes: {'data-date': dateStr},
-        [Component.text('$day')],
+        children: [Text('$day')],
       ));
     }
 

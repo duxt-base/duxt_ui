@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardSearch component
 ///
@@ -106,17 +107,17 @@ class _UDashboardSearchState extends State<DDashboardSearch> {
   }
 
   Component get _searchIcon {
-    return svg(
-      classes: _iconSizeClasses,
+    return Svg(
+      className: _iconSizeClasses,
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<circle cx="11" cy="11" r="8"/>'),
         RawText('<line x1="21" y1="21" x2="16.65" y2="16.65"/>'),
       ],
@@ -134,26 +135,26 @@ class _UDashboardSearchState extends State<DDashboardSearch> {
         ? 'border-cyan-500 ring-2 ring-cyan-500/20'
         : 'border-gray-200 dark:border-gray-700';
 
-    return div(
-      classes:
+    return Div(
+      className:
           'relative $_widthClasses transition-all duration-200 ${component.classes ?? ""}',
-      [
+      children: [
         // Search icon
-        div(
-          classes:
+        Div(
+          className:
               'absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400',
-          [component.icon ?? _searchIcon],
+          children: [component.icon ?? _searchIcon],
         ),
         // Input
-        input<String>(
-          type: InputType.text,
+        Input(
+          type: 'text',
           value: _value,
           disabled: component.disabled,
           onInput: (val) {
             setState(() => _value = val);
             component.onInput?.call(val);
           },
-          classes:
+          className:
               'w-full $_sizeClasses $_inputPaddingClasses rounded-lg border $borderClasses bg-white dark:bg-zinc-900 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none transition-colors ${component.disabled ? "opacity-50 cursor-not-allowed" : ""}',
           attributes: {
             'placeholder': component.placeholder,
@@ -170,24 +171,24 @@ class _UDashboardSearchState extends State<DDashboardSearch> {
         ),
         // Keyboard shortcut hint
         if (component.showShortcut && !_focused)
-          div(
-            classes:
+          Div(
+            className:
                 'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none',
-            [
-              div(
-                classes:
+            children: [
+              Div(
+                className:
                     'hidden sm:flex items-center gap-1 text-xs text-gray-400',
-                [
+                children: [
                   // Command/Ctrl key
-                  span(
-                    classes:
+                  Span(
+                    className:
                         'px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded border border-gray-200 dark:border-gray-700 font-medium',
-                    [Component.text(_isMac ? '\u2318' : 'Ctrl')],
+                    children: [Text(_isMac ? '\u2318' : 'Ctrl')],
                   ),
-                  span(
-                    classes:
+                  Span(
+                    className:
                         'px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded border border-gray-200 dark:border-gray-700 font-medium',
-                    [Component.text(component.shortcut)],
+                    children: [Text(component.shortcut)],
                   ),
                 ],
               ),
@@ -223,17 +224,17 @@ class DDashboardSearchButton extends StatelessComponent {
   });
 
   Component get _searchIcon {
-    return svg(
-      classes: 'w-5 h-5',
+    return Svg(
+      className: 'w-5 h-5',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<circle cx="11" cy="11" r="8"/>'),
         RawText('<line x1="21" y1="21" x2="16.65" y2="16.65"/>'),
       ],
@@ -242,24 +243,24 @@ class DDashboardSearchButton extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: onClick,
-      classes:
+      className:
           'flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-900 text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 transition-colors ${classes ?? ""}',
-      [
+      children: [
         _searchIcon,
-        span(classes: 'text-sm', [Component.text('Search...')]),
-        div(classes: 'flex items-center gap-1 ml-auto', [
-          span(
-            classes:
+        Span(className: 'text-sm', children: [Text('Search...')]),
+        Div(className: 'flex items-center gap-1 ml-auto', children: [
+          Span(
+            className:
                 'px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded border border-gray-200 dark:border-gray-700 text-xs font-medium',
-            [Component.text('\u2318')],
+            children: [Text('\u2318')],
           ),
-          span(
-            classes:
+          Span(
+            className:
                 'px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded border border-gray-200 dark:border-gray-700 text-xs font-medium',
-            [Component.text(shortcut)],
+            children: [Text(shortcut)],
           ),
         ]),
       ],

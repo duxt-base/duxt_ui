@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -128,20 +129,20 @@ class DChip extends StatelessComponent {
 
     final children = <Component>[
       // Dot indicator
-      if (showDot) span(classes: '$_dotSize rounded-full $_dotColor', []),
+      if (showDot) Span(className: '$_dotSize rounded-full $_dotColor', children: []),
 
       // Leading icon
       if (leadingIcon != null)
-        i(classes: '$leadingIcon $_iconSize shrink-0', []),
+        I(className: '$leadingIcon $_iconSize shrink-0', children: []),
 
       // Label text
-      span([Component.text(label)]),
+      Span(children: [Text(label)]),
 
       // Trailing icon (with optional click handler)
       if (trailingIcon != null)
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             '$trailingIcon $_iconSize shrink-0',
             if (onTrailingClick != null && !disabled)
               'cursor-pointer hover:opacity-70 transition-opacity',
@@ -152,20 +153,20 @@ class DChip extends StatelessComponent {
                   onTrailingClick!();
                 }}
               : null,
-          [],
+          children: [],
         ),
     ];
 
     if (onClick != null && !disabled) {
-      return button(
-        type: ButtonType.button,
-        classes: baseClasses,
+      return Button(
+        type: 'button',
+        className: baseClasses,
         events: events(onClick: () => onClick!()),
-        children,
+        children: children,
       );
     }
 
-    return span(classes: baseClasses, children);
+    return Span(className: baseClasses, children: children);
   }
 }
 
@@ -189,13 +190,13 @@ class DChipGroup extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'inline-flex items-center',
         gap,
         if (wrap) 'flex-wrap',
       ]),
-      chips,
+      children: chips,
     );
   }
 }

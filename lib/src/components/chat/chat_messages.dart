@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import 'chat_message.dart';
 
 /// DuxtUI ChatMessages component - displays a scrollable list of chat messages
@@ -38,39 +38,36 @@ class _UChatMessagesState extends State<DChatMessages> {
   @override
   Component build(BuildContext context) {
     if (component.messages.isEmpty && component.emptyState != null) {
-      return div(
-        classes: 'flex-1 flex items-center justify-center p-4',
-        [component.emptyState!],
+      return Div(
+        className: 'flex-1 flex items-center justify-center p-4',
+        children: [component.emptyState!],
       );
     }
 
     if (component.messages.isEmpty) {
-      return div(
-        classes:
+      return Div(
+        className:
             'flex-1 flex flex-col items-center justify-center p-4 text-gray-400',
-        [
+        children: [
           // Empty chat icon
-          div(
-            classes:
+          Div(
+            className:
                 'w-16 h-16 mb-4 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center',
-            [
-              span(classes: 'text-2xl', [Component.text('💬')]),
+            children: [
+              Span(className: 'text-2xl', children: [Text('💬')]),
             ],
           ),
-          p(classes: 'text-sm', [Component.text('No messages yet')]),
-          p(classes: 'text-xs mt-1', [Component.text('Start a conversation')]),
+          P(className: 'text-sm', children: [Text('No messages yet')]),
+          P(className: 'text-xs mt-1', children: [Text('Start a conversation')]),
         ],
       );
     }
 
-    return div(
-      classes: 'flex flex-col gap-4 overflow-y-auto p-4 flex-1',
-      styles: Styles(raw: {
-        'scroll-behavior': 'smooth',
-        'overflow-anchor': 'auto',
-      }),
+    return Div(
+      className: 'flex flex-col gap-4 overflow-y-auto p-4 flex-1',
+      style: 'scroll-behavior: smooth; overflow-anchor: auto',
       id: 'chat-messages-container',
-      [
+      children: [
         for (final message in component.messages)
           DChatMessage(
             key: ValueKey(message.id),
@@ -82,13 +79,10 @@ class _UChatMessagesState extends State<DChatMessages> {
           ),
         // Scroll anchor element
         if (component.autoScrollToBottom)
-          div(
+          Div(
             id: 'chat-scroll-anchor',
-            styles: Styles(raw: {
-              'overflow-anchor': 'auto',
-              'height': '1px',
-            }),
-            [],
+            style: 'overflow-anchor: auto; height: 1px',
+            children: [],
           ),
       ],
     );

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
@@ -132,71 +132,71 @@ class DError extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'flex flex-col items-center justify-center text-center',
         _paddingClasses,
       ]),
-      [
+      children: [
         // Icon
         if (iconComponent != null)
-          div(
-            classes: cx(['mb-4', _severityColorClasses]),
-            [iconComponent!],
+          Div(
+            className: cx(['mb-4', _severityColorClasses]),
+            children: [iconComponent!],
           )
         else
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'mb-4',
               _iconSizeClasses,
               _severityColorClasses,
             ]),
-            [Component.text(icon ?? _defaultIcon)],
+            children: [Text(icon ?? _defaultIcon)],
           ),
         // Title
-        h3(
-          classes: cx([
+        H3(
+          className: cx([
             'font-semibold',
             _titleSizeClasses,
             DTextColors.highlighted,
             'mb-2',
           ]),
-          [Component.text(title ?? _defaultTitle)],
+          children: [Text(title ?? _defaultTitle)],
         ),
         // Description
         if (description != null)
-          p(
-            classes: cx([
+          P(
+            className: cx([
               _descriptionSizeClasses,
               DTextColors.muted,
               'max-w-sm',
               'mb-2',
             ]),
-            [Component.text(description!)],
+            children: [Text(description!)],
           ),
         // Error code
         if (errorCode != null)
-          p(
-            classes: cx([
+          P(
+            className: cx([
               'text-xs',
               'font-mono',
               DTextColors.dimmed,
               'mb-4',
             ]),
-            [Component.text('Error code: $errorCode')],
+            children: [Text('Error code: $errorCode')],
           ),
         // Custom children
-        if (children.isNotEmpty) div(classes: 'mt-2', children),
+        if (children.isNotEmpty) Div(className: 'mt-2', children: children),
         // Actions
-        div(
-          classes: 'flex items-center gap-3 mt-4',
-          [
+        Div(
+          className: 'flex items-center gap-3 mt-4',
+          children: [
             // Retry button
             if (onRetry != null)
-              button(
-                type: ButtonType.button,
+              Button(
+                type: 'button',
                 onClick: onRetry,
-                classes: cx([
+                className: cx([
                   'px-4 py-2',
                   'text-sm font-medium',
                   'text-white',
@@ -205,7 +205,7 @@ class DError extends StatelessComponent {
                   'hover:bg-gray-800 dark:hover:bg-gray-100',
                   'transition-colors',
                 ]),
-                [Component.text('Try again')],
+                children: [Text('Try again')],
               ),
             // Custom action
             if (action != null) action!,

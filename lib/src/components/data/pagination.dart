@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -189,7 +190,7 @@ class DPagination extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     if (totalPages <= 0) {
-      return span([]);
+      return Span(children: []);
     }
 
     final children = <Component>[];
@@ -197,15 +198,15 @@ class DPagination extends StatelessComponent {
     // First button
     if (showFirstLast) {
       children.add(
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             _navButtonClasses,
             if (currentPage <= 1) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage <= 1 ? {'disabled': 'true'} : null,
           events: events(onClick: () => _handlePageChange(1)),
-          [i(classes: '$firstLabel $_iconSize', [])],
+          children: [I(className: '$firstLabel $_iconSize', children: [])],
         ),
       );
     }
@@ -213,15 +214,15 @@ class DPagination extends StatelessComponent {
     // Previous button
     if (showPrevNext) {
       children.add(
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             _navButtonClasses,
             if (currentPage <= 1) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage <= 1 ? {'disabled': 'true'} : null,
           events: events(onClick: () => _handlePageChange(currentPage - 1)),
-          [i(classes: '$prevLabel $_iconSize', [])],
+          children: [I(className: '$prevLabel $_iconSize', children: [])],
         ),
       );
     }
@@ -231,20 +232,20 @@ class DPagination extends StatelessComponent {
       if (page == null) {
         // Ellipsis
         children.add(
-          span(
-            classes:
+          Span(
+            className:
                 '$_sizeClasses inline-flex items-center justify-center ${DTextColors.muted}',
-            [Component.text('...')],
+            children: [Text('...')],
           ),
         );
       } else {
         final isActive = page == currentPage;
         children.add(
-          button(
-            type: ButtonType.button,
-            classes: _buttonClasses(isActive),
+          Button(
+            type: 'button',
+            className: _buttonClasses(isActive),
             events: events(onClick: () => _handlePageChange(page)),
-            [Component.text('$page')],
+            children: [Text('$page')],
           ),
         );
       }
@@ -253,15 +254,15 @@ class DPagination extends StatelessComponent {
     // Next button
     if (showPrevNext) {
       children.add(
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             _navButtonClasses,
             if (currentPage >= totalPages) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage >= totalPages ? {'disabled': 'true'} : null,
           events: events(onClick: () => _handlePageChange(currentPage + 1)),
-          [i(classes: '$nextLabel $_iconSize', [])],
+          children: [I(className: '$nextLabel $_iconSize', children: [])],
         ),
       );
     }
@@ -269,24 +270,24 @@ class DPagination extends StatelessComponent {
     // Last button
     if (showFirstLast) {
       children.add(
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             _navButtonClasses,
             if (currentPage >= totalPages) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage >= totalPages ? {'disabled': 'true'} : null,
           events: events(onClick: () => _handlePageChange(totalPages)),
-          [i(classes: '$lastLabel $_iconSize', [])],
+          children: [I(className: '$lastLabel $_iconSize', children: [])],
         ),
       );
     }
 
-    return nav(
-      classes: 'inline-flex items-center gap-1',
-      [
-        ul(classes: 'flex items-center gap-1', [
-          for (final child in children) li([child]),
+    return Nav(
+      className: 'inline-flex items-center gap-1',
+      children: [
+        Ul(className: 'flex items-center gap-1', children: [
+          for (final child in children) Li(children: [child]),
         ]),
       ],
     );
@@ -321,12 +322,12 @@ class DPaginationSimple extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'inline-flex items-center gap-2',
-      [
-        button(
-          type: ButtonType.button,
-          classes: cx([
+    return Div(
+      className: 'inline-flex items-center gap-2',
+      children: [
+        Button(
+          type: 'button',
+          className: cx([
             'px-3 py-1.5 text-sm rounded-md transition-colors',
             'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300',
             if (currentPage <= 1 || disabled) 'opacity-50 cursor-not-allowed',
@@ -340,15 +341,15 @@ class DPaginationSimple extends StatelessComponent {
               onPageChange!(currentPage - 1);
             }
           }),
-          [Component.text('Previous')],
+          children: [Text('Previous')],
         ),
-        span(
-          classes: 'text-sm ${DTextColors.muted}',
-          [Component.text('Page $currentPage of $totalPages')],
+        Span(
+          className: 'text-sm ${DTextColors.muted}',
+          children: [Text('Page $currentPage of $totalPages')],
         ),
-        button(
-          type: ButtonType.button,
-          classes: cx([
+        Button(
+          type: 'button',
+          className: cx([
             'px-3 py-1.5 text-sm rounded-md transition-colors',
             'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300',
             if (currentPage >= totalPages || disabled)
@@ -364,7 +365,7 @@ class DPaginationSimple extends StatelessComponent {
               onPageChange!(currentPage + 1);
             }
           }),
-          [Component.text('Next')],
+          children: [Text('Next')],
         ),
       ],
     );

@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Modal sizes
 enum DModalSize { xs, sm, md, lg, xl, xxl, xxxl, xxxxl, xxxxxl, full }
@@ -61,77 +62,76 @@ class DModal extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'inline-block',
+    return Div(
+      className: 'inline-block',
       attributes: {'data-modal': 'true'},
-      [
+      children: [
         // Trigger
-        div(
+        Div(
           attributes: {'data-modal-trigger': 'true'},
-          classes: 'cursor-pointer inline-block',
-          [trigger],
+          className: 'cursor-pointer inline-block',
+          children: [trigger],
         ),
         // Dialog element
-        Component.element(
-          tag: 'dialog',
-          classes:
+        Dialog(
+          className:
               'm-auto w-full $_sizeClasses bg-white dark:bg-zinc-900 rounded-lg shadow-xl ring-1 ring-gray-200 dark:ring-gray-800 p-0 backdrop:bg-gray-900/50 dark:backdrop:bg-zinc-950/75',
           attributes: {
             'data-modal-dialog': 'true',
             if (closeOnOverlay) 'data-close-on-backdrop': 'true',
           },
           children: [
-            div(
-              classes: 'flex flex-col',
-              [
+            Div(
+              className: 'flex flex-col',
+              children: [
                 // Header
                 if (title != null ||
                     description != null ||
                     header != null)
-                  div(
-                    classes: 'flex items-start justify-between p-4 sm:p-6',
-                    [
+                  Div(
+                    className: 'flex items-start justify-between p-4 sm:p-6',
+                    children: [
                       if (header != null)
                         header!
                       else
-                        div(classes: 'flex-1 min-w-0', [
+                        Div(className: 'flex-1 min-w-0', children: [
                           if (title != null)
-                            h3(
-                                classes:
+                            H3(
+                                className:
                                     'text-base font-semibold text-gray-900 dark:text-white',
-                                [Component.text(title!)]),
+                                children: [Text(title!)]),
                           if (description != null)
-                            p(
-                                classes:
+                            P(
+                                className:
                                     'mt-1 text-sm text-gray-500 dark:text-gray-400',
-                                [Component.text(description!)]),
+                                children: [Text(description!)]),
                         ]),
                       // Close button
-                      button(
-                        type: ButtonType.button,
-                        classes:
+                      Button(
+                        type: 'button',
+                        className:
                             'shrink-0 -my-1 -mx-1 p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors',
                         attributes: {'data-modal-close': 'true'},
-                        [
-                          span(
-                              classes:
+                        children: [
+                          Span(
+                              className:
                                   'size-5 flex items-center justify-center text-xl',
-                              [Component.text('×')]),
+                              children: [Text('×')]),
                         ],
                       ),
                     ],
                   ),
                 // Body
-                div(
-                    classes:
+                Div(
+                    className:
                         'flex-1 p-4 sm:p-6 text-gray-700 dark:text-gray-300 ${title != null || description != null || header != null ? "pt-0 sm:pt-0" : ""}',
-                    children),
+                    children: children),
                 // Footer
                 if (footer != null)
-                  div(
-                      classes:
+                  Div(
+                      className:
                           'flex items-center justify-end gap-3 p-4 sm:px-6 border-t border-gray-200 dark:border-gray-800',
-                      [footer!]),
+                      children: [footer!]),
               ],
             ),
           ],
@@ -251,76 +251,76 @@ class DModalControlled extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    if (!open) return div([]);
+    if (!open) return Div(children: []);
 
-    return div(
-      classes: 'fixed inset-0 z-50 overflow-y-auto',
-      [
+    return Div(
+      className: 'fixed inset-0 z-50 overflow-y-auto',
+      children: [
         // Backdrop
-        div(
-          classes:
+        Div(
+          className:
               'fixed inset-0 bg-gray-900/50 dark:bg-zinc-950/75 transition-opacity',
           events: {'click': (_) => _handleOverlayClick()},
-          [],
+          children: [],
         ),
         // Modal container
-        div(
-          classes: 'flex min-h-full items-center justify-center p-4',
-          [
-            div(
-              classes:
+        Div(
+          className: 'flex min-h-full items-center justify-center p-4',
+          children: [
+            Div(
+              className:
                   'relative w-full $_sizeClasses bg-white dark:bg-zinc-900 rounded-lg shadow-xl ring-1 ring-gray-200 dark:ring-gray-800 flex flex-col',
               events: {'click': (e) => e.stopPropagation()},
-              [
+              children: [
                 // Header
                 if (title != null ||
                     description != null ||
                     header != null ||
                     onClose != null)
-                  div(
-                    classes: 'flex items-start justify-between p-4 sm:p-6',
-                    [
+                  Div(
+                    className: 'flex items-start justify-between p-4 sm:p-6',
+                    children: [
                       if (header != null)
                         header!
                       else
-                        div(classes: 'flex-1 min-w-0', [
+                        Div(className: 'flex-1 min-w-0', children: [
                           if (title != null)
-                            h3(
-                                classes:
+                            H3(
+                                className:
                                     'text-base font-semibold text-gray-900 dark:text-white',
-                                [Component.text(title!)]),
+                                children: [Text(title!)]),
                           if (description != null)
-                            p(
-                                classes:
+                            P(
+                                className:
                                     'mt-1 text-sm text-gray-500 dark:text-gray-400',
-                                [Component.text(description!)]),
+                                children: [Text(description!)]),
                         ]),
                       if (onClose != null && !preventClose)
-                        button(
-                          type: ButtonType.button,
+                        Button(
+                          type: 'button',
                           onClick: onClose,
-                          classes:
+                          className:
                               'shrink-0 -my-1 -mx-1 p-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors',
-                          [
-                            span(
-                                classes:
+                          children: [
+                            Span(
+                                className:
                                     'size-5 flex items-center justify-center text-xl',
-                                [Component.text('×')]),
+                                children: [Text('×')]),
                           ],
                         ),
                     ],
                   ),
                 // Body
-                div(
-                    classes:
+                Div(
+                    className:
                         'flex-1 p-4 sm:p-6 text-gray-700 dark:text-gray-300 ${title != null || description != null || header != null ? "pt-0 sm:pt-0" : ""}',
-                    children),
+                    children: children),
                 // Footer
                 if (footer != null)
-                  div(
-                      classes:
+                  Div(
+                      className:
                           'flex items-center justify-end gap-3 p-4 sm:px-6 border-t border-gray-200 dark:border-gray-800',
-                      [footer!]),
+                      children: [footer!]),
               ],
             ),
           ],

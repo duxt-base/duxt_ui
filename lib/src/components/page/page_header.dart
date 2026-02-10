@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Alignment options for page header content
 enum DPageHeaderAlign { left, center, right }
@@ -72,51 +72,51 @@ class DPageHeader extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return header(
-      classes: 'py-8 sm:py-16 lg:py-24 $_alignClasses ${classes ?? ""}',
-      [
-        div(
-          classes:
+    return Header(
+      className: 'py-8 sm:py-16 lg:py-24 $_alignClasses ${classes ?? ""}',
+      children: [
+        Div(
+          className:
               'max-w-4xl ${align == DPageHeaderAlign.center ? "mx-auto" : ""}',
-          [
+          children: [
             // Icon (if provided)
             if (icon != null)
-              div(
-                classes:
+              Div(
+                className:
                     'mb-6 ${align == DPageHeaderAlign.center ? "flex justify-center" : ""}',
-                [icon!],
+                children: [icon!],
               ),
             // Headline/eyebrow
             if (headline != null)
-              p(
-                classes:
+              P(
+                className:
                     'text-sm font-semibold text-primary-500 dark:text-primary-400 mb-2',
-                [Component.text(headline!)],
+                children: [Text(headline!)],
               ),
             // Title
             if (titleSlot != null)
               titleSlot!
             else if (title != null)
-              h1(
-                classes:
+              H1(
+                className:
                     'text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white tracking-tight',
-                [Component.text(title!)],
+                children: [Text(title!)],
               ),
             // Description
             if (descriptionSlot != null)
-              div(classes: 'mt-4 sm:mt-6', [descriptionSlot!])
+              Div(className: 'mt-4 sm:mt-6', children: [descriptionSlot!])
             else if (description != null)
-              p(
-                classes:
+              P(
+                className:
                     'mt-4 sm:mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-300',
-                [Component.text(description!)],
+                children: [Text(description!)],
               ),
             // Links/actions
             if (links.isNotEmpty)
-              div(
-                classes:
+              Div(
+                className:
                     'mt-8 sm:mt-10 flex flex-wrap gap-3 $_linksAlignClasses',
-                links,
+                children: links,
               ),
           ],
         ),

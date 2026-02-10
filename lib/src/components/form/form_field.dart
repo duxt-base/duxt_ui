@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 
 /// Form field sizes
@@ -212,8 +212,8 @@ class _UFormFieldState extends State<DFormField> {
     final displayError = component.error ?? _error;
     final hasError = displayError != null && displayError.isNotEmpty;
 
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'space-y-1',
         component.disabled ? 'opacity-50' : null,
       ]),
@@ -227,11 +227,11 @@ class _UFormFieldState extends State<DFormField> {
           _handleChange(target.value);
         },
       },
-      [
+      children: [
         // Label
         if (component.label != null)
-          label(
-            classes: cx([
+          Label(
+            className: cx([
               'block',
               'font-medium',
               _labelSizeClasses,
@@ -242,34 +242,34 @@ class _UFormFieldState extends State<DFormField> {
             attributes: {
               if (component.name != null) 'for': component.name!,
             },
-            [
-              Component.text(component.label!),
+            children: [
+              Text(component.label!),
               if (component.required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ],
           ),
         // Field content (input, select, etc.)
-        div(classes: 'relative', component.children),
+        Div(className: 'relative', children: component.children),
         // Error or hint message
         if (hasError)
-          p(
-            classes: cx([
+          P(
+            className: cx([
               _hintSizeClasses,
               'text-red-600',
               'dark:text-red-400',
               'mt-1',
             ]),
-            [Component.text(displayError)],
+            children: [Text(displayError)],
           )
         else if (component.hint != null)
-          p(
-            classes: cx([
+          P(
+            className: cx([
               _hintSizeClasses,
               'text-gray-500',
               'dark:text-gray-400',
               'mt-1',
             ]),
-            [Component.text(component.hint!)],
+            children: [Text(component.hint!)],
           ),
       ],
     );
@@ -299,36 +299,36 @@ class DFormFieldGroup extends StatelessComponent {
   Component build(BuildContext context) {
     final hasError = error != null && error!.isNotEmpty;
 
-    return fieldset(
-      classes: 'space-y-2',
-      [
+    return Fieldset(
+      className: 'space-y-2',
+      children: [
         if (label != null)
-          legend(
-            classes: cx([
+          Legend(
+            className: cx([
               'text-sm',
               'font-medium',
               hasError
                   ? 'text-red-700 dark:text-red-400'
                   : 'text-gray-700 dark:text-gray-200',
             ]),
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ],
           ),
-        div(
-          classes: inline ? 'flex flex-wrap gap-4' : 'space-y-2',
-          children,
+        Div(
+          className: inline ? 'flex flex-wrap gap-4' : 'space-y-2',
+          children: children,
         ),
         if (hasError)
-          p(
-              classes: 'text-sm text-red-600 dark:text-red-400',
-              [Component.text(error!)])
+          P(
+              className: 'text-sm text-red-600 dark:text-red-400',
+              children: [Text(error!)])
         else if (hint != null)
-          p(
-              classes: 'text-sm text-gray-500 dark:text-gray-400',
-              [Component.text(hint!)]),
+          P(
+              className: 'text-sm text-gray-500 dark:text-gray-400',
+              children: [Text(hint!)]),
       ],
     );
   }
@@ -343,12 +343,12 @@ class DFieldError extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     if (error == null || error!.isEmpty) {
-      return span([]);
+      return Span(children: []);
     }
 
-    return p(
-      classes: 'text-sm text-red-600 dark:text-red-400 mt-1',
-      [Component.text(error!)],
+    return P(
+      className: 'text-sm text-red-600 dark:text-red-400 mt-1',
+      children: [Text(error!)],
     );
   }
 }
@@ -361,9 +361,9 @@ class DFieldHint extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return p(
-      classes: 'text-sm text-gray-500 dark:text-gray-400 mt-1',
-      [Component.text(hint)],
+    return P(
+      className: 'text-sm text-gray-500 dark:text-gray-400 mt-1',
+      children: [Text(hint)],
     );
   }
 }

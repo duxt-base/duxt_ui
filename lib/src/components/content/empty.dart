@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
@@ -90,66 +90,66 @@ class DEmpty extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'flex flex-col items-center justify-center text-center',
         _paddingClasses,
       ]),
-      [
+      children: [
         // Icon
         if (iconComponent != null)
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'mb-4',
               DTextColors.muted,
             ]),
-            [iconComponent!],
+            children: [iconComponent!],
           )
         else if (icon != null)
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'mb-4',
               _iconSizeClasses,
               DTextColors.muted,
             ]),
-            [Component.text(icon!)],
+            children: [Text(icon!)],
           )
         else
           // Default empty icon
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'mb-4',
               _iconSizeClasses,
               DTextColors.muted,
             ]),
-            [Component.text('\u{1F4ED}')], // Empty mailbox emoji as default
+            children: [Text('\u{1F4ED}')], // Empty mailbox emoji as default
           ),
         // Title
         if (title != null)
-          h3(
-            classes: cx([
+          H3(
+            className: cx([
               'font-semibold',
               _titleSizeClasses,
               DTextColors.highlighted,
               'mb-2',
             ]),
-            [Component.text(title!)],
+            children: [Text(title!)],
           ),
         // Description
         if (description != null)
-          p(
-            classes: cx([
+          P(
+            className: cx([
               _descriptionSizeClasses,
               DTextColors.muted,
               'max-w-sm',
               'mb-4',
             ]),
-            [Component.text(description!)],
+            children: [Text(description!)],
           ),
         // Custom children
-        if (children.isNotEmpty) div(classes: 'mt-2', children),
+        if (children.isNotEmpty) Div(className: 'mt-2', children: children),
         // Action button
-        if (action != null) div(classes: 'mt-4', [action!]),
+        if (action != null) Div(className: 'mt-4', children: [action!]),
       ],
     );
   }

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Avatar sizes
 enum DAvatarSize { xxxs, xxs, xs, sm, md, lg, xl, xxl, xxxl }
@@ -88,50 +88,50 @@ class DAvatar extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'relative inline-flex',
-      [
+    return Div(
+      className: 'relative inline-flex',
+      children: [
         // Avatar container
-        div(
-          classes:
+        Div(
+          className:
               '$_sizeClasses rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 flex items-center justify-center font-medium text-gray-600 dark:text-gray-300',
-          [
+          children: [
             if (src != null)
-              img(
+              Img(
                 src: src!,
                 alt: alt ?? '',
-                classes: 'size-full object-cover',
+                className: 'size-full object-cover',
               )
             else if (icon != null)
-              span(classes: _iconSizeClasses, [icon!])
+              Span(className: _iconSizeClasses, children: [icon!])
             else if (text != null)
-              Component.text(text!
+              Text(text!
                   .substring(0, text!.length > 2 ? 2 : text!.length)
                   .toUpperCase())
             else
               // Default user icon placeholder
-              span(
-                  classes: '$_iconSizeClasses text-gray-400 dark:text-gray-500',
-                  [Component.text('?')]),
+              Span(
+                  className: '$_iconSizeClasses text-gray-400 dark:text-gray-500',
+                  children: [Text('?')]),
           ],
         ),
         // Chip indicator
         if (chipColor != null || chipText != null)
-          div(
-            classes:
+          Div(
+            className:
                 'absolute $_chipPositionClasses transform translate-x-1/4 -translate-y-1/4',
-            [
+            children: [
               if (chipText != null)
-                span(
-                  classes:
+                Span(
+                  className:
                       'flex items-center justify-center min-w-4 h-4 px-1 text-[10px] font-medium bg-cyan-500 text-white rounded-full ring-2 ring-white dark:ring-gray-900',
-                  [Component.text(chipText!)],
+                  children: [Text(chipText!)],
                 )
               else
-                span(
-                  classes:
+                Span(
+                  className:
                       'block size-2.5 bg-cyan-500 rounded-full ring-2 ring-white dark:ring-gray-900',
-                  [],
+                  children: [],
                 ),
             ],
           ),
@@ -181,16 +181,16 @@ class DAvatarGroup extends StatelessComponent {
     final visible = avatars.take(max).toList();
     final remaining = avatars.length - max;
 
-    return div(classes: 'flex -space-x-2', [
+    return Div(className: 'flex -space-x-2', children: [
       for (final avatar in visible)
-        div(
-            classes: 'ring-2 ring-white dark:ring-gray-900 rounded-full',
-            [avatar]),
+        Div(
+            className: 'ring-2 ring-white dark:ring-gray-900 rounded-full',
+            children: [avatar]),
       if (remaining > 0)
-        div(
-          classes:
+        Div(
+          className:
               '$_sizeClasses rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center font-medium text-gray-600 dark:text-gray-300 ring-2 ring-white dark:ring-gray-900',
-          [Component.text('+$remaining')],
+          children: [Text('+$remaining')],
         ),
     ]);
   }

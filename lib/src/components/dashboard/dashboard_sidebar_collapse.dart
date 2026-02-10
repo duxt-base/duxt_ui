@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardSidebarCollapse component
 ///
@@ -53,17 +54,17 @@ class _UDashboardSidebarCollapseState extends State<DDashboardSidebarCollapse> {
   }
 
   Component get _chevronIcon {
-    return svg(
-      classes: 'w-4 h-4 transition-transform ${_open ? "rotate-90" : ""}',
+    return Svg(
+      className: 'w-4 h-4 transition-transform ${_open ? "rotate-90" : ""}',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<polyline points="9 18 15 12 9 6"/>'),
       ],
     );
@@ -73,28 +74,28 @@ class _UDashboardSidebarCollapseState extends State<DDashboardSidebarCollapse> {
   Component build(BuildContext context) {
     // When sidebar is collapsed, show as dropdown or tooltip
     if (component.sidebarCollapsed) {
-      return div(classes: 'relative group', [
+      return Div(className: 'relative group', children: [
         // Icon button
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           onClick: _toggle,
-          classes:
+          className:
               'w-full flex items-center justify-center p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors',
           attributes: {'title': component.label},
-          [
+          children: [
             if (component.icon != null) component.icon!,
           ],
         ),
         // Flyout menu on hover
-        div(
-          classes:
+        Div(
+          className:
               'absolute left-full top-0 ml-2 w-48 py-2 bg-white dark:bg-zinc-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50',
-          [
+          children: [
             // Label
-            div(
-              classes:
+            Div(
+              className:
                   'px-3 py-2 text-xs font-semibold text-gray-400 uppercase',
-              [Component.text(component.label)],
+              children: [Text(component.label)],
             ),
             // Children
             ...component.children,
@@ -104,26 +105,26 @@ class _UDashboardSidebarCollapseState extends State<DDashboardSidebarCollapse> {
     }
 
     // Normal expanded sidebar
-    return div(classes: component.classes ?? '', [
+    return Div(className: component.classes ?? '', children: [
       // Toggle button
-      button(
-        type: ButtonType.button,
+      Button(
+        type: 'button',
         onClick: _toggle,
-        classes:
+        className:
             'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors',
-        [
+        children: [
           if (component.icon != null) component.icon!,
-          span(
-              classes: 'flex-1 text-left text-sm font-medium',
-              [Component.text(component.label)]),
+          Span(
+              className: 'flex-1 text-left text-sm font-medium',
+              children: [Text(component.label)]),
           _chevronIcon,
         ],
       ),
       // Collapsible content
       if (_open)
-        div(
-          classes: 'pl-4 mt-1 space-y-1',
-          component.children,
+        Div(
+          className: 'pl-4 mt-1 space-y-1',
+          children: component.children,
         ),
     ]);
   }

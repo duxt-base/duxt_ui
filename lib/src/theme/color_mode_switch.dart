@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
 import 'provider.dart';
 
@@ -47,10 +47,10 @@ class _UColorModeSwitchState extends State<DColorModeSwitch> {
 
   @override
   Component build(BuildContext context) {
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: _toggle,
-      classes: [
+      className: [
         'relative inline-flex h-8 w-16 items-center rounded-full',
         'transition-colors duration-200 ease-in-out',
         'focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2',
@@ -62,47 +62,47 @@ class _UColorModeSwitchState extends State<DColorModeSwitch> {
         'aria-checked': _isDark ? 'true' : 'false',
         'aria-label': 'Toggle dark mode',
       },
-      [
+      children: [
         // Switch track with icons
-        span(
-          classes: 'sr-only',
-          [
-            Component.text(_isDark ? 'Dark mode enabled' : 'Light mode enabled')
+        Span(
+          className: 'sr-only',
+          children: [
+            Text(_isDark ? 'Dark mode enabled' : 'Light mode enabled')
           ],
         ),
 
         // Sun icon (left side)
-        span(
-          classes: [
+        Span(
+          className: [
             'absolute left-1.5 flex items-center justify-center',
             'text-yellow-500 transition-opacity',
             _isDark ? 'opacity-100' : 'opacity-40',
           ].join(' '),
-          [
+          children: [
             DIcon(name: DIconNames.sun, size: DIconSize.xs),
           ],
         ),
 
         // Moon icon (right side)
-        span(
-          classes: [
+        Span(
+          className: [
             'absolute right-1.5 flex items-center justify-center',
             'text-cyan-300 transition-opacity',
             _isDark ? 'opacity-40' : 'opacity-100',
           ].join(' '),
-          [
+          children: [
             DIcon(name: DIconNames.moon, size: DIconSize.xs),
           ],
         ),
 
         // Switch thumb/knob
-        span(
-          classes: [
+        Span(
+          className: [
             'inline-block h-6 w-6 transform rounded-full bg-white shadow-lg',
             'transition-transform duration-200 ease-in-out',
             _isDark ? 'translate-x-8' : 'translate-x-1',
           ].join(' '),
-          [],
+          children: [],
         ),
       ],
     );

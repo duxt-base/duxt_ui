@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Footer style variants
 enum DFooterVariant { simple, columns, centered }
@@ -33,26 +33,25 @@ class DFooter extends StatelessComponent {
 
     // If left/center/right slots are provided, use structured layout
     if (left != null || center != null || right != null) {
-      return Component.element(
-        tag: 'footer',
-        classes: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
+      return Footer(
+        className: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
         children: [
-          div(
-            classes: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
-            [
-              div(
-                classes:
+          Div(
+            className: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
+            children: [
+              Div(
+                className:
                     'flex flex-col md:flex-row items-center justify-between gap-4',
-                [
+                children: [
                   // Left slot
                   if (left != null)
-                    div(classes: 'flex items-center gap-4', [left!]),
+                    Div(className: 'flex items-center gap-4', children: [left!]),
                   // Center slot
                   if (center != null)
-                    div(classes: 'flex items-center gap-4', [center!]),
+                    Div(className: 'flex items-center gap-4', children: [center!]),
                   // Right slot
                   if (right != null)
-                    div(classes: 'flex items-center gap-4', [right!]),
+                    Div(className: 'flex items-center gap-4', children: [right!]),
                 ],
               ),
             ],
@@ -62,13 +61,12 @@ class DFooter extends StatelessComponent {
     }
 
     // Simple footer with children
-    return Component.element(
-      tag: 'footer',
-      classes: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
+    return Footer(
+      className: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
       children: [
-        div(
-          classes: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
-          children,
+        Div(
+          className: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
+          children: children,
         ),
       ],
     );
@@ -90,17 +88,17 @@ class DFooterLinks extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: classes ?? '',
-      [
+    return Div(
+      className: classes ?? '',
+      children: [
         if (title != null)
-          h3(
-            classes: 'text-sm font-semibold text-gray-900 dark:text-white',
-            [Component.text(title!)],
+          H3(
+            className: 'text-sm font-semibold text-gray-900 dark:text-white',
+            children: [Text(title!)],
           ),
-        ul(
-          classes: 'mt-4 space-y-2',
-          links.map((link) => li([link])).toList(),
+        Ul(
+          className: 'mt-4 space-y-2',
+          children: links.map((link) => Li(children: [link])).toList(),
         ),
       ],
     );
@@ -124,19 +122,19 @@ class DFooterLink extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return a(
+    return A(
       href: href,
       target: external ? Target.blank : null,
       attributes: external ? {'rel': 'noopener noreferrer'} : null,
-      classes:
+      className:
           'text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors ${classes ?? ""}'
               .trim(),
-      [
-        Component.text(label),
+      children: [
+        Text(label),
         if (external)
-          span(
-            classes: 'ml-1 inline-block',
-            [Component.text('\u2197')], // Unicode arrow for external link
+          Span(
+            className: 'ml-1 inline-block',
+            children: [Text('\u2197')], // Unicode arrow for external link
           ),
       ],
     );
@@ -159,10 +157,10 @@ class DCopyright extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     final displayYear = year ?? DateTime.now().year;
-    return p(
-      classes:
+    return P(
+      className:
           'text-sm text-gray-500 dark:text-gray-400 ${classes ?? ""}'.trim(),
-      [Component.text('\u00A9 $displayYear $text')],
+      children: [Text('\u00A9 $displayYear $text')],
     );
   }
 }

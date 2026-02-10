@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import 'checkbox.dart';
 
 /// Checkbox group orientation
@@ -82,19 +82,19 @@ class DCheckboxGroup<T> extends StatelessComponent {
   Component build(BuildContext context) {
     final hasError = error != null && error!.isNotEmpty;
 
-    return div(classes: 'space-y-2', [
+    return Div(className: 'space-y-2', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
-      fieldset(
-        classes: _orientationClasses,
-        [
+      Fieldset(
+        className: _orientationClasses,
+        children: [
           for (final option in options)
             DCheckbox(
               label: option.label,
@@ -109,9 +109,9 @@ class DCheckboxGroup<T> extends StatelessComponent {
         ],
       ),
       if (hasError)
-        p(classes: 'text-sm text-red-600', [Component.text(error!)])
+        P(className: 'text-sm text-red-600', children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500', [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500', children: [Text(hint!)]),
     ]);
   }
 }

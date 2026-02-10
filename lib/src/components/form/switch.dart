@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Switch sizes
 enum DSwitchSize { xs, sm, md, lg, xl }
@@ -126,23 +126,23 @@ class DSwitch extends StatelessComponent {
   Component build(BuildContext context) {
     final hasError = error != null && error!.isNotEmpty;
 
-    return div(classes: 'space-y-1', [
-      div(classes: 'flex items-start gap-3', [
+    return Div(className: 'space-y-1', children: [
+      Div(className: 'flex items-start gap-3', children: [
         // Hidden input for form submission
-        input(
-          type: InputType.checkbox,
+        Input(
+          type: 'checkbox',
           name: name,
           id: name != null ? 'switch-$name' : null,
           disabled: disabled,
-          classes: 'sr-only peer',
+          className: 'sr-only peer',
           attributes: {
             if (checked) 'checked': 'true',
             if (required) 'required': 'true',
           },
         ),
         // Switch track
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           disabled: disabled,
           onClick: disabled
               ? null
@@ -151,30 +151,30 @@ class DSwitch extends StatelessComponent {
                     onChange!(!checked);
                   }
                 },
-          classes:
+          className:
               'relative inline-flex $_trackSizeClasses shrink-0 cursor-pointer rounded-full border-2 border-transparent $_trackColorClasses transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 $_focusRingClasses ${disabled ? "opacity-50 cursor-not-allowed" : ""}',
           attributes: {
             'role': 'switch',
             'aria-checked': checked.toString(),
           },
-          [
+          children: [
             // Switch thumb
-            span(
-              classes:
+            Span(
+              className:
                   'pointer-events-none inline-block $_thumbSizeClasses $_thumbTranslateClasses transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-              [
+              children: [
                 // Icon inside thumb
                 if (checked && onIcon != null)
-                  span(
-                    classes:
+                  Span(
+                    className:
                         'absolute inset-0 flex items-center justify-center',
-                    [onIcon!],
+                    children: [onIcon!],
                   )
                 else if (!checked && offIcon != null)
-                  span(
-                    classes:
+                  Span(
+                    className:
                         'absolute inset-0 flex items-center justify-center',
-                    [offIcon!],
+                    children: [offIcon!],
                   ),
               ],
             ),
@@ -185,8 +185,8 @@ class DSwitch extends StatelessComponent {
             description != null ||
             onLabel != null ||
             offLabel != null)
-          div(
-            classes: 'flex flex-col cursor-pointer',
+          Div(
+            className: 'flex flex-col cursor-pointer',
             events: {
               'click': (_) {
                 if (!disabled && onChange != null) {
@@ -194,37 +194,37 @@ class DSwitch extends StatelessComponent {
                 }
               },
             },
-            [
+            children: [
               if (label != null)
-                span(
-                  classes:
+                Span(
+                  className:
                       '$_labelSizeClasses font-medium ${disabled ? "text-gray-400" : "text-gray-700 dark:text-gray-200"}',
-                  [
-                    Component.text(label!),
+                  children: [
+                    Text(label!),
                     if (required)
-                      span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                      Span(className: 'text-red-500 ml-1', children: [Text('*')]),
                   ],
                 )
               else if (onLabel != null || offLabel != null)
-                span(
-                  classes:
+                Span(
+                  className:
                       '$_labelSizeClasses font-medium ${disabled ? "text-gray-400" : "text-gray-700 dark:text-gray-200"}',
-                  [
-                    Component.text(checked ? (onLabel ?? '') : (offLabel ?? ''))
+                  children: [
+                    Text(checked ? (onLabel ?? '') : (offLabel ?? ''))
                   ],
                 ),
               if (description != null)
-                p(
-                  classes: 'text-xs text-gray-500 dark:text-gray-400',
-                  [Component.text(description!)],
+                P(
+                  className: 'text-xs text-gray-500 dark:text-gray-400',
+                  children: [Text(description!)],
                 ),
             ],
           ),
       ]),
       if (hasError)
-        p(classes: 'text-sm text-red-600', [Component.text(error!)])
+        P(className: 'text-sm text-red-600', children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500', [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500', children: [Text(hint!)]),
     ]);
   }
 }

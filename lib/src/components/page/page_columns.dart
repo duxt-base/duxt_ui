@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageColumns component - Multi-column layout
 ///
@@ -53,9 +53,9 @@ class DPageColumns extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'grid $_columnsClasses gap-$gap ${reverseOnMobile ? "flex-col-reverse lg:flex-row" : ""} ${classes ?? ""}',
-      children,
+    return Div(
+      className: 'grid $_columnsClasses gap-$gap ${reverseOnMobile ? "flex-col-reverse lg:flex-row" : ""} ${classes ?? ""}',
+      children: children,
     );
   }
 }
@@ -91,9 +91,9 @@ class DPageColumn extends StatelessComponent {
     final spanClasses = span != null ? 'lg:col-span-$span' : '';
     final stickyClasses = sticky ? 'lg:sticky lg:top-$stickyTop' : '';
 
-    return div(
-      classes: '$spanClasses $stickyClasses ${classes ?? ""}',
-      children,
+    return Div(
+      className: '$spanClasses $stickyClasses ${classes ?? ""}',
+      children: children,
     );
   }
 }

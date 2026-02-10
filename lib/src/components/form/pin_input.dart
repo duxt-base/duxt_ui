@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -93,14 +94,14 @@ class DPinInput extends StatelessComponent {
     }
   }
 
-  InputType get _inputType {
+  String get _inputType {
     switch (type) {
       case DPinInputType.text:
-        return InputType.text;
+        return 'text';
       case DPinInputType.number:
-        return InputType.text; // Use text with inputmode for better mobile support
+        return 'text'; // Use text with inputmode for better mobile support
       case DPinInputType.password:
-        return InputType.password;
+        return 'password';
     }
   }
 
@@ -116,27 +117,27 @@ class DPinInput extends StatelessComponent {
       (i) => i < value.length ? value[i] : '',
     );
 
-    return div(classes: 'space-y-2', [
+    return Div(className: 'space-y-2', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
-      div(
-        classes: 'flex items-center $_gapClasses',
+      Div(
+        className: 'flex items-center $_gapClasses',
         attributes: {'data-pin-input': 'true'},
-        [
+        children: [
           for (var i = 0; i < length; i++)
-            input(
+            Input(
               type: _inputType,
               name: name != null ? '${name}_$i' : null,
               value: digits[i],
               disabled: disabled,
-              classes: cx([
+              className: cx([
                 _sizeClasses,
                 'text-center',
                 'font-medium',
@@ -151,19 +152,19 @@ class DPinInput extends StatelessComponent {
                 'focus:outline-none',
                 'focus:ring-2',
               ]),
+              placeholder: placeholder,
               attributes: {
                 'maxlength': '1',
                 'data-pin-index': '$i',
                 if (type == DPinInputType.number) 'inputmode': 'numeric',
                 if (type == DPinInputType.number) 'pattern': '[0-9]*',
-                if (placeholder != null) 'placeholder': placeholder!,
                 if (autofocus && i == 0) 'autofocus': 'true',
               },
             ),
           // Hidden input for form submission with complete value
           if (name != null)
-            input(
-              type: InputType.hidden,
+            Input(
+              type: 'hidden',
               name: name,
               value: value,
               attributes: {'data-pin-hidden': 'true'},
@@ -171,11 +172,11 @@ class DPinInput extends StatelessComponent {
         ],
       ),
       if (hasError)
-        p(classes: 'text-sm text-red-600 dark:text-red-400',
-            [Component.text(error!)])
+        P(className: 'text-sm text-red-600 dark:text-red-400',
+            children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(hint!)]),
       // Global PIN input handler
       RawText('''<script>
 if (!window._pinInputInit) {

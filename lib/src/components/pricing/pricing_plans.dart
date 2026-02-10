@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import 'pricing_plan.dart';
 
 /// Grid column configuration for pricing plans
@@ -62,36 +63,36 @@ class DPricingPlans extends StatelessComponent {
     final hasHeader =
         title != null || description != null || billingToggle != null;
 
-    return div(
-      classes: classes,
-      [
+    return Div(
+      className: classes,
+      children: [
         if (hasHeader) _buildHeader(),
-        div(
-          classes:
+        Div(
+          className:
               'grid $_columnClasses $gap items-start ${centerWhenFewer ? "justify-center" : ""}',
-          plans,
+          children: plans,
         ),
       ],
     );
   }
 
   Component _buildHeader() {
-    return div(
-      classes: 'text-center mb-12',
-      [
+    return Div(
+      className: 'text-center mb-12',
+      children: [
         if (title != null)
-          h2(
-            classes:
+          H2(
+            className:
                 'text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl',
-            [Component.text(title!)],
+            children: [Text(title!)],
           ),
         if (description != null)
-          p(
-            classes:
+          P(
+            className:
                 'mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto',
-            [Component.text(description!)],
+            children: [Text(description!)],
           ),
-        if (billingToggle != null) div(classes: 'mt-8', [billingToggle!]),
+        if (billingToggle != null) Div(className: 'mt-8', children: [billingToggle!]),
       ],
     );
   }
@@ -125,31 +126,31 @@ class DBillingToggle extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes:
+    return Div(
+      className:
           'inline-flex items-center gap-3 p-1 bg-gray-100 dark:bg-zinc-800 rounded-lg',
-      [
+      children: [
         // Monthly button
-        button(
-          type: ButtonType.button,
-          classes:
+        Button(
+          type: 'button',
+          className:
               'px-4 py-2 text-sm font-medium rounded-md transition-colors ${!isYearly ? "bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}',
           events: events(onClick: () => onChange?.call(false)),
-          [Component.text(monthlyLabel)],
+          children: [Text(monthlyLabel)],
         ),
         // Yearly button
-        button(
-          type: ButtonType.button,
-          classes:
+        Button(
+          type: 'button',
+          className:
               'px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${isYearly ? "bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}',
           events: events(onClick: () => onChange?.call(true)),
-          [
-            Component.text(yearlyLabel),
+          children: [
+            Text(yearlyLabel),
             if (yearlySavings != null)
-              span(
-                classes:
+              Span(
+                className:
                     'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300',
-                [Component.text(yearlySavings!)],
+                children: [Text(yearlySavings!)],
               ),
           ],
         ),

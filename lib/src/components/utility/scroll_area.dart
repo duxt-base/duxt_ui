@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Scroll orientation
 enum DScrollOrientation { vertical, horizontal, both }
@@ -74,20 +74,19 @@ class DScrollArea extends StatelessComponent {
       styles['max-width'] = maxWidth!;
     }
 
-    return div(
-      classes: [
+    return Div(
+      className: [
         _overflowClasses,
         _scrollbarClasses,
         'scroll-smooth',
         if (classes != null) classes!,
       ].join(' '),
-      styles: styles.isNotEmpty ? Styles(raw: styles) : null,
-      [
+      style: styles.isNotEmpty ? styles.entries.map((e) => '${e.key}: ${e.value}').join('; ') : null,
+      children: [
         // Style tag for scrollbar CSS (works with Tailwind scrollbar plugin)
-        Component.element(
-          tag: 'style',
+        StyleElement(
           children: [
-            Component.text('''
+            Text('''
               .scrollbar-thin::-webkit-scrollbar {
                 width: 8px;
                 height: 8px;

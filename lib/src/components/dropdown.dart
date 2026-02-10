@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Dropdown item configuration
 class DDropdownItem {
@@ -64,57 +65,57 @@ class DDropdown extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return details(
-      classes: 'relative inline-block group',
+    return Details(
+      className: 'relative inline-block group',
       attributes: {
         'data-dropdown': 'true',
       },
-      [
+      children: [
         // Trigger wrapped in summary - use pointer-events to let summary handle clicks
-        summary(
-          classes: 'list-none [&::-webkit-details-marker]:hidden cursor-pointer [&>*]:pointer-events-none',
-          [trigger],
+        Summary(
+          className: 'list-none [&::-webkit-details-marker]:hidden cursor-pointer [&>*]:pointer-events-none',
+          children: [trigger],
         ),
         // Menu
-        div(
-          classes:
+        Div(
+          className:
               'absolute $_placementClasses w-48 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-gray-200 dark:border-zinc-700 py-1 z-50',
-          [
+          children: [
             for (final item in items)
               if (item.divider)
-                div(
-                    classes:
+                Div(
+                    className:
                         'border-t border-gray-100 dark:border-zinc-700 my-1',
-                    [])
+                    children: [])
               else if (item.href != null)
-                a(
+                A(
                   href: item.href!,
-                  classes:
+                  className:
                       'block w-full px-4 py-2 text-left text-sm flex items-center gap-2 ${item.disabled ? "text-gray-400 dark:text-zinc-500 cursor-not-allowed pointer-events-none" : "text-gray-700 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700"}',
                   attributes: {'data-dropdown-item': 'true'},
-                  [
+                  children: [
                     if (item.icon != null)
-                      span(
-                        classes: 'iconify w-4 h-4',
+                      Span(
+                        className: 'iconify w-4 h-4',
                         attributes: {'data-icon': item.icon!},
-                        [],
+                        children: [],
                       ),
-                    Component.text(item.label),
+                    Text(item.label),
                   ],
                 )
               else
-                div(
-                  classes:
+                Div(
+                  className:
                       'w-full px-4 py-2 text-left text-sm flex items-center gap-2 ${item.disabled ? "text-gray-400 dark:text-zinc-500 cursor-not-allowed" : "text-gray-700 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"}',
                   attributes: {'data-dropdown-item': 'true'},
-                  [
+                  children: [
                     if (item.icon != null)
-                      span(
-                        classes: 'iconify w-4 h-4',
+                      Span(
+                        className: 'iconify w-4 h-4',
                         attributes: {'data-icon': item.icon!},
-                        [],
+                        children: [],
                       ),
-                    Component.text(item.label),
+                    Text(item.label),
                   ],
                 ),
           ],

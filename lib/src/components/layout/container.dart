@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Container max-width variants
 enum DContainerSize { xs, sm, md, lg, xl, xxl, full }
@@ -44,9 +44,9 @@ class DContainer extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'mx-auto $_maxWidthClasses $_paddingClasses ${classes ?? ""}'.trim(),
-      children,
+    return Div(
+      className: 'mx-auto $_maxWidthClasses $_paddingClasses ${classes ?? ""}'.trim(),
+      children: children,
     );
   }
 }

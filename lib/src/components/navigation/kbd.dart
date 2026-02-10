@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Keyboard key size variants
 enum DKbdSize { xs, sm, md }
@@ -42,34 +42,32 @@ class DKbd extends StatelessComponent {
 
       for (var i = 0; i < keys!.length; i++) {
         keyComponents.add(
-          Component.element(
-            tag: 'kbd',
-            classes: '$baseClasses $_sizeClasses'.trim(),
-            children: [Component.text(_formatKey(keys![i]))],
+          Kbd(
+            className: '$baseClasses $_sizeClasses'.trim(),
+            children: [Text(_formatKey(keys![i]))],
           ),
         );
 
         if (i < keys!.length - 1) {
           keyComponents.add(
-            span(
-              classes: 'mx-0.5 text-gray-400 dark:text-gray-500 text-xs',
-              [Component.text('+')],
+            Span(
+              className: 'mx-0.5 text-gray-400 dark:text-gray-500 text-xs',
+              children: [Text('+')],
             ),
           );
         }
       }
 
-      return span(
-        classes: 'inline-flex items-center gap-0.5 ${classes ?? ""}'.trim(),
-        keyComponents,
+      return Span(
+        className: 'inline-flex items-center gap-0.5 ${classes ?? ""}'.trim(),
+        children: keyComponents,
       );
     }
 
     // Single key
-    return Component.element(
-      tag: 'kbd',
-      classes: '$baseClasses $_sizeClasses ${classes ?? ""}'.trim(),
-      children: [Component.text(_formatKey(value!))],
+    return Kbd(
+      className: '$baseClasses $_sizeClasses ${classes ?? ""}'.trim(),
+      children: [Text(_formatKey(value!))],
     );
   }
 

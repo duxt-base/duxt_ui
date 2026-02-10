@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import 'blog_post.dart';
 
 /// Grid column configuration
@@ -59,41 +60,41 @@ class DBlogPosts extends StatelessComponent {
     final hasHeader = title != null || description != null;
 
     if (posts.isEmpty && emptyState != null) {
-      return div(
-        classes: classes,
-        [
+      return Div(
+        className: classes,
+        children: [
           if (hasHeader) _buildHeader(),
           emptyState!,
         ],
       );
     }
 
-    return div(
-      classes: classes,
-      [
+    return Div(
+      className: classes,
+      children: [
         if (hasHeader) _buildHeader(),
-        div(
-          classes: 'grid $_columnClasses $gap',
-          posts,
+        Div(
+          className: 'grid $_columnClasses $gap',
+          children: posts,
         ),
       ],
     );
   }
 
   Component _buildHeader() {
-    return div(
-      classes: 'mb-8',
-      [
+    return Div(
+      className: 'mb-8',
+      children: [
         if (title != null)
-          h2(
-            classes:
+          H2(
+            className:
                 'text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl',
-            [Component.text(title!)],
+            children: [Text(title!)],
           ),
         if (description != null)
-          p(
-            classes: 'mt-2 text-gray-600 dark:text-gray-400',
-            [Component.text(description!)],
+          P(
+            className: 'mt-2 text-gray-600 dark:text-gray-400',
+            children: [Text(description!)],
           ),
       ],
     );
@@ -117,15 +118,15 @@ class DBlogPostsEmpty extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex flex-col items-center justify-center py-16 text-center',
-      [
+    return Div(
+      className: 'flex flex-col items-center justify-center py-16 text-center',
+      children: [
         if (icon != null)
-          div(classes: 'mb-4 text-gray-400', [icon!])
+          Div(className: 'mb-4 text-gray-400', children: [icon!])
         else
-          div(
-            classes: 'mb-4 text-gray-400',
-            [
+          Div(
+            className: 'mb-4 text-gray-400',
+            children: [
               // Default document icon
               RawText('''
                 <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -135,16 +136,16 @@ class DBlogPostsEmpty extends StatelessComponent {
             ],
           ),
         if (title != null)
-          h3(
-            classes: 'text-lg font-medium text-gray-900 dark:text-white',
-            [Component.text(title!)],
+          H3(
+            className: 'text-lg font-medium text-gray-900 dark:text-white',
+            children: [Text(title!)],
           ),
         if (description != null)
-          p(
-            classes: 'mt-1 text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(description!)],
+          P(
+            className: 'mt-1 text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(description!)],
           ),
-        if (action != null) div(classes: 'mt-4', [action!]),
+        if (action != null) Div(className: 'mt-4', children: [action!]),
       ],
     );
   }

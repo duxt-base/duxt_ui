@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import 'icon.dart';
 
 /// Stepper orientation
@@ -84,17 +84,17 @@ class DStepper extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     if (steps.isEmpty) {
-      return div([]);
+      return Div(children: []);
     }
 
     final isHorizontal = orientation == DStepperOrientation.horizontal;
 
-    return div(
-      classes: [
+    return Div(
+      className: [
         if (isHorizontal) 'flex items-center' else 'flex flex-col',
         classes ?? '',
       ].join(' '),
-      [
+      children: [
         for (var i = 0; i < steps.length; i++) ...[
           _buildStep(i, steps[i], isHorizontal),
           if (i < steps.length - 1) _buildConnector(i, isHorizontal),
@@ -107,17 +107,17 @@ class DStepper extends StatelessComponent {
     final status = _getStepStatus(index);
     final circleClasses = _getStepCircleClasses(status);
 
-    final stepWidget = div(
-      classes: [
+    final stepWidget = Div(
+      className: [
         'flex',
         if (isHorizontal) 'flex-col items-center' else 'items-start gap-4',
       ].join(' '),
-      [
+      children: [
         // Step circle
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           onClick: clickable ? () => onStepClick?.call(index) : null,
-          classes: [
+          className: [
             'flex items-center justify-center w-10 h-10 rounded-full border-2 font-medium text-sm transition-colors',
             circleClasses,
             if (clickable)
@@ -125,39 +125,39 @@ class DStepper extends StatelessComponent {
             else
               'cursor-default',
           ].join(' '),
-          [
+          children: [
             if (status == DStepStatus.completed)
               DIcon(name: DIconNames.check, size: DIconSize.sm)
             else if (step.icon != null)
               step.icon!
             else
-              Component.text('${index + 1}'),
+              Text('${index + 1}'),
           ],
         ),
 
         // Step content
-        div(
-          classes: [
+        Div(
+          className: [
             if (isHorizontal) 'mt-2 text-center' else 'flex-1',
           ].join(' '),
-          [
+          children: [
             // Title
-            span(
-              classes: [
+            Span(
+              className: [
                 'block font-medium text-sm',
                 status == DStepStatus.upcoming
                     ? 'text-gray-400 dark:text-gray-500'
                     : 'text-gray-900 dark:text-white',
               ].join(' '),
-              [Component.text(step.title)],
+              children: [Text(step.title)],
             ),
 
             // Description
             if (step.description != null)
-              span(
-                classes:
+              Span(
+                className:
                     'block text-xs text-gray-500 dark:text-gray-400 mt-0.5',
-                [Component.text(step.description!)],
+                children: [Text(step.description!)],
               ),
           ],
         ),
@@ -172,14 +172,14 @@ class DStepper extends StatelessComponent {
     final lineClasses = _getLineClasses(status);
 
     if (isHorizontal) {
-      return div(
-        classes: 'flex-1 h-0.5 mx-4 $lineClasses transition-colors',
-        [],
+      return Div(
+        className: 'flex-1 h-0.5 mx-4 $lineClasses transition-colors',
+        children: [],
       );
     } else {
-      return div(
-        classes: 'w-0.5 h-8 ml-5 my-2 $lineClasses transition-colors',
-        [],
+      return Div(
+        className: 'w-0.5 h-8 ml-5 my-2 $lineClasses transition-colors',
+        children: [],
       );
     }
   }

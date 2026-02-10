@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Tab orientation
 enum DTabsOrientation { horizontal, vertical }
@@ -74,17 +75,17 @@ class DTabs extends StatelessComponent {
     ''';
 
     if (isVertical) {
-      return div(id: _tabsId, classes: 'flex gap-4', [
+      return Div(id: _tabsId, className: 'flex gap-4', children: [
         // Tab list (vertical)
-        div(
-          classes: 'flex flex-col gap-1',
+        Div(
+          className: 'flex flex-col gap-1',
           attributes: {'role': 'tablist', 'aria-orientation': 'vertical'},
-          [
+          children: [
             for (final item in items) _buildTab(item, isVertical, initialValue),
           ],
         ),
         // Tab panels
-        div(classes: 'flex-1', [
+        Div(className: 'flex-1', children: [
           for (final item in items) _buildPanel(item, initialValue),
         ]),
         // Inline script for interactivity
@@ -92,17 +93,17 @@ class DTabs extends StatelessComponent {
       ]);
     }
 
-    return div(id: _tabsId, [
+    return Div(id: _tabsId, children: [
       // Tab list (horizontal)
-      div(
-        classes: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
+      Div(
+        className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
         attributes: {'role': 'tablist'},
-        [
+        children: [
           for (final item in items) _buildTab(item, isVertical, initialValue),
         ],
       ),
       // Tab panels
-      div(classes: 'mt-4', [
+      Div(className: 'mt-4', children: [
         for (final item in items) _buildPanel(item, initialValue),
       ]),
       // Inline script for interactivity
@@ -127,10 +128,10 @@ class DTabs extends StatelessComponent {
     final disabledClasses =
         item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: item.disabled,
-      classes:
+      className:
           '$baseClasses ${isActive ? activeClasses : inactiveClasses} $disabledClasses ${isActive ? "tab-active" : ""}',
       attributes: {
         'role': 'tab',
@@ -138,9 +139,9 @@ class DTabs extends StatelessComponent {
         'aria-selected': isActive.toString(),
         'aria-controls': 'panel_${item.value}',
       },
-      [
-        if (item.icon != null) span(classes: 'size-4', [item.icon!]),
-        Component.text(item.label),
+      children: [
+        if (item.icon != null) Span(className: 'size-4', children: [item.icon!]),
+        Text(item.label),
       ],
     );
   }
@@ -148,15 +149,15 @@ class DTabs extends StatelessComponent {
   Component _buildPanel(DTabItem item, String activeValue) {
     final isActive = item.value == activeValue;
 
-    return div(
+    return Div(
       id: 'panel_${item.value}',
-      classes: isActive ? '' : 'hidden',
+      className: isActive ? '' : 'hidden',
       attributes: {
         'role': 'tabpanel',
         'data-tab-panel': item.value,
         'aria-labelledby': item.value,
       },
-      [if (item.content != null) item.content!],
+      children: [if (item.content != null) item.content!],
     );
   }
 }
@@ -183,37 +184,37 @@ class DControlledTabs extends StatelessComponent {
     final isVertical = orientation == DTabsOrientation.vertical;
 
     if (isVertical) {
-      return div(classes: 'flex gap-4', [
-        div(
-          classes: 'flex flex-col gap-1',
-          [
+      return Div(className: 'flex gap-4', children: [
+        Div(
+          className: 'flex flex-col gap-1',
+          children: [
             for (final item in items) _buildTab(item, isVertical),
           ],
         ),
-        div(classes: 'flex-1', [
+        Div(className: 'flex-1', children: [
           for (final item in items)
             if (!unmountOnHide || item.value == selected)
-              div(
-                classes: item.value == selected ? '' : 'hidden',
-                [if (item.content != null) item.content!],
+              Div(
+                className: item.value == selected ? '' : 'hidden',
+                children: [if (item.content != null) item.content!],
               ),
         ]),
       ]);
     }
 
-    return div([
-      div(
-        classes: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
-        [
+    return Div(children: [
+      Div(
+        className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
+        children: [
           for (final item in items) _buildTab(item, isVertical),
         ],
       ),
-      div(classes: 'mt-4', [
+      Div(className: 'mt-4', children: [
         for (final item in items)
           if (!unmountOnHide || item.value == selected)
-            div(
-              classes: item.value == selected ? '' : 'hidden',
-              [if (item.content != null) item.content!],
+            Div(
+              className: item.value == selected ? '' : 'hidden',
+              children: [if (item.content != null) item.content!],
             ),
       ]),
     ]);
@@ -237,14 +238,14 @@ class DControlledTabs extends StatelessComponent {
     final disabledClasses =
         item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: item.disabled,
       onClick: item.disabled ? null : () => onSelect?.call(item.value),
-      classes: '$baseClasses $stateClasses $disabledClasses',
-      [
-        if (item.icon != null) span(classes: 'size-4', [item.icon!]),
-        Component.text(item.label),
+      className: '$baseClasses $stateClasses $disabledClasses',
+      children: [
+        if (item.icon != null) Span(className: 'size-4', children: [item.icon!]),
+        Text(item.label),
       ],
     );
   }

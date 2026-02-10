@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Radio group sizes
 enum DRadioGroupSize { xs, sm, md, lg, xl }
@@ -112,27 +112,27 @@ class DRadioGroup<T> extends StatelessComponent {
     final borderColor =
         hasError ? 'border-red-500' : 'border-gray-300 dark:border-gray-600';
 
-    return div(classes: 'space-y-2', [
+    return Div(className: 'space-y-2', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
-      fieldset(
-        classes: _orientationClasses,
-        [
+      Fieldset(
+        className: _orientationClasses,
+        children: [
           for (final option in options)
-            div(classes: 'flex items-start gap-2', [
-              div(classes: 'flex items-center h-5', [
-                input(
-                  type: InputType.radio,
+            Div(className: 'flex items-start gap-2', children: [
+              Div(className: 'flex items-center h-5', children: [
+                Input(
+                  type: 'radio',
                   name: name,
                   disabled: disabled || option.disabled,
-                  classes:
+                  className:
                       '$_sizeClasses $_colorClasses rounded-full border-2 $borderColor bg-white dark:bg-zinc-900 cursor-pointer focus:ring-2 focus:ring-offset-0 ${disabled || option.disabled ? "opacity-50 cursor-not-allowed" : ""}',
                   attributes: {
                     'value': option.value.toString(),
@@ -148,25 +148,25 @@ class DRadioGroup<T> extends StatelessComponent {
                 ),
               ]),
               if (option.label.isNotEmpty || option.description != null)
-                div(classes: 'flex flex-col', [
-                  span(
-                    classes:
+                Div(className: 'flex flex-col', children: [
+                  Span(
+                    className:
                         '$_labelSizeClasses font-medium ${disabled || option.disabled ? "text-gray-400" : "text-gray-700 dark:text-gray-200"} cursor-pointer',
-                    [Component.text(option.label)],
+                    children: [Text(option.label)],
                   ),
                   if (option.description != null)
-                    p(
-                      classes: 'text-xs text-gray-500 dark:text-gray-400',
-                      [Component.text(option.description!)],
+                    P(
+                      className: 'text-xs text-gray-500 dark:text-gray-400',
+                      children: [Text(option.description!)],
                     ),
                 ]),
             ]),
         ],
       ),
       if (hasError)
-        p(classes: 'text-sm text-red-600', [Component.text(error!)])
+        P(className: 'text-sm text-red-600', children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500', [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500', children: [Text(hint!)]),
     ]);
   }
 }

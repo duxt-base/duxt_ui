@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../utility/icon.dart';
 
 /// Select sizes
@@ -101,70 +101,70 @@ class DSelect<T> extends StatelessComponent {
         ? 'border-red-500 focus:ring-red-500'
         : 'border-gray-300 dark:border-gray-600 $_focusRingClasses';
 
-    return div(classes: 'space-y-1', [
+    return Div(className: 'space-y-1', children: [
       // Label
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
 
       // Native select with custom styling
-      div(classes: 'relative', [
-        select(
+      Div(className: 'relative', children: [
+        Select(
           name: name,
           disabled: disabled,
-          classes:
+          className:
               'w-full cursor-pointer rounded-lg border $borderColor $_sizeClasses pr-10 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 appearance-none ${disabled ? "bg-gray-100 dark:bg-zinc-800 cursor-not-allowed opacity-50" : ""}',
           attributes: {
             if (required) 'required': 'true',
             if (multiple) 'multiple': 'true',
           },
-          [
+          children: [
             // Placeholder option
             if (placeholder != null)
-              option(
+              Option(
                 value: '',
                 disabled: true,
                 selected: value == null,
-                [Component.text(placeholder!)],
+                children: [Text(placeholder!)],
               ),
 
             // Option groups
             if (optionGroups != null)
               for (final group in optionGroups!)
-                optgroup(
+                Optgroup(
                   label: group.label,
-                  [
+                  children: [
                     for (final opt in group.options)
-                      option(
+                      Option(
                         value: opt.value.toString(),
                         disabled: opt.disabled,
                         selected: value == opt.value,
-                        [Component.text(opt.label)],
+                        children: [Text(opt.label)],
                       ),
                   ],
                 )
             else
               // Regular options
               for (final opt in options)
-                option(
+                Option(
                   value: opt.value.toString(),
                   disabled: opt.disabled,
                   selected: value == opt.value,
-                  [Component.text(opt.label)],
+                  children: [Text(opt.label)],
                 ),
           ],
         ),
         // Custom dropdown arrow
-        span(
-          classes:
+        Span(
+          className:
               'absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none',
-          [
+          children: [
             DIcon(
               name: DIconNames.chevronDown,
               size: DIconSize.sm,
@@ -176,9 +176,9 @@ class DSelect<T> extends StatelessComponent {
 
       // Error or hint
       if (hasError)
-        p(classes: 'text-sm text-red-600', [Component.text(error!)])
+        P(className: 'text-sm text-red-600', children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500', [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500', children: [Text(hint!)]),
     ]);
   }
 }

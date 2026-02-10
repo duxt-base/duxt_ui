@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageAside component - Sticky sidebar navigation
 ///
@@ -31,22 +31,22 @@ class DPageAside extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return aside(
-      classes: '${hiddenOnMobile ? "hidden lg:block" : ""} ${classes ?? ""}',
-      [
-        div(
-          classes: 'sticky top-$topOffset',
-          [
+    return Aside(
+      className: '${hiddenOnMobile ? "hidden lg:block" : ""} ${classes ?? ""}',
+      children: [
+        Div(
+          className: 'sticky top-$topOffset',
+          children: [
             // Navigation container
-            nav(
-              classes: 'space-y-1',
-              [
+            Nav(
+              className: 'space-y-1',
+              children: [
                 // Optional title
                 if (title != null)
-                  h4(
-                    classes:
+                  H4(
+                    className:
                         'text-sm font-semibold text-gray-900 dark:text-white mb-4',
-                    [Component.text(title!)],
+                    children: [Text(title!)],
                   ),
                 // Content
                 ...children,
@@ -92,11 +92,11 @@ class DPageAsideLink extends StatelessComponent {
         ? 'text-primary-500 dark:text-primary-400 font-medium border-l-2 border-primary-500'
         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-l-2 border-transparent hover:border-gray-300';
 
-    return a(
+    return A(
       href: href,
-      classes:
+      className:
           'block py-1.5 pl-3 pr-2 text-sm $paddingLeft $activeClasses transition-colors ${classes ?? ""}',
-      [Component.text(label)],
+      children: [Text(label)],
     );
   }
 }
@@ -129,18 +129,18 @@ class DPageAsideGroup extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'mb-6 ${classes ?? ""}',
-      [
+    return Div(
+      className: 'mb-6 ${classes ?? ""}',
+      children: [
         if (title != null)
-          h5(
-            classes:
+          H5(
+            className:
                 'text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3',
-            [Component.text(title!)],
+            children: [Text(title!)],
           ),
-        div(
-          classes: 'space-y-1',
-          children,
+        Div(
+          className: 'space-y-1',
+          children: children,
         ),
       ],
     );

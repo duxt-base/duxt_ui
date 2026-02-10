@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import 'colors.dart';
 
 /// Theme mode for dark/light switching
@@ -79,9 +79,9 @@ class _UThemeProviderState extends State<DThemeProvider> {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: _themeClass,
-      [component.child],
+    return Div(
+      className: _themeClass,
+      children: [component.child],
     );
   }
 }
@@ -101,9 +101,9 @@ class DApp extends StatelessComponent {
   Component build(BuildContext context) {
     return DThemeProvider(
       config: theme,
-      child: div(
-        classes: 'min-h-screen bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 antialiased',
-        [child],
+      child: Div(
+        className: 'min-h-screen bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 antialiased',
+        children: [child],
       ),
     );
   }

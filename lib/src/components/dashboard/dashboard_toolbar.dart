@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardToolbar component
 ///
@@ -66,18 +66,18 @@ class DDashboardToolbar extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: '$_heightClasses flex items-center gap-2 px-4 $_backgroundClasses $_borderClasses ${classes ?? ""}',
-      [
+    return Div(
+      className: '$_heightClasses flex items-center gap-2 px-4 $_backgroundClasses $_borderClasses ${classes ?? ""}',
+      children: [
         // Left section
         if (leading != null)
-          div(classes: 'flex items-center gap-2', [leading!]),
+          Div(className: 'flex items-center gap-2', children: [leading!]),
         // Center section
         if (children.isNotEmpty)
-          div(classes: 'flex-1 flex items-center gap-2', children),
+          Div(className: 'flex-1 flex items-center gap-2', children: children),
         // Right section
         if (trailing != null)
-          div(classes: 'flex items-center gap-2 ml-auto', [trailing!]),
+          Div(className: 'flex items-center gap-2 ml-auto', children: [trailing!]),
       ],
     );
   }
@@ -95,9 +95,9 @@ class DToolbarSeparator extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'w-px h-6 bg-gray-200 dark:bg-zinc-700',
-      [],
+    return Div(
+      className: 'w-px h-6 bg-gray-200 dark:bg-zinc-700',
+      children: [],
     );
   }
 }
@@ -108,6 +108,6 @@ class DToolbarSpacer extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'flex-1', []);
+    return Div(className: 'flex-1', children: []);
   }
 }

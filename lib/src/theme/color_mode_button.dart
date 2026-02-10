@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
 import 'provider.dart';
 
@@ -91,10 +91,10 @@ class _UColorModeButtonState extends State<DColorModeButton> {
 
   @override
   Component build(BuildContext context) {
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: _toggleMode,
-      classes: [
+      className: [
         'inline-flex items-center justify-center rounded-lg',
         'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
         'hover:bg-gray-100 dark:hover:bg-gray-800',
@@ -106,7 +106,7 @@ class _UColorModeButtonState extends State<DColorModeButton> {
       attributes: {
         'aria-label': _isDark ? 'Switch to light mode' : 'Switch to dark mode',
       },
-      [
+      children: [
         // Show sun in dark mode (to switch to light), moon in light mode (to switch to dark)
         if (_isDark)
           DIcon(name: DIconNames.sun, size: _iconSize)

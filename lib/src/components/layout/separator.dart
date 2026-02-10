@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Separator orientation
 enum DSeparatorOrientation { horizontal, vertical }
@@ -48,26 +48,26 @@ class DSeparator extends StatelessComponent {
 
     if (label != null && orientation == DSeparatorOrientation.horizontal) {
       // Separator with label
-      return div(
-        classes: 'relative flex items-center w-full ${classes ?? ""}'.trim(),
-        [
-          div(classes: 'flex-grow border-t $baseClasses $_typeClasses', []),
-          span(
-            classes:
+      return Div(
+        className: 'relative flex items-center w-full ${classes ?? ""}'.trim(),
+        children: [
+          Div(className: 'flex-grow border-t $baseClasses $_typeClasses', children: []),
+          Span(
+            className:
                 'mx-4 text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-zinc-900 px-2',
-            [Component.text(label!)],
+            children: [Text(label!)],
           ),
-          div(classes: 'flex-grow border-t $baseClasses $_typeClasses', []),
+          Div(className: 'flex-grow border-t $baseClasses $_typeClasses', children: []),
         ],
       );
     }
 
     // Simple separator (hr-like)
-    return div(
-      classes:
+    return Div(
+      className:
           '$_orientationClasses $baseClasses $_typeClasses ${classes ?? ""}'
               .trim(),
-      [],
+      children: [],
     );
   }
 }

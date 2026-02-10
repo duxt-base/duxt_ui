@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText, events;
+import 'package:duxt_html/duxt_html.dart';
 
 /// A plan column in the pricing table
 class DPricingTablePlan {
@@ -106,21 +107,21 @@ class DPricingTable extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: '${scrollable ? "overflow-x-auto" : ""} ${classes ?? ""}',
-      [
-        table(
-          classes: 'w-full border-collapse',
-          [
+    return Div(
+      className: '${scrollable ? "overflow-x-auto" : ""} ${classes ?? ""}',
+      children: [
+        Table(
+          className: 'w-full border-collapse',
+          children: [
             // Table header with plans
-            thead([
-              tr(
-                classes: stickyHeaders ? 'sticky top-0 z-10' : '',
-                [
+            Thead(children: [
+              Tr(
+                className: stickyHeaders ? 'sticky top-0 z-10' : '',
+                children: [
                   // Empty cell for feature column
-                  th(
-                    classes: 'bg-white dark:bg-zinc-900 px-6 py-4 text-left',
-                    [],
+                  Th(
+                    className: 'bg-white dark:bg-zinc-900 px-6 py-4 text-left',
+                    children: [],
                   ),
                   // Plan columns
                   for (final plan in plans) _buildPlanHeader(plan),
@@ -128,7 +129,7 @@ class DPricingTable extends StatelessComponent {
               ),
             ]),
             // Table body with features
-            tbody([
+            Tbody(children: [
               // Ungrouped features
               if (features.isNotEmpty)
                 for (final feature in features) _buildFeatureRow(feature),
@@ -140,9 +141,9 @@ class DPricingTable extends StatelessComponent {
               ],
             ]),
             // Table footer with CTA buttons
-            tfoot([
-              tr([
-                td(classes: 'px-6 py-6', []),
+            Tfoot(children: [
+              Tr(children: [
+                Td(className: 'px-6 py-6', children: []),
                 for (final plan in plans) _buildPlanFooter(plan),
               ]),
             ]),
@@ -157,38 +158,38 @@ class DPricingTable extends StatelessComponent {
         ? 'bg-primary-50 dark:bg-primary-900/20'
         : 'bg-gray-50 dark:bg-zinc-800';
 
-    return th(
-      classes: 'px-6 py-6 text-center $bgClass relative',
-      [
+    return Th(
+      className: 'px-6 py-6 text-center $bgClass relative',
+      children: [
         // Badge
         if (plan.badge != null)
-          div(
-            classes: 'absolute -top-3 left-1/2 -translate-x-1/2',
-            [
-              span(
-                classes:
+          Div(
+            className: 'absolute -top-3 left-1/2 -translate-x-1/2',
+            children: [
+              Span(
+                className:
                     'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-500 text-white',
-                [Component.text(plan.badge!)],
+                children: [Text(plan.badge!)],
               ),
             ],
           ),
         // Plan name
-        div(
-          classes: 'text-lg font-semibold text-gray-900 dark:text-white',
-          [Component.text(plan.name)],
+        Div(
+          className: 'text-lg font-semibold text-gray-900 dark:text-white',
+          children: [Text(plan.name)],
         ),
         // Price
-        div(
-          classes: 'mt-2 flex items-baseline justify-center gap-1',
-          [
-            span(
-              classes: 'text-3xl font-bold text-gray-900 dark:text-white',
-              [Component.text(plan.price)],
+        Div(
+          className: 'mt-2 flex items-baseline justify-center gap-1',
+          children: [
+            Span(
+              className: 'text-3xl font-bold text-gray-900 dark:text-white',
+              children: [Text(plan.price)],
             ),
             if (plan.period != null)
-              span(
-                classes: 'text-sm text-gray-500 dark:text-gray-400',
-                [Component.text(plan.period!)],
+              Span(
+                className: 'text-sm text-gray-500 dark:text-gray-400',
+                children: [Text(plan.period!)],
               ),
           ],
         ),
@@ -197,17 +198,17 @@ class DPricingTable extends StatelessComponent {
   }
 
   Component _buildCategoryRow(DPricingTableCategory category) {
-    return tr(
-      classes: 'border-t border-gray-200 dark:border-gray-700',
-      [
-        td(
+    return Tr(
+      className: 'border-t border-gray-200 dark:border-gray-700',
+      children: [
+        Td(
           attributes: {'colspan': (plans.length + 1).toString()},
-          classes: 'px-6 py-4 bg-gray-50 dark:bg-zinc-800/50',
-          [
-            span(
-              classes:
+          className: 'px-6 py-4 bg-gray-50 dark:bg-zinc-800/50',
+          children: [
+            Span(
+              className:
                   'text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider',
-              [Component.text(category.name)],
+              children: [Text(category.name)],
             ),
           ],
         ),
@@ -216,22 +217,22 @@ class DPricingTable extends StatelessComponent {
   }
 
   Component _buildFeatureRow(DPricingTableFeature feature) {
-    return tr(
-      classes:
+    return Tr(
+      className:
           'border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50',
-      [
+      children: [
         // Feature name
-        td(
-          classes: 'px-6 py-4',
-          [
-            div(
-              classes: 'text-sm font-medium text-gray-900 dark:text-white',
-              [Component.text(feature.name)],
+        Td(
+          className: 'px-6 py-4',
+          children: [
+            Div(
+              className: 'text-sm font-medium text-gray-900 dark:text-white',
+              children: [Text(feature.name)],
             ),
             if (feature.description != null)
-              div(
-                classes: 'text-xs text-gray-500 dark:text-gray-400 mt-0.5',
-                [Component.text(feature.description!)],
+              Div(
+                className: 'text-xs text-gray-500 dark:text-gray-400 mt-0.5',
+                children: [Text(feature.description!)],
               ),
           ],
         ),
@@ -250,25 +251,25 @@ class DPricingTable extends StatelessComponent {
         highlighted ? 'bg-primary-50/50 dark:bg-primary-900/10' : '';
 
     if (value == null) {
-      return td(
-        classes: 'px-6 py-4 text-center $bgClass',
-        [
-          span(
-            classes: 'text-gray-300 dark:text-gray-600',
-            [Component.text('-')],
+      return Td(
+        className: 'px-6 py-4 text-center $bgClass',
+        children: [
+          Span(
+            className: 'text-gray-300 dark:text-gray-600',
+            children: [Text('-')],
           ),
         ],
       );
     }
 
     if (value is bool) {
-      return td(
-        classes: 'px-6 py-4 text-center $bgClass',
-        [
+      return Td(
+        className: 'px-6 py-4 text-center $bgClass',
+        children: [
           if (value)
-            span(
-              classes: 'text-primary-500',
-              [
+            Span(
+              className: 'text-primary-500',
+              children: [
                 RawText('''
                   <svg class="h-5 w-5 mx-auto" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -277,9 +278,9 @@ class DPricingTable extends StatelessComponent {
               ],
             )
           else
-            span(
-              classes: 'text-gray-300 dark:text-gray-600',
-              [
+            Span(
+              className: 'text-gray-300 dark:text-gray-600',
+              children: [
                 RawText('''
                   <svg class="h-5 w-5 mx-auto" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -292,27 +293,27 @@ class DPricingTable extends StatelessComponent {
     }
 
     if (value is String) {
-      return td(
-        classes: 'px-6 py-4 text-center $bgClass',
-        [
-          span(
-            classes: 'text-sm text-gray-900 dark:text-white',
-            [Component.text(value)],
+      return Td(
+        className: 'px-6 py-4 text-center $bgClass',
+        children: [
+          Span(
+            className: 'text-sm text-gray-900 dark:text-white',
+            children: [Text(value)],
           ),
         ],
       );
     }
 
     if (value is Component) {
-      return td(
-        classes: 'px-6 py-4 text-center $bgClass',
-        [value],
+      return Td(
+        className: 'px-6 py-4 text-center $bgClass',
+        children: [value],
       );
     }
 
-    return td(
-      classes: 'px-6 py-4 text-center $bgClass',
-      [Component.text(value.toString())],
+    return Td(
+      className: 'px-6 py-4 text-center $bgClass',
+      children: [Text(value.toString())],
     );
   }
 
@@ -324,23 +325,23 @@ class DPricingTable extends StatelessComponent {
         ? 'w-full py-2.5 px-4 rounded-lg font-semibold text-sm text-center transition-colors bg-primary-600 text-white hover:bg-primary-700'
         : 'w-full py-2.5 px-4 rounded-lg font-semibold text-sm text-center transition-colors bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-zinc-700 dark:text-white dark:hover:bg-gray-600';
 
-    return td(
-      classes: 'px-6 py-6 $bgClass',
-      [
+    return Td(
+      className: 'px-6 py-6 $bgClass',
+      children: [
         if (plan.buttonHref != null)
-          a(
+          A(
             href: plan.buttonHref!,
-            classes: buttonClasses,
-            [Component.text(plan.buttonText)],
+            className: buttonClasses,
+            children: [Text(plan.buttonText)],
           )
         else
-          button(
-            type: ButtonType.button,
-            classes: buttonClasses,
+          Button(
+            type: 'button',
+            className: buttonClasses,
             events: plan.onButtonClick != null
                 ? events(onClick: () => plan.onButtonClick!())
                 : null,
-            [Component.text(plan.buttonText)],
+            children: [Text(plan.buttonText)],
           ),
       ],
     );

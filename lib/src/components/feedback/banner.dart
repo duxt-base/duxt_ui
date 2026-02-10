@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 
@@ -104,64 +104,64 @@ class DBanner extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'w-full',
         'px-4 py-3',
         _variantClasses,
         _positionClasses,
       ]),
-      [
-        div(
-          classes: 'flex items-center justify-center gap-4 max-w-7xl mx-auto',
-          [
+      children: [
+        Div(
+          className: 'flex items-center justify-center gap-4 max-w-7xl mx-auto',
+          children: [
             // Icon
-            if (icon != null) div(classes: 'flex-shrink-0', [icon!]),
+            if (icon != null) Div(className: 'flex-shrink-0', children: [icon!]),
             // Content
-            div(
-              classes:
+            Div(
+              className:
                   'flex-1 flex items-center justify-center gap-x-4 gap-y-2 flex-wrap text-center sm:text-left',
-              [
+              children: [
                 // Message
-                div(
-                  classes: 'text-sm',
-                  [
+                Div(
+                  className: 'text-sm',
+                  children: [
                     if (title != null)
-                      span(classes: 'font-semibold', [Component.text(title!)]),
+                      Span(className: 'font-semibold', children: [Text(title!)]),
                     if (title != null && description != null)
-                      Component.text(' \u2013 '), // En dash separator
+                      Text(' \u2013 '), // En dash separator
                     if (description != null)
-                      span([Component.text(description!)]),
+                      Span(children: [Text(description!)]),
                   ],
                 ),
                 // Actions
                 if (actions.isNotEmpty)
-                  div(
-                    classes: cx([
+                  Div(
+                    className: cx([
                       'flex items-center gap-3',
                       'text-sm',
                       _actionButtonClasses,
                     ]),
-                    actions,
+                    children: actions,
                   ),
               ],
             ),
             // Close button
             if (closable && onClose != null)
-              button(
-                type: ButtonType.button,
+              Button(
+                type: 'button',
                 onClick: onClose,
-                classes: cx([
+                className: cx([
                   'flex-shrink-0',
                   'p-1',
                   'rounded',
                   'transition-colors',
                   _closeButtonClasses,
                 ]),
-                [
-                  span(
-                      classes: 'text-lg leading-none',
-                      [Component.text('\u00D7')])
+                children: [
+                  Span(
+                      className: 'text-lg leading-none',
+                      children: [Text('\u00D7')])
                 ],
               ),
           ],
@@ -187,17 +187,17 @@ class DBannerAction extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     if (href != null) {
-      return a(
+      return A(
         href: href!,
-        classes: 'whitespace-nowrap',
-        [Component.text(label)],
+        className: 'whitespace-nowrap',
+        children: [Text(label)],
       );
     }
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: onClick,
-      classes: 'whitespace-nowrap',
-      [Component.text(label)],
+      className: 'whitespace-nowrap',
+      children: [Text(label)],
     );
   }
 }
@@ -246,7 +246,7 @@ class DBannerMaintenance extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return DBanner(
-      icon: div([Component.text('\u{1F6A7}')]), // Construction emoji
+      icon: Div(children: [Text('\u{1F6A7}')]), // Construction emoji
       title: 'Maintenance',
       description: message ??
           'We are currently performing maintenance. Some features may be unavailable.',
@@ -283,19 +283,19 @@ class DBannerCookieConsent extends StatelessComponent {
       actions: [
         if (privacyPolicyHref != null)
           DBannerAction(label: 'Learn more', href: privacyPolicyHref),
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           onClick: onDecline,
-          classes:
+          className:
               'px-3 py-1 text-sm rounded bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-gray-600',
-          [Component.text('Decline')],
+          children: [Text('Decline')],
         ),
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           onClick: onAccept,
-          classes:
+          className:
               'px-3 py-1 text-sm rounded bg-blue-500 text-white hover:bg-blue-600',
-          [Component.text('Accept')],
+          children: [Text('Accept')],
         ),
       ],
     );

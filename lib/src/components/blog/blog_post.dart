@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Author information for blog posts
 class DBlogAuthor {
@@ -82,13 +83,13 @@ class DBlogPost extends StatelessComponent {
     final isHorizontal = orientation == DBlogPostOrientation.horizontal;
 
     final imageComponent = image != null
-        ? div(
-            classes: isHorizontal ? 'flex-shrink-0 w-48 md:w-64' : 'w-full',
-            [
-              img(
+        ? Div(
+            className: isHorizontal ? 'flex-shrink-0 w-48 md:w-64' : 'w-full',
+            children: [
+              Img(
                 src: image!,
                 alt: imageAlt ?? title,
-                classes:
+                className:
                     'aspect-video w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105',
               ),
             ],
@@ -96,79 +97,79 @@ class DBlogPost extends StatelessComponent {
         : null;
 
     final categoryBadge = category != null
-        ? span(
-            classes:
+        ? Span(
+            className:
                 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColor ?? "bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300"}',
-            [Component.text(category!)],
+            children: [Text(category!)],
           )
         : null;
 
-    final titleComponent = h3(
-      classes:
+    final titleComponent = H3(
+      className:
           'text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors line-clamp-2',
-      [Component.text(title)],
+      children: [Text(title)],
     );
 
     final excerptComponent = excerpt != null
-        ? p(
-            classes:
+        ? P(
+            className:
                 'mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2',
-            [Component.text(excerpt!)],
+            children: [Text(excerpt!)],
           )
         : null;
 
-    final metaComponent = div(
-      classes: 'mt-4 flex items-center gap-3',
-      [
+    final metaComponent = Div(
+      className: 'mt-4 flex items-center gap-3',
+      children: [
         if (author != null) ...[
           if (author!.avatar != null)
-            img(
+            Img(
               src: author!.avatar!,
               alt: author!.name,
-              classes: 'h-8 w-8 rounded-full object-cover',
+              className: 'h-8 w-8 rounded-full object-cover',
             )
           else
-            div(
-              classes:
+            Div(
+              className:
                   'h-8 w-8 rounded-full bg-gray-200 dark:bg-zinc-700 flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-300',
-              [
-                Component.text(author!.name.isNotEmpty
+              children: [
+                Text(author!.name.isNotEmpty
                     ? author!.name[0].toUpperCase()
                     : '?')
               ],
             ),
-          div([
-            p(
-              classes: 'text-sm font-medium text-gray-900 dark:text-white',
-              [Component.text(author!.name)],
+          Div(children: [
+            P(
+              className: 'text-sm font-medium text-gray-900 dark:text-white',
+              children: [Text(author!.name)],
             ),
             if (author!.role != null)
-              p(
-                classes: 'text-xs text-gray-500 dark:text-gray-400',
-                [Component.text(author!.role!)],
+              P(
+                className: 'text-xs text-gray-500 dark:text-gray-400',
+                children: [Text(author!.role!)],
               ),
           ]),
         ],
         if (date != null || readingTime != null)
-          div(
-            classes:
+          Div(
+            className:
                 'flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 ${author != null ? "ml-auto" : ""}',
-            [
-              if (date != null) span([Component.text(date!)]),
+            children: [
+              if (date != null) Span(children: [Text(date!)]),
               if (date != null && readingTime != null)
-                span(
-                    classes: 'text-gray-300 dark:text-gray-600',
-                    [Component.text('|')]),
-              if (readingTime != null) span([Component.text(readingTime!)]),
+                Span(
+                    className: 'text-gray-300 dark:text-gray-600',
+                    children: [Text('|')]),
+              if (readingTime != null) Span(children: [Text(readingTime!)]),
             ],
           ),
       ],
     );
 
-    final content = div(
-      classes: isHorizontal ? 'flex-1 min-w-0' : '',
-      [
-        if (categoryBadge != null) div(classes: 'mb-2', [categoryBadge]),
+    final content = Div(
+      className: isHorizontal ? 'flex-1 min-w-0' : '',
+      children: [
+        if (categoryBadge != null) Div(className: 'mb-2', children: [categoryBadge]),
         titleComponent,
         if (excerptComponent != null) excerptComponent,
         metaComponent,
@@ -189,17 +190,17 @@ class DBlogPost extends StatelessComponent {
     ];
 
     if (href != null) {
-      return a(
+      return A(
         href: href!,
-        classes: cardClasses,
-        cardContent,
+        className: cardClasses,
+        children: cardContent,
       );
     }
 
-    return div(
-      classes: cardClasses,
+    return Div(
+      className: cardClasses,
       events: onClick != null ? events(onClick: onClick!) : null,
-      cardContent,
+      children: cardContent,
     );
   }
 }

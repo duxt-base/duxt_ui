@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 
 /// Slider sizes with serialization support for @client
@@ -116,32 +116,32 @@ class _DSliderState extends State<DSlider> {
       component.disabled ? 'opacity-50 cursor-not-allowed' : null,
     ]);
 
-    return div(classes: 'space-y-2', [
+    return Div(className: 'space-y-2', children: [
       if (component.label != null || component.showValue)
-        div(classes: 'flex justify-between items-center', [
+        Div(className: 'flex justify-between items-center', children: [
           if (component.label != null)
-            span(
-              classes:
+            Span(
+              className:
                   'block text-sm font-medium text-gray-700 dark:text-gray-200',
-              [Component.text(component.label!)],
+              children: [Text(component.label!)],
             )
           else
-            span([]),
+            Span(children: []),
           if (component.showValue)
-            span(
-              classes: 'text-sm font-medium text-gray-500 dark:text-gray-400',
-              [
-                Component.text(
+            Span(
+              className: 'text-sm font-medium text-gray-500 dark:text-gray-400',
+              children: [
+                Text(
                     _value.toStringAsFixed(component.step < 1 ? 1 : 0))
               ],
             ),
         ]),
-      input(
-        type: InputType.range,
+      Input(
+        type: 'range',
         name: component.name,
         value: _value.toString(),
         disabled: component.disabled,
-        classes: baseClasses,
+        className: baseClasses,
         attributes: {
           'min': component.min.toString(),
           'max': component.max.toString(),
@@ -155,9 +155,9 @@ class _DSliderState extends State<DSlider> {
         },
       ),
       if (component.hint != null)
-        p(
-          classes: 'text-sm text-gray-500 dark:text-gray-400',
-          [Component.text(component.hint!)],
+        P(
+          className: 'text-sm text-gray-500 dark:text-gray-400',
+          children: [Text(component.hint!)],
         ),
     ]);
   }

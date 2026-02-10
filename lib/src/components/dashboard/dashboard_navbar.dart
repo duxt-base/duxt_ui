@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardNavbar component
 ///
@@ -59,28 +59,28 @@ class DDashboardNavbar extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return nav(
-      classes:
+    return Nav(
+      className:
           'h-16 flex items-center justify-between px-4 $_backgroundClasses $_borderClasses ${classes ?? ""}',
-      [
+      children: [
         // Left section
-        div(classes: 'flex items-center gap-4', [
+        Div(className: 'flex items-center gap-4', children: [
           if (leading != null) leading!,
           if (title != null)
-            h1(
-                classes: 'text-lg font-semibold text-gray-900 dark:text-white',
-                [Component.text(title!)]),
+            H1(
+                className: 'text-lg font-semibold text-gray-900 dark:text-white',
+                children: [Text(title!)]),
         ]),
         // Center section
         if (center != null)
-          div(classes: 'flex-1 flex items-center justify-center', [center!])
+          Div(className: 'flex-1 flex items-center justify-center', children: [center!])
         else if (children.isNotEmpty)
-          div(
-              classes: 'flex-1 flex items-center justify-center gap-4',
-              children),
+          Div(
+              className: 'flex-1 flex items-center justify-center gap-4',
+              children: children),
         // Right section
         if (trailing != null)
-          div(classes: 'flex items-center gap-4', [trailing!]),
+          Div(className: 'flex items-center gap-4', children: [trailing!]),
       ],
     );
   }

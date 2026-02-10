@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Button variants
 enum DButtonVariant { solid, outline, soft, subtle, ghost, link }
@@ -224,24 +224,24 @@ class DButton extends StatelessComponent {
   Component build(BuildContext context) {
     final blockClasses = block ? 'w-full justify-center' : '';
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: disabled || loading,
       onClick: disabled || loading ? null : onClick,
-      classes:
+      className:
           '$_baseClasses $_sizeClasses $_colorClasses $blockClasses'.trim(),
-      [
+      children: [
         if (loading)
-          span(
-              classes:
+          Span(
+              className:
                   'animate-spin $_iconSizeClasses border-2 border-current border-t-transparent rounded-full',
-              [])
+              children: [])
         else if (leadingIcon != null)
-          span(classes: 'shrink-0 $_iconSizeClasses', [leadingIcon!]),
-        if (label != null) span(classes: 'truncate', [Component.text(label!)]),
+          Span(className: 'shrink-0 $_iconSizeClasses', children: [leadingIcon!]),
+        if (label != null) Span(className: 'truncate', children: [Text(label!)]),
         ...children,
         if (trailingIcon != null)
-          span(classes: 'shrink-0 $_iconSizeClasses', [trailingIcon!]),
+          Span(className: 'shrink-0 $_iconSizeClasses', children: [trailingIcon!]),
       ],
     );
   }
@@ -263,10 +263,10 @@ class DButtonGroup extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     final isVertical = orientation == 'vertical';
-    return div(
-      classes:
+    return Div(
+      className:
           'inline-flex ${isVertical ? "flex-col" : ""} -space-${isVertical ? "y" : "x"}-px',
-      children,
+      children: children,
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Checkbox sizes
 enum DCheckboxSize { xs, sm, md, lg, xl }
@@ -85,14 +85,14 @@ class DCheckbox extends StatelessComponent {
     final borderColor =
         hasError ? 'border-red-500' : 'border-gray-300 dark:border-gray-600';
 
-    return div(classes: 'space-y-1', [
-      div(classes: 'flex items-start gap-2', [
-        div(classes: 'flex items-center h-5', [
-          input(
-            type: InputType.checkbox,
+    return Div(className: 'space-y-1', children: [
+      Div(className: 'flex items-start gap-2', children: [
+        Div(className: 'flex items-center h-5', children: [
+          Input(
+            type: 'checkbox',
             name: name,
             disabled: disabled,
-            classes:
+            className:
                 '$_sizeClasses $_colorClasses rounded border-2 $borderColor bg-white dark:bg-zinc-900 cursor-pointer focus:ring-2 focus:ring-offset-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""}',
             attributes: {
               if (checked) 'checked': 'true',
@@ -110,28 +110,28 @@ class DCheckbox extends StatelessComponent {
           ),
         ]),
         if (label != null || description != null)
-          div(classes: 'flex flex-col', [
+          Div(className: 'flex flex-col', children: [
             if (label != null)
-              span(
-                classes:
+              Span(
+                className:
                     '$_labelSizeClasses font-medium ${disabled ? "text-gray-400" : "text-gray-700 dark:text-gray-200"} cursor-pointer',
-                [
-                  Component.text(label!),
+                children: [
+                  Text(label!),
                   if (required)
-                    span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                    Span(className: 'text-red-500 ml-1', children: [Text('*')]),
                 ],
               ),
             if (description != null)
-              p(
-                classes: 'text-xs text-gray-500 dark:text-gray-400',
-                [Component.text(description!)],
+              P(
+                className: 'text-xs text-gray-500 dark:text-gray-400',
+                children: [Text(description!)],
               ),
           ]),
       ]),
       if (hasError)
-        p(classes: 'text-sm text-red-600', [Component.text(error!)])
+        P(className: 'text-sm text-red-600', children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500', [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500', children: [Text(hint!)]),
     ]);
   }
 }

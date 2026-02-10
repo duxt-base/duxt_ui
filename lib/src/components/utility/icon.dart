@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Icon sizes
 enum DIconSize { xs, sm, md, lg, xl }
@@ -56,13 +56,13 @@ class DIcon extends StatelessComponent {
 
     // Use Iconify's icon element pattern
     // This relies on Iconify's web component or CSS approach
-    return span(
-      classes: iconClasses,
+    return Span(
+      className: iconClasses,
       attributes: {
         'data-icon': name,
         'aria-hidden': 'true',
       },
-      [
+      children: [
         // Render iconify-icon custom element
         Component.element(
           tag: 'iconify-icon',

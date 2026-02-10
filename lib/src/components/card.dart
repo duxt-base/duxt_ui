@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Card variants
 enum DCardVariant { solid, outline, soft, subtle }
@@ -40,12 +40,12 @@ class DCard extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: '$_baseClasses $_variantClasses ${classes ?? ""}'.trim(),
-      [
-        if (header != null) div(classes: 'p-4 sm:px-6', [header!]),
-        div(classes: noPadding ? '' : 'p-4 sm:p-6', children),
-        if (footer != null) div(classes: 'p-4 sm:px-6', [footer!]),
+    return Div(
+      className: '$_baseClasses $_variantClasses ${classes ?? ""}'.trim(),
+      children: [
+        if (header != null) Div(className: 'p-4 sm:px-6', children: [header!]),
+        Div(className: noPadding ? '' : 'p-4 sm:p-6', children: children),
+        if (footer != null) Div(className: 'p-4 sm:px-6', children: [footer!]),
       ],
     );
   }
@@ -68,17 +68,17 @@ class DCardHeader extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'flex items-start justify-between gap-4', [
-      div(classes: 'flex-1 min-w-0', [
+    return Div(className: 'flex items-start justify-between gap-4', children: [
+      Div(className: 'flex-1 min-w-0', children: [
         if (title != null)
-          h3(
-              classes:
+          H3(
+              className:
                   'text-base font-semibold text-gray-900 dark:text-white truncate',
-              [Component.text(title!)]),
+              children: [Text(title!)]),
         if (description != null)
-          p(
-              classes: 'text-sm text-gray-500 dark:text-gray-400 mt-1',
-              [Component.text(description!)]),
+          P(
+              className: 'text-sm text-gray-500 dark:text-gray-400 mt-1',
+              children: [Text(description!)]),
         ...children,
       ]),
       if (trailing != null) trailing!,
@@ -99,7 +99,7 @@ class DCardBody extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: classes, children);
+    return Div(className: classes, children: children);
   }
 }
 
@@ -116,8 +116,8 @@ class DCardFooter extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-        classes: 'flex items-center justify-end gap-3 ${classes ?? ""}'.trim(),
-        children);
+    return Div(
+        className: 'flex items-center justify-end gap-3 ${classes ?? ""}'.trim(),
+        children: children);
   }
 }

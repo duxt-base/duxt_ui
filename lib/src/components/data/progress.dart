@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show svg, circle;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -96,8 +97,8 @@ class DProgress extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final progressBar = div(
-      classes: cx([
+    final progressBar = Div(
+      className: cx([
         'overflow-hidden rounded-full w-full',
         _heightClass,
         _trackColorClass,
@@ -108,38 +109,36 @@ class DProgress extends StatelessComponent {
         'aria-valuemin': '0',
         'aria-valuemax': '${max.toInt()}',
       },
-      [
-        div(
-          classes: cx([
+      children: [
+        Div(
+          className: cx([
             _heightClass,
             _indicatorColorClass,
             'rounded-full transition-all duration-300',
             _animationClass,
           ]),
-          styles: indeterminate
-              ? Styles(raw: {'width': '30%'})
-              : Styles(raw: {'width': '${_percentage}%'}),
-          [],
+          style: indeterminate ? 'width: 30%' : 'width: ${_percentage}%',
+          children: [],
         ),
       ],
     );
 
     if (showLabel || label != null) {
-      return div(
-        classes: 'w-full',
-        [
+      return Div(
+        className: 'w-full',
+        children: [
           if (showLabel || label != null)
-            div(
-              classes: 'flex justify-between mb-1',
-              [
+            Div(
+              className: 'flex justify-between mb-1',
+              children: [
                 if (label != null)
-                  span(
-                    classes: 'text-sm font-medium ${DTextColors.defaultText}',
-                    [Component.text(label!)],
+                  Span(
+                    className: 'text-sm font-medium ${DTextColors.defaultText}',
+                    children: [Text(label!)],
                   ),
-                span(
-                  classes: 'text-sm font-medium ${DTextColors.muted}',
-                  [Component.text('${_percentage.toInt()}%')],
+                Span(
+                  className: 'text-sm font-medium ${DTextColors.muted}',
+                  children: [Text('${_percentage.toInt()}%')],
                 ),
               ],
             ),
@@ -249,9 +248,9 @@ class DProgressCircular extends StatelessComponent {
     final circumference = 2 * 3.14159 * radius;
     final dashOffset = circumference - (_percentage / 100 * circumference);
 
-    return div(
-      classes: 'relative inline-flex items-center justify-center $_sizeClass',
-      [
+    return Div(
+      className: 'relative inline-flex items-center justify-center $_sizeClass',
+      children: [
         // SVG using Jaspr's native SVG components
         svg(
           [
@@ -293,10 +292,10 @@ class DProgressCircular extends StatelessComponent {
         ),
         // Center label
         if ((showLabel || label != null) && !indeterminate)
-          span(
-            classes:
+          Span(
+            className:
                 'absolute $_textSizeClass font-medium ${DTextColors.defaultText}',
-            [Component.text(label ?? '${_percentage.toInt()}%')],
+            children: [Text(label ?? '${_percentage.toInt()}%')],
           ),
       ],
     );
@@ -351,39 +350,39 @@ class DProgressSteps extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'w-full',
-      [
+    return Div(
+      className: 'w-full',
+      children: [
         // Progress segments
-        div(
-          classes: 'flex gap-1',
-          [
+        Div(
+          className: 'flex gap-1',
+          children: [
             for (var i = 0; i < totalSteps; i++)
-              div(
-                classes: cx([
+              Div(
+                className: cx([
                   'flex-1 rounded-full $_heightClass transition-colors',
                   i <= currentStep
                       ? _activeColor
                       : 'bg-gray-200 dark:bg-zinc-700',
                 ]),
-                [],
+                children: [],
               ),
           ],
         ),
         // Labels
         if (labels != null && labels!.isNotEmpty)
-          div(
-            classes: 'flex justify-between mt-2',
-            [
+          Div(
+            className: 'flex justify-between mt-2',
+            children: [
               for (var i = 0; i < totalSteps && i < labels!.length; i++)
-                span(
-                  classes: cx([
+                Span(
+                  className: cx([
                     'text-xs',
                     i <= currentStep
                         ? DTextColors.defaultText
                         : DTextColors.muted,
                   ]),
-                  [Component.text(labels![i])],
+                  children: [Text(labels![i])],
                 ),
             ],
           ),

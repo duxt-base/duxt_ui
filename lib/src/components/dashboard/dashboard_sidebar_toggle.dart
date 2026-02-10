@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardSidebarToggle component
 ///
@@ -62,17 +63,17 @@ class DDashboardSidebarToggle extends StatelessComponent {
 
   Component get _defaultCollapsedIcon {
     // Hamburger menu icon (bars)
-    return svg(
-      classes: 'w-5 h-5',
+    return Svg(
+      className: 'w-5 h-5',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<line x1="3" y1="12" x2="21" y2="12"/>'),
         RawText('<line x1="3" y1="6" x2="21" y2="6"/>'),
         RawText('<line x1="3" y1="18" x2="21" y2="18"/>'),
@@ -82,17 +83,17 @@ class DDashboardSidebarToggle extends StatelessComponent {
 
   Component get _defaultExpandedIcon {
     // Chevron left icon (collapse)
-    return svg(
-      classes: 'w-5 h-5',
+    return Svg(
+      className: 'w-5 h-5',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<polyline points="15 18 9 12 15 6"/>'),
       ],
     );
@@ -104,14 +105,14 @@ class DDashboardSidebarToggle extends StatelessComponent {
         ? (collapsedIcon ?? _defaultCollapsedIcon)
         : (expandedIcon ?? _defaultExpandedIcon);
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: onToggle,
-      classes: 'rounded-lg transition-colors $_variantClasses $_sizeClasses ${classes ?? ""}',
+      className: 'rounded-lg transition-colors $_variantClasses $_sizeClasses ${classes ?? ""}',
       attributes: {
         'aria-label': collapsed ? 'Expand sidebar' : 'Collapse sidebar',
       },
-      [icon],
+      children: [icon],
     );
   }
 }

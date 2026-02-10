@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Alert variants
 enum DAlertVariant { solid, outline, soft, subtle }
@@ -125,33 +125,33 @@ class DAlert extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: '$_baseClasses $_variantClasses',
-      [
-        div(classes: 'flex gap-3', [
-          if (icon != null) div(classes: 'shrink-0 size-5', [icon!]),
-          if (avatar != null) div(classes: 'shrink-0', [avatar!]),
-          div(classes: 'flex-1 min-w-0', [
+    return Div(
+      className: '$_baseClasses $_variantClasses',
+      children: [
+        Div(className: 'flex gap-3', children: [
+          if (icon != null) Div(className: 'shrink-0 size-5', children: [icon!]),
+          if (avatar != null) Div(className: 'shrink-0', children: [avatar!]),
+          Div(className: 'flex-1 min-w-0', children: [
             if (title != null)
-              h3(classes: 'text-sm font-medium', [Component.text(title!)]),
+              H3(className: 'text-sm font-medium', children: [Text(title!)]),
             if (description != null)
-              p(
-                  classes: 'text-sm mt-1 opacity-90',
-                  [Component.text(description!)]),
+              P(
+                  className: 'text-sm mt-1 opacity-90',
+                  children: [Text(description!)]),
             ...children,
             if (actions.isNotEmpty)
-              div(classes: 'flex items-center gap-2 mt-3', actions),
+              Div(className: 'flex items-center gap-2 mt-3', children: actions),
           ]),
           if (onClose != null)
-            button(
-              type: ButtonType.button,
+            Button(
+              type: 'button',
               onClick: onClose,
-              classes:
+              className:
                   'shrink-0 -my-1 -mx-1 p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors',
-              [
-                span(
-                    classes: 'size-5 flex items-center justify-center',
-                    [Component.text('×')]),
+              children: [
+                Span(
+                    className: 'size-5 flex items-center justify-center',
+                    children: [Text('\u00d7')]),
               ],
             ),
         ]),

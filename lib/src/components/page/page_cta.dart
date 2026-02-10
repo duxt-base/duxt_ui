@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageCTA component - Call-to-action section
 ///
@@ -75,46 +75,46 @@ class DPageCTA extends StatelessComponent {
     final descColorClasses =
         gradient ? 'text-white/90' : 'text-gray-600 dark:text-gray-300';
 
-    return section(
-      classes: 'py-12 sm:py-16 lg:py-20 ${classes ?? ""}',
-      [
-        div(
-          classes: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
-          [
-            div(
-              classes:
+    return Section(
+      className: 'py-12 sm:py-16 lg:py-20 ${classes ?? ""}',
+      children: [
+        Div(
+          className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
+          children: [
+            Div(
+              className:
                   '$bgClasses $containerClasses ${card || gradient ? "p-8 sm:p-12 lg:p-16" : ""}',
-              [
-                div(
-                  classes:
+              children: [
+                Div(
+                  className:
                       'flex flex-col $_alignClasses max-w-3xl ${align == DPageCTAAlign.center ? "mx-auto" : ""}',
-                  [
+                  children: [
                     // Icon
                     if (icon != null)
-                      div(
-                        classes:
+                      Div(
+                        className:
                             'mb-6 ${gradient ? "text-white" : "text-primary-500"}',
-                        [icon!],
+                        children: [icon!],
                       ),
                     // Title
                     if (title != null)
-                      h2(
-                        classes:
+                      H2(
+                        className:
                             'text-2xl sm:text-3xl lg:text-4xl font-bold $textColorClasses tracking-tight',
-                        [Component.text(title!)],
+                        children: [Text(title!)],
                       ),
                     // Description
                     if (description != null)
-                      p(
-                        classes: 'mt-4 text-lg $descColorClasses',
-                        [Component.text(description!)],
+                      P(
+                        className: 'mt-4 text-lg $descColorClasses',
+                        children: [Text(description!)],
                       ),
                     // Links/buttons
                     if (links.isNotEmpty)
-                      div(
-                        classes:
+                      Div(
+                        className:
                             'mt-8 flex flex-wrap gap-4 ${align == DPageCTAAlign.center ? "justify-center" : ""}',
-                        links,
+                        children: links,
                       ),
                   ],
                 ),

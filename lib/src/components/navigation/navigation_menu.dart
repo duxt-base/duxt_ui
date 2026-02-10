@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Navigation menu orientation
 enum DNavigationOrientation { horizontal, vertical }
@@ -31,13 +31,12 @@ class DNavigationMenu extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return Component.element(
-      tag: 'nav',
-      classes: '${classes ?? ""}'.trim(),
+    return Nav(
+      className: '${classes ?? ""}'.trim(),
       children: [
-        ul(
-          classes: _orientationClasses,
-          items.map((item) => li([item])).toList(),
+        Ul(
+          className: _orientationClasses,
+          children: items.map((item) => Li(children: [item])).toList(),
         ),
       ],
     );
@@ -82,29 +81,29 @@ class DNavigationItem extends StatelessComponent {
 
     // If has children, render as dropdown trigger
     if (children != null && children!.isNotEmpty) {
-      return div(
-        classes: 'relative group',
-        [
-          button(
-            type: ButtonType.button,
+      return Div(
+        className: 'relative group',
+        children: [
+          Button(
+            type: 'button',
             disabled: disabled,
-            classes: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
-            [
+            className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+            children: [
               if (icon != null) icon!,
-              Component.text(label),
+              Text(label),
               if (badge != null) badge!,
               // Dropdown indicator
-              span(
-                classes: 'ml-1 transition-transform group-hover:rotate-180',
-                [Component.text('\u25BC')], // Down arrow
+              Span(
+                className: 'ml-1 transition-transform group-hover:rotate-180',
+                children: [Text('\u25BC')], // Down arrow
               ),
             ],
           ),
           // Dropdown menu
-          div(
-            classes:
+          Div(
+            className:
                 'absolute left-0 top-full mt-1 min-w-48 py-1 bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50',
-            children!,
+            children: children!,
           ),
         ],
       );
@@ -112,25 +111,25 @@ class DNavigationItem extends StatelessComponent {
 
     // Regular navigation item
     if (href != null && !disabled) {
-      return a(
+      return A(
         href: href!,
-        classes: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
-        [
+        className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+        children: [
           if (icon != null) icon!,
-          Component.text(label),
+          Text(label),
           if (badge != null) badge!,
         ],
       );
     }
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: disabled,
       onClick: disabled ? null : onClick,
-      classes: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
-      [
+      className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+      children: [
         if (icon != null) icon!,
-        Component.text(label),
+        Text(label),
         if (badge != null) badge!,
       ],
     );
@@ -150,9 +149,8 @@ class DVerticalNavigation extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return Component.element(
-      tag: 'nav',
-      classes: 'space-y-4 ${classes ?? ""}'.trim(),
+    return Nav(
+      className: 'space-y-4 ${classes ?? ""}'.trim(),
       children: groups,
     );
   }
@@ -173,18 +171,18 @@ class DNavigationGroup extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: classes ?? '',
-      [
+    return Div(
+      className: classes ?? '',
+      children: [
         if (title != null)
-          h3(
-            classes:
+          H3(
+            className:
                 'px-3 mb-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider',
-            [Component.text(title!)],
+            children: [Text(title!)],
           ),
-        ul(
-          classes: 'space-y-1',
-          items.map((item) => li([item])).toList(),
+        Ul(
+          className: 'space-y-1',
+          children: items.map((item) => Li(children: [item])).toList(),
         ),
       ],
     );

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Context menu item
 class DContextMenuItem {
@@ -89,51 +89,51 @@ class _UContextMenuState extends State<DContextMenu> {
 
   Component _buildMenuItem(DContextMenuItem item) {
     if (item.divider) {
-      return div(
-        classes: 'border-t border-gray-200 dark:border-gray-700 my-1',
-        [],
+      return Div(
+        className: 'border-t border-gray-200 dark:border-gray-700 my-1',
+        children: [],
       );
     }
 
     final hasSubmenu = item.submenu != null && item.submenu!.isNotEmpty;
 
-    return div(
-      classes: 'relative group',
-      [
-        button(
-          type: ButtonType.button,
+    return Div(
+      className: 'relative group',
+      children: [
+        Button(
+          type: 'button',
           disabled: item.disabled,
           onClick:
               item.disabled || hasSubmenu ? null : () => _handleItemClick(item),
-          classes:
+          className:
               'w-full flex items-center justify-between px-3 py-2 text-sm ${item.disabled ? "text-gray-400 dark:text-gray-600 cursor-not-allowed" : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"}',
-          [
-            div(
-              classes: 'flex items-center gap-2',
-              [
+          children: [
+            Div(
+              className: 'flex items-center gap-2',
+              children: [
                 if (item.icon != null)
-                  span(classes: 'w-4 h-4', [Component.text(item.icon!)]),
-                span([Component.text(item.label)]),
+                  Span(className: 'w-4 h-4', children: [Text(item.icon!)]),
+                Span(children: [Text(item.label)]),
               ],
             ),
             if (item.shortcut != null)
-              span(
-                classes: 'ml-4 text-xs text-gray-400 dark:text-gray-500',
-                [Component.text(item.shortcut!)],
+              Span(
+                className: 'ml-4 text-xs text-gray-400 dark:text-gray-500',
+                children: [Text(item.shortcut!)],
               ),
             if (hasSubmenu)
-              span(
-                classes: 'ml-2 text-gray-400',
-                [Component.text('\u203A')], // Right arrow
+              Span(
+                className: 'ml-2 text-gray-400',
+                children: [Text('\u203A')], // Right arrow
               ),
           ],
         ),
         // Submenu
         if (hasSubmenu)
-          div(
-            classes:
+          Div(
+            className:
                 'absolute left-full top-0 ml-1 hidden group-hover:block min-w-48 bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800 py-1',
-            [
+            children: [
               for (final subItem in item.submenu!) _buildMenuItem(subItem),
             ],
           ),
@@ -143,28 +143,28 @@ class _UContextMenuState extends State<DContextMenu> {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'relative inline-block',
-      [
+    return Div(
+      className: 'relative inline-block',
+      children: [
         // Child with context menu event
-        div(
+        Div(
           events: {'contextmenu': _handleContextMenu},
-          [component.child],
+          children: [component.child],
         ),
         // Context menu overlay
         if (_open) ...[
           // Invisible overlay to catch clicks outside
-          div(
-            classes: 'fixed inset-0 z-40',
+          Div(
+            className: 'fixed inset-0 z-40',
             events: {'click': (_) => _close(), 'contextmenu': (_) => _close()},
-            [],
+            children: [],
           ),
           // Context menu
-          div(
-            classes:
+          Div(
+            className:
                 'absolute z-50 min-w-48 bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800 py-1',
-            styles: Styles(raw: {'left': '${_x}px', 'top': '${_y}px'}),
-            [
+            style: 'left: ${_x}px; top: ${_y}px',
+            children: [
               for (final item in component.items) _buildMenuItem(item),
             ],
           ),
@@ -193,14 +193,14 @@ class DContextMenuControlled extends StatelessComponent {
 
   Component _buildMenuItem(DContextMenuItem item, VoidCallback close) {
     if (item.divider) {
-      return div(
-        classes: 'border-t border-gray-200 dark:border-gray-700 my-1',
-        [],
+      return Div(
+        className: 'border-t border-gray-200 dark:border-gray-700 my-1',
+        children: [],
       );
     }
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: item.disabled,
       onClick: item.disabled
           ? null
@@ -208,21 +208,21 @@ class DContextMenuControlled extends StatelessComponent {
               close();
               item.onClick?.call();
             },
-      classes:
+      className:
           'w-full flex items-center justify-between px-3 py-2 text-sm ${item.disabled ? "text-gray-400 dark:text-gray-600 cursor-not-allowed" : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"}',
-      [
-        div(
-          classes: 'flex items-center gap-2',
-          [
+      children: [
+        Div(
+          className: 'flex items-center gap-2',
+          children: [
             if (item.icon != null)
-              span(classes: 'w-4 h-4', [Component.text(item.icon!)]),
-            span([Component.text(item.label)]),
+              Span(className: 'w-4 h-4', children: [Text(item.icon!)]),
+            Span(children: [Text(item.label)]),
           ],
         ),
         if (item.shortcut != null)
-          span(
-            classes: 'ml-4 text-xs text-gray-400 dark:text-gray-500',
-            [Component.text(item.shortcut!)],
+          Span(
+            className: 'ml-4 text-xs text-gray-400 dark:text-gray-500',
+            children: [Text(item.shortcut!)],
           ),
       ],
     );
@@ -230,24 +230,24 @@ class DContextMenuControlled extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    if (!open) return div([]);
+    if (!open) return Div(children: []);
 
-    return div(
-      [
+    return Div(
+      children: [
         // Invisible overlay to catch clicks outside
-        div(
-          classes: 'fixed inset-0 z-40',
+        Div(
+          className: 'fixed inset-0 z-40',
           events: onClose != null
               ? {'click': (_) => onClose!(), 'contextmenu': (_) => onClose!()}
               : {},
-          [],
+          children: [],
         ),
         // Context menu
-        div(
-          classes:
+        Div(
+          className:
               'fixed z-50 min-w-48 bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800 py-1',
-          styles: Styles(raw: {'left': '${x}px', 'top': '${y}px'}),
-          [
+          style: 'left: ${x}px; top: ${y}px',
+          children: [
             for (final item in items)
               _buildMenuItem(item, () => onClose?.call()),
           ],

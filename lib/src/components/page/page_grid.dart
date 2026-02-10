@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Grid column configurations
 enum DPageGridColumns { one, two, three, four, five, six }
@@ -47,9 +47,9 @@ class DPageGrid extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'grid $_columnsClasses gap-$gap ${classes ?? ""}',
-      children,
+    return Div(
+      className: 'grid $_columnsClasses gap-$gap ${classes ?? ""}',
+      children: children,
     );
   }
 }

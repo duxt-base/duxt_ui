@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Input sizes
 enum DInputSize { xs, sm, md, lg, xl }
@@ -136,60 +136,60 @@ class DInput extends StatelessComponent {
     final hasLeading = leadingIcon != null;
     final hasTrailing = trailingIcon != null || loading;
 
-    return div(classes: 'space-y-1.5', [
+    return Div(className: 'space-y-1.5', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-0.5', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-0.5', children: [Text('*')]),
             ]),
-      div(classes: 'relative', [
+      Div(className: 'relative', children: [
         if (hasLeading)
-          div(
-            classes:
+          Div(
+            className:
                 'absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none text-gray-400 dark:text-gray-500',
-            [
-              span(classes: '$_iconSizeClasses', [leadingIcon!])
+            children: [
+              Span(className: '$_iconSizeClasses', children: [leadingIcon!])
             ],
           ),
-        input(
-          type: type,
+        Input(
+          type: type.name,
           name: name,
           value: value,
           disabled: disabled || loading,
           onInput: onInput,
-          classes:
+          placeholder: placeholder,
+          className:
               '$_baseClasses $_sizeClasses $_variantClasses ${hasLeading ? _leadingPadding : ""} ${hasTrailing ? _trailingPadding : ""}'
                   .trim(),
           attributes: {
-            if (placeholder != null) 'placeholder': placeholder!,
             if (readonly) 'readonly': 'true',
           },
         ),
         if (hasTrailing)
-          div(
-            classes:
+          Div(
+            className:
                 'absolute inset-y-0 end-0 flex items-center pe-2.5 pointer-events-none text-gray-400 dark:text-gray-500',
-            [
+            children: [
               if (loading)
-                span(
-                    classes:
+                Span(
+                    className:
                         '$_iconSizeClasses animate-spin border-2 border-current border-t-transparent rounded-full',
-                    [])
+                    children: [])
               else if (trailingIcon != null)
-                span(classes: '$_iconSizeClasses', [trailingIcon!]),
+                Span(className: '$_iconSizeClasses', children: [trailingIcon!]),
             ],
           ),
       ]),
       if (hasError)
-        p(classes: 'text-sm text-red-500', [Component.text(error!)])
+        P(className: 'text-sm text-red-500', children: [Text(error!)])
       else if (hint != null)
-        p(
-            classes: 'text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(hint!)]),
+        P(
+            className: 'text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(hint!)]),
     ]);
   }
 }
@@ -269,33 +269,31 @@ class DTextarea extends StatelessComponent {
   Component build(BuildContext context) {
     final hasError = error != null && error!.isNotEmpty;
 
-    return div(classes: 'space-y-1.5', [
+    return Div(className: 'space-y-1.5', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-0.5', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-0.5', children: [Text('*')]),
             ]),
-      textarea(
+      Textarea(
         name: name,
         onInput: onInput,
-        classes: '$_baseClasses $_sizeClasses $_variantClasses',
-        attributes: {
-          if (placeholder != null) 'placeholder': placeholder!,
-          'rows': rows.toString(),
-          if (disabled) 'disabled': 'true',
-        },
-        [if (value != null) Component.text(value!)],
+        className: '$_baseClasses $_sizeClasses $_variantClasses',
+        placeholder: placeholder,
+        rows: rows,
+        disabled: disabled,
+        children: [if (value != null) Text(value!)],
       ),
       if (hasError)
-        p(classes: 'text-sm text-red-500', [Component.text(error!)])
+        P(className: 'text-sm text-red-500', children: [Text(error!)])
       else if (hint != null)
-        p(
-            classes: 'text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(hint!)]),
+        P(
+            className: 'text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(hint!)]),
     ]);
   }
 }

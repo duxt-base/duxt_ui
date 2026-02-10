@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Popover placement options
 enum DPopoverPlacement {
@@ -66,22 +67,22 @@ class DPopover extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return details(
-      classes: 'relative inline-block group',
+    return Details(
+      className: 'relative inline-block group',
       attributes: {
         'data-popover': 'true',
       },
-      [
+      children: [
         // Trigger wrapped in summary - use pointer-events to let summary handle clicks
-        summary(
-          classes: 'list-none [&::-webkit-details-marker]:hidden cursor-pointer [&>*]:pointer-events-none',
-          [trigger],
+        Summary(
+          className: 'list-none [&::-webkit-details-marker]:hidden cursor-pointer [&>*]:pointer-events-none',
+          children: [trigger],
         ),
         // Popover panel
-        div(
-          classes:
+        Div(
+          className:
               'absolute z-50 $_positionClasses bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800',
-          children,
+          children: children,
         ),
         // Global click-outside handler (only added once per page)
         if (closeOnClickOutside)
@@ -152,28 +153,28 @@ class DPopoverControlled extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'relative inline-block',
-      [
+    return Div(
+      className: 'relative inline-block',
+      children: [
         // Trigger
-        div(
+        Div(
           events: onToggle != null ? {'click': (_) => onToggle!()} : {},
-          [trigger],
+          children: [trigger],
         ),
         // Popover content
         if (open) ...[
           // Invisible overlay to catch outside clicks
           if (onClose != null)
-            div(
-              classes: 'fixed inset-0 z-40',
+            Div(
+              className: 'fixed inset-0 z-40',
               events: {'click': (_) => onClose!()},
-              [],
+              children: [],
             ),
           // Popover panel
-          div(
-            classes:
+          Div(
+            className:
                 'absolute z-50 $_positionClasses bg-white dark:bg-zinc-900 rounded-lg shadow-lg ring-1 ring-gray-200 dark:ring-gray-800 p-4',
-            children,
+            children: children,
           ),
         ],
       ],

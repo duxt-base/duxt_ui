@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -161,9 +162,9 @@ class DTimeline extends StatelessComponent {
   }
 
   Component _buildVertical(BuildContext context) {
-    return div(
-      classes: 'relative',
-      [
+    return Div(
+      className: 'relative',
+      children: [
         for (var i = 0; i < items.length; i++) _buildVerticalItem(items[i], i),
       ],
     );
@@ -173,90 +174,90 @@ class DTimeline extends StatelessComponent {
     final isLast = index == items.length - 1;
     final hasIcon = item.icon != null;
 
-    final itemContent = div(
-      classes: cx([
+    final itemContent = Div(
+      className: cx([
         'relative flex gap-4 pb-8',
         if (isLast) 'pb-0',
       ]),
-      [
+      children: [
         // Left side: dot/icon and connector
-        div(
-          classes: 'flex flex-col items-center',
-          [
+        Div(
+          className: 'flex flex-col items-center',
+          children: [
             // Dot or icon
             if (hasIcon)
-              div(
-                classes: cx([
+              Div(
+                className: cx([
                   'rounded-full flex items-center justify-center shrink-0',
                   _iconContainerSize,
                   _getIconContainerColor(item),
                 ]),
-                [i(classes: '${item.icon} $_iconSize', [])],
+                children: [I(className: '${item.icon} $_iconSize', children: [])],
               )
             else
-              div(
-                classes: cx([
+              Div(
+                className: cx([
                   'rounded-full shrink-0 mt-1',
                   _dotSize,
                   _getDotColor(item),
                 ]),
-                [],
+                children: [],
               ),
             // Connector line
             if (showConnectors && !isLast)
-              div(
-                classes: cx([
+              Div(
+                className: cx([
                   'w-0.5 flex-1 min-h-4 mt-2',
                   _connectorColor,
                 ]),
-                [],
+                children: [],
               ),
           ],
         ),
         // Right side: content
-        div(
-          classes: 'flex-1 min-w-0 pt-0.5',
-          [
+        Div(
+          className: 'flex-1 min-w-0 pt-0.5',
+          children: [
             // Header with title and time
-            div(
-              classes: 'flex items-start justify-between gap-2',
-              [
-                span(
-                  classes: cx([
+            Div(
+              className: 'flex items-start justify-between gap-2',
+              children: [
+                Span(
+                  className: cx([
                     'font-medium',
                     item.status == DTimelineStatus.pending
                         ? DTextColors.muted
                         : DTextColors.defaultText,
                   ]),
-                  [Component.text(item.title)],
+                  children: [Text(item.title)],
                 ),
                 if (item.time != null)
-                  span(
-                    classes: 'text-sm ${DTextColors.muted} shrink-0',
-                    [Component.text(item.time!)],
+                  Span(
+                    className: 'text-sm ${DTextColors.muted} shrink-0',
+                    children: [Text(item.time!)],
                   ),
               ],
             ),
             // Description
             if (item.description != null)
-              p(
-                classes: 'mt-1 text-sm ${DTextColors.muted}',
-                [Component.text(item.description!)],
+              P(
+                className: 'mt-1 text-sm ${DTextColors.muted}',
+                children: [Text(item.description!)],
               ),
             // Custom content
-            if (item.content != null) div(classes: 'mt-2', [item.content!]),
+            if (item.content != null) Div(className: 'mt-2', children: [item.content!]),
           ],
         ),
       ],
     );
 
     if (onItemClick != null) {
-      return button(
-        type: ButtonType.button,
-        classes:
+      return Button(
+        type: 'button',
+        className:
             'w-full text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 -mx-2 px-2 rounded-lg transition-colors',
         events: events(onClick: () => onItemClick!(item, index)),
-        [itemContent],
+        children: [itemContent],
       );
     }
 
@@ -264,13 +265,13 @@ class DTimeline extends StatelessComponent {
   }
 
   Component _buildHorizontal(BuildContext context) {
-    return div(
-      classes: 'relative',
-      [
+    return Div(
+      className: 'relative',
+      children: [
         // Items
-        div(
-          classes: 'flex',
-          [
+        Div(
+          className: 'flex',
+          children: [
             for (var i = 0; i < items.length; i++)
               _buildHorizontalItem(items[i], i),
           ],
@@ -283,57 +284,57 @@ class DTimeline extends StatelessComponent {
     final isLast = index == items.length - 1;
     final hasIcon = item.icon != null;
 
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'flex flex-col items-center flex-1',
         if (!isLast) 'relative',
       ]),
-      [
+      children: [
         // Dot or icon
         if (hasIcon)
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'rounded-full flex items-center justify-center shrink-0 relative z-10',
               _iconContainerSize,
               _getIconContainerColor(item),
             ]),
-            [i(classes: '${item.icon} $_iconSize', [])],
+            children: [I(className: '${item.icon} $_iconSize', children: [])],
           )
         else
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'rounded-full shrink-0 relative z-10',
               _dotSize,
               _getDotColor(item),
             ]),
-            [],
+            children: [],
           ),
         // Connector line (positioned between dots)
         if (showConnectors && !isLast)
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'absolute top-3 left-1/2 w-full h-0.5',
               _connectorColor,
             ]),
-            [],
+            children: [],
           ),
         // Content below
-        div(
-          classes: 'mt-3 text-center',
-          [
-            span(
-              classes: cx([
+        Div(
+          className: 'mt-3 text-center',
+          children: [
+            Span(
+              className: cx([
                 'font-medium text-sm',
                 item.status == DTimelineStatus.pending
                     ? DTextColors.muted
                     : DTextColors.defaultText,
               ]),
-              [Component.text(item.title)],
+              children: [Text(item.title)],
             ),
             if (item.time != null)
-              p(
-                classes: 'mt-0.5 text-xs ${DTextColors.muted}',
-                [Component.text(item.time!)],
+              P(
+                className: 'mt-0.5 text-xs ${DTextColors.muted}',
+                children: [Text(item.time!)],
               ),
           ],
         ),
@@ -364,42 +365,42 @@ class DTimelineSimple extends StatelessComponent {
   Component build(BuildContext context) {
     final baseColor = defaultColorMapping[color] ?? 'green';
 
-    return ul(
-      classes: 'relative',
-      [
+    return Ul(
+      className: 'relative',
+      children: [
         for (var i = 0; i < items.length; i++)
-          li(
-            classes: cx([
+          Li(
+            className: cx([
               'relative flex gap-3 pb-6',
               if (i == items.length - 1) 'pb-0',
             ]),
-            [
+            children: [
               // Dot
-              div(
-                classes: cx([
+              Div(
+                className: cx([
                   'size-2.5 rounded-full mt-1.5 shrink-0',
                   if (activeIndex != null && i <= activeIndex!)
                     'bg-$baseColor-500'
                   else
                     'bg-gray-300 dark:bg-zinc-600',
                 ]),
-                [],
+                children: [],
               ),
               // Line
               if (i < items.length - 1)
-                div(
-                  classes: cx([
+                Div(
+                  className: cx([
                     'absolute left-1 top-4 w-0.5 h-full -translate-x-1/2',
                     if (activeIndex != null && i < activeIndex!)
                       'bg-$baseColor-500'
                     else
                       'bg-gray-200 dark:bg-zinc-700',
                   ]),
-                  [],
+                  children: [],
                 ),
               // Text
-              span(
-                classes: cx([
+              Span(
+                className: cx([
                   'text-sm',
                   if (activeIndex != null && i == activeIndex!)
                     'font-medium ${DTextColors.defaultText}'
@@ -408,7 +409,7 @@ class DTimelineSimple extends StatelessComponent {
                   else
                     DTextColors.muted,
                 ]),
-                [Component.text(items[i])],
+                children: [Text(items[i])],
               ),
             ],
           ),

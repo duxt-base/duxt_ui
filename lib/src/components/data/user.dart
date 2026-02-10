@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 import '../avatar.dart';
@@ -154,31 +155,31 @@ class DUser extends StatelessComponent {
 
     final isVertical = orientation == DUserOrientation.vertical;
 
-    final content = div(
-      classes: cx([
+    final content = Div(
+      className: cx([
         'inline-flex items-center',
         _gap,
         if (isVertical) 'flex-col text-center',
         if (reverse && !isVertical) 'flex-row-reverse',
         if (onClick != null) 'cursor-pointer',
       ]),
-      [
+      children: [
         avatar,
         info,
         if (actions != null && actions!.isNotEmpty)
-          div(
-            classes: 'flex items-center gap-1 ml-auto',
-            actions!,
+          Div(
+            className: 'flex items-center gap-1 ml-auto',
+            children: actions!,
           ),
       ],
     );
 
     if (onClick != null) {
-      return button(
-        type: ButtonType.button,
-        classes: 'hover:opacity-80 transition-opacity',
+      return Button(
+        type: 'button',
+        className: 'hover:opacity-80 transition-opacity',
         events: events(onClick: () => onClick!()),
-        [content],
+        children: [content],
       );
     }
 
@@ -186,9 +187,9 @@ class DUser extends StatelessComponent {
   }
 
   Component _buildAvatar() {
-    return div(
-      classes: 'relative shrink-0',
-      [
+    return Div(
+      className: 'relative shrink-0',
+      children: [
         DAvatar(
           src: avatarSrc,
           text: _initials,
@@ -196,13 +197,13 @@ class DUser extends StatelessComponent {
         ),
         // Online status indicator
         if (online != null)
-          div(
-            classes: cx([
+          Div(
+            className: cx([
               'absolute bottom-0 right-0 rounded-full ring-2 ring-white dark:ring-gray-900',
               _statusDotSize,
               online! ? 'bg-cyan-500' : 'bg-gray-400',
             ]),
-            [],
+            children: [],
           ),
       ],
     );
@@ -211,30 +212,30 @@ class DUser extends StatelessComponent {
   Component _buildInfo() {
     final isVertical = orientation == DUserOrientation.vertical;
 
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'min-w-0',
         if (!isVertical) 'flex flex-col',
       ]),
-      [
+      children: [
         // Name
-        span(
-          classes: cx([
+        Span(
+          className: cx([
             _nameTextSize,
             'font-medium truncate',
             DTextColors.defaultText,
           ]),
-          [Component.text(name)],
+          children: [Text(name)],
         ),
         // Description or status
         if (description != null || status != null)
-          span(
-            classes: cx([
+          Span(
+            className: cx([
               _descriptionTextSize,
               'truncate',
               DTextColors.muted,
             ]),
-            [Component.text(status ?? description ?? '')],
+            children: [Text(status ?? description ?? '')],
           ),
       ],
     );
@@ -277,10 +278,10 @@ class DUserCard extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final cardContent = div(
-      classes:
+    final cardContent = Div(
+      className:
           'p-4 rounded-lg border border-gray-200 dark:border-gray-700 ${DBgColors.defaultBg}',
-      [
+      children: [
         DUser(
           name: name,
           description: description,
@@ -288,22 +289,22 @@ class DUserCard extends StatelessComponent {
           avatarInitials: avatarInitials,
           size: DSize.lg,
         ),
-        if (content != null) div(classes: 'mt-3', [content!]),
+        if (content != null) Div(className: 'mt-3', children: [content!]),
         if (actions != null && actions!.isNotEmpty)
-          div(
-            classes:
+          Div(
+            className:
                 'mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 flex items-center gap-2',
-            actions!,
+            children: actions!,
           ),
       ],
     );
 
     if (onClick != null) {
-      return button(
-        type: ButtonType.button,
-        classes: 'text-left w-full hover:shadow-md transition-shadow',
+      return Button(
+        type: 'button',
+        className: 'text-left w-full hover:shadow-md transition-shadow',
         events: events(onClick: () => onClick!()),
-        [cardContent],
+        children: [cardContent],
       );
     }
 
@@ -347,14 +348,14 @@ class DUserListItem extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final content = div(
-      classes: cx([
+    final content = Div(
+      className: cx([
         'flex items-center justify-between gap-3 px-3 py-2 rounded-lg transition-colors',
         if (selected) 'bg-gray-100 dark:bg-zinc-800',
         if (onClick != null && !selected)
           'hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer',
       ]),
-      [
+      children: [
         DUser(
           name: name,
           description: description,
@@ -367,11 +368,11 @@ class DUserListItem extends StatelessComponent {
     );
 
     if (onClick != null) {
-      return button(
-        type: ButtonType.button,
-        classes: 'w-full text-left',
+      return Button(
+        type: 'button',
+        className: 'w-full text-left',
         events: events(onClick: () => onClick!()),
-        [content],
+        children: [content],
       );
     }
 

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../avatar.dart';
 
 /// Role for chat messages
@@ -63,27 +63,27 @@ class DChatMessage extends StatelessComponent {
     final containerClasses = isUser ? 'flex justify-end' : 'flex justify-start';
 
     // Loading dots animation
-    final loadingContent = div(
-      classes: 'flex gap-1 items-center py-1',
-      [
-        span(classes: 'w-2 h-2 bg-gray-400 rounded-full animate-bounce', []),
-        span(
-            classes:
+    final loadingContent = Div(
+      className: 'flex gap-1 items-center py-1',
+      children: [
+        Span(className: 'w-2 h-2 bg-gray-400 rounded-full animate-bounce', children: []),
+        Span(
+            className:
                 'w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.1s]',
-            []),
-        span(
-            classes:
+            children: []),
+        Span(
+            className:
                 'w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]',
-            []),
+            children: []),
       ],
     );
 
-    return div(
-      classes: containerClasses,
-      [
-        div(
-          classes: 'flex items-end gap-2 ${isUser ? "flex-row-reverse" : ""}',
-          [
+    return Div(
+      className: containerClasses,
+      children: [
+        Div(
+          className: 'flex items-end gap-2 ${isUser ? "flex-row-reverse" : ""}',
+          children: [
             // Avatar
             if (showAvatar)
               avatar ??
@@ -92,26 +92,26 @@ class DChatMessage extends StatelessComponent {
                     text: isUser ? 'U' : 'A',
                   ),
             // Message bubble and timestamp
-            div(
-              classes: 'flex flex-col ${isUser ? "items-end" : "items-start"}',
-              [
+            Div(
+              className: 'flex flex-col ${isUser ? "items-end" : "items-start"}',
+              children: [
                 // Message bubble
-                div(
-                  classes: bubbleClasses,
-                  [
+                Div(
+                  className: bubbleClasses,
+                  children: [
                     if (message.isLoading)
                       loadingContent
                     else
-                      p(
-                          classes: 'whitespace-pre-wrap break-words',
-                          [Component.text(message.content)]),
+                      P(
+                          className: 'whitespace-pre-wrap break-words',
+                          children: [Text(message.content)]),
                   ],
                 ),
                 // Timestamp
                 if (showTimestamp && !message.isLoading)
-                  span(
-                    classes: 'text-xs text-gray-400 mt-1 px-1',
-                    [Component.text(_formatTimestamp(message.timestamp))],
+                  Span(
+                    className: 'text-xs text-gray-400 mt-1 px-1',
+                    children: [Text(_formatTimestamp(message.timestamp))],
                   ),
               ],
             ),

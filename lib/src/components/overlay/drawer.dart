@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Drawer slide direction
 enum DDrawerSide { left, right, top, bottom }
@@ -88,20 +89,19 @@ class DDrawer extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'inline-block',
+    return Div(
+      className: 'inline-block',
       attributes: {'data-drawer': 'true'},
-      [
+      children: [
         // Trigger
-        div(
+        Div(
           attributes: {'data-drawer-trigger': 'true'},
-          classes: 'cursor-pointer inline-block',
-          [trigger],
+          className: 'cursor-pointer inline-block',
+          children: [trigger],
         ),
         // Dialog element for drawer
-        Component.element(
-          tag: 'dialog',
-          classes:
+        Dialog(
+          className:
               '$_sizeClasses $_positionClasses bg-white dark:bg-zinc-900 shadow-xl p-0 border-none backdrop:bg-gray-900/50 dark:backdrop:bg-zinc-950/75 backdrop:transition-opacity backdrop:duration-300',
           attributes: {
             'data-drawer-dialog': 'true',
@@ -109,38 +109,38 @@ class DDrawer extends StatelessComponent {
             if (closeOnOverlay) 'data-close-on-backdrop': 'true',
           },
           children: [
-            div(
-              classes: 'flex flex-col h-full',
-              [
+            Div(
+              className: 'flex flex-col h-full',
+              children: [
                 // Header
-                div(
-                  classes:
+                Div(
+                  className:
                       'flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800',
-                  [
+                  children: [
                     if (title != null)
-                      h3(
-                        classes:
+                      H3(
+                        className:
                             'text-lg font-semibold text-gray-900 dark:text-white',
-                        [Component.text(title!)],
+                        children: [Text(title!)],
                       )
                     else
-                      span([]),
+                      Span(children: []),
                     // Close button
-                    button(
-                      type: ButtonType.button,
-                      classes:
+                    Button(
+                      type: 'button',
+                      className:
                           'p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded',
                       attributes: {'data-drawer-close': 'true'},
-                      [
-                        span(classes: 'text-xl', [Component.text('×')]),
+                      children: [
+                        Span(className: 'text-xl', children: [Text('\u00D7')]),
                       ],
                     ),
                   ],
                 ),
                 // Body
-                div(
-                  classes: 'flex-1 overflow-y-auto p-4',
-                  children,
+                Div(
+                  className: 'flex-1 overflow-y-auto p-4',
+                  children: children,
                 ),
               ],
             ),
@@ -308,51 +308,51 @@ class DDrawerControlled extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}',
-      [
+    return Div(
+      className: 'fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}',
+      children: [
         // Backdrop
-        div(
-          classes:
+        Div(
+          className:
               'fixed inset-0 bg-gray-900/50 dark:bg-zinc-950/75 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}',
           events: closeOnOverlay && onClose != null
               ? {'click': (_) => onClose!()}
               : {},
-          [],
+          children: [],
         ),
         // Drawer panel
-        div(
-          classes:
+        Div(
+          className:
               'fixed $_positionClasses $_sizeClasses bg-white dark:bg-zinc-900 shadow-xl transition-transform duration-300 ease-in-out $_transformClasses flex flex-col',
-          [
+          children: [
             // Header
             if (title != null || onClose != null)
-              div(
-                classes:
+              Div(
+                className:
                     'flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800',
-                [
+                children: [
                   if (title != null)
-                    h3(
-                      classes:
+                    H3(
+                      className:
                           'text-lg font-semibold text-gray-900 dark:text-white',
-                      [Component.text(title!)],
+                      children: [Text(title!)],
                     ),
                   if (onClose != null)
-                    button(
-                      type: ButtonType.button,
+                    Button(
+                      type: 'button',
                       onClick: onClose,
-                      classes:
+                      className:
                           'p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded',
-                      [
-                        span(classes: 'text-xl', [Component.text('×')]),
+                      children: [
+                        Span(className: 'text-xl', children: [Text('\u00D7')]),
                       ],
                     ),
                 ],
               ),
             // Body
-            div(
-              classes: 'flex-1 overflow-y-auto p-4',
-              children,
+            Div(
+              className: 'flex-1 overflow-y-auto p-4',
+              children: children,
             ),
           ],
         ),

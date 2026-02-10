@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Tooltip placement options
 enum DTooltipPlacement {
@@ -71,22 +71,22 @@ class DTooltip extends StatelessComponent {
   Component build(BuildContext context) {
     final delayStyle = delayMs > 0 ? 'transition-delay: ${delayMs}ms;' : '';
 
-    return div(
-      classes: 'relative inline-block group',
-      [
+    return Div(
+      className: 'relative inline-block group',
+      children: [
         // Child element
         child,
         // Tooltip - uses CSS group-hover for reliable display
-        div(
-          classes:
+        Div(
+          className:
               'absolute z-50 $_positionClasses px-2 py-1 text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded whitespace-nowrap pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-150',
-          styles: delayStyle.isNotEmpty ? Styles(raw: {'transition-delay': '${delayMs}ms'}) : null,
-          [
-            Component.text(text),
+          style: delayStyle.isNotEmpty ? 'transition-delay: ${delayMs}ms' : null,
+          children: [
+            Text(text),
             // Arrow
-            div(
-              classes: 'absolute w-0 h-0 $_arrowClasses',
-              [],
+            Div(
+              className: 'absolute w-0 h-0 $_arrowClasses',
+              children: [],
             ),
           ],
         ),
@@ -133,17 +133,17 @@ class DTooltipCustom extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'relative inline-block group',
-      [
+    return Div(
+      className: 'relative inline-block group',
+      children: [
         // Child element
         child,
         // Tooltip
-        div(
-          classes:
+        Div(
+          className:
               'absolute z-50 $_positionClasses bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded p-2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-150',
-          styles: delayMs > 0 ? Styles(raw: {'transition-delay': '${delayMs}ms'}) : null,
-          [content],
+          style: delayMs > 0 ? 'transition-delay: ${delayMs}ms' : null,
+          children: [content],
         ),
       ],
     );

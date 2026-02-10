@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText, events;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Feature item for pricing plan
 class DPricingFeature {
@@ -116,18 +117,18 @@ class DPricingPlan extends StatelessComponent {
       classes ?? '',
     ].where((c) => c.isNotEmpty).join(' ');
 
-    return div(
-      classes: baseClasses,
-      [
+    return Div(
+      className: baseClasses,
+      children: [
         // Badge
         if (badge != null)
-          div(
-            classes: 'absolute -top-3 left-1/2 -translate-x-1/2',
-            [
-              span(
-                classes:
+          Div(
+            className: 'absolute -top-3 left-1/2 -translate-x-1/2',
+            children: [
+              Span(
+                className:
                     'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${badgeColor ?? "bg-primary-500 text-white"}',
-                [Component.text(badge!)],
+                children: [Text(badge!)],
               ),
             ],
           ),
@@ -136,12 +137,12 @@ class DPricingPlan extends StatelessComponent {
         if (header != null) header! else _buildDefaultHeader(),
 
         // Features list
-        div(
-          classes: 'flex-1 mt-6',
-          [
-            ul(
-              classes: 'space-y-3',
-              [
+        Div(
+          className: 'flex-1 mt-6',
+          children: [
+            Ul(
+              className: 'space-y-3',
+              children: [
                 for (final feature in features) _buildFeatureItem(feature),
               ],
             ),
@@ -149,60 +150,60 @@ class DPricingPlan extends StatelessComponent {
         ),
 
         // CTA Button
-        div(
-          classes: 'mt-8',
-          [
+        Div(
+          className: 'mt-8',
+          children: [
             _buildButton(),
           ],
         ),
 
         // Custom footer
-        if (footer != null) div(classes: 'mt-4', [footer!]),
+        if (footer != null) Div(className: 'mt-4', children: [footer!]),
       ],
     );
   }
 
   Component _buildDefaultHeader() {
-    return div([
+    return Div(children: [
       // Plan name
-      h3(
-        classes: 'text-lg font-semibold text-gray-900 dark:text-white',
-        [Component.text(name)],
+      H3(
+        className: 'text-lg font-semibold text-gray-900 dark:text-white',
+        children: [Text(name)],
       ),
 
       // Description
       if (description != null)
-        p(
-          classes: 'mt-2 text-sm text-gray-500 dark:text-gray-400',
-          [Component.text(description!)],
+        P(
+          className: 'mt-2 text-sm text-gray-500 dark:text-gray-400',
+          children: [Text(description!)],
         ),
 
       // Price
-      div(
-        classes: 'mt-4 flex items-baseline gap-1',
-        [
+      Div(
+        className: 'mt-4 flex items-baseline gap-1',
+        children: [
           // Original price (strikethrough)
           if (originalPrice != null)
-            span(
-              classes: 'text-lg text-gray-400 line-through mr-2',
-              [Component.text('$currency$originalPrice')],
+            Span(
+              className: 'text-lg text-gray-400 line-through mr-2',
+              children: [Text('$currency$originalPrice')],
             ),
           // Currency
-          span(
-            classes: 'text-2xl font-semibold text-gray-900 dark:text-white',
-            [Component.text(currency)],
+          Span(
+            className: 'text-2xl font-semibold text-gray-900 dark:text-white',
+            children: [Text(currency)],
           ),
           // Price amount
-          span(
-            classes:
+          Span(
+            className:
                 'text-4xl font-bold tracking-tight text-gray-900 dark:text-white',
-            [Component.text(price)],
+            children: [Text(price)],
           ),
           // Period
           if (period != null)
-            span(
-              classes: 'text-sm text-gray-500 dark:text-gray-400',
-              [Component.text(period!)],
+            Span(
+              className: 'text-sm text-gray-500 dark:text-gray-400',
+              children: [Text(period!)],
             ),
         ],
       ),
@@ -218,13 +219,13 @@ class DPricingPlan extends StatelessComponent {
         ? 'text-gray-700 dark:text-gray-300'
         : 'text-gray-400 dark:text-gray-500 line-through';
 
-    return li(
-      classes: 'flex items-start gap-3',
-      [
+    return Li(
+      className: 'flex items-start gap-3',
+      children: [
         // Checkmark or X icon
-        span(
-          classes: 'flex-shrink-0 mt-0.5 $iconClasses',
-          [
+        Span(
+          className: 'flex-shrink-0 mt-0.5 $iconClasses',
+          children: [
             if (feature.included) RawText('''
                 <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -237,9 +238,9 @@ class DPricingPlan extends StatelessComponent {
           ],
         ),
         // Feature text
-        span(
-          classes: 'text-sm $textClasses',
-          [Component.text(feature.text)],
+        Span(
+          className: 'text-sm $textClasses',
+          children: [Text(feature.text)],
         ),
       ],
     );
@@ -253,21 +254,21 @@ class DPricingPlan extends StatelessComponent {
     final disabledClasses = disabled ? ' opacity-50 cursor-not-allowed' : '';
 
     if (buttonHref != null && !disabled) {
-      return a(
+      return A(
         href: buttonHref!,
-        classes: buttonClasses,
-        [Component.text(buttonText)],
+        className: buttonClasses,
+        children: [Text(buttonText)],
       );
     }
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: disabled,
-      classes: '$buttonClasses$disabledClasses',
+      className: '$buttonClasses$disabledClasses',
       events: !disabled && onButtonClick != null
           ? events(onClick: () => onButtonClick!())
           : null,
-      [Component.text(buttonText)],
+      children: [Text(buttonText)],
     );
   }
 }

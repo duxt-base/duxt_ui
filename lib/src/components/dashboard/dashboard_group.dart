@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardGroup component
 ///
@@ -33,9 +33,9 @@ class DDashboardGroup extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex min-h-screen $_orientationClasses ${classes ?? ""}',
-      children,
+    return Div(
+      className: 'flex min-h-screen $_orientationClasses ${classes ?? ""}',
+      children: children,
     );
   }
 }

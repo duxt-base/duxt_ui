@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Marquee direction
 enum DMarqueeDirection { left, right }
@@ -45,14 +45,13 @@ class DMarquee extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex overflow-hidden ${classes ?? ""}',
-      [
+    return Div(
+      className: 'flex overflow-hidden ${classes ?? ""}',
+      children: [
         // Style tag for keyframes animation
-        Component.element(
-          tag: 'style',
+        StyleElement(
           children: [
-            Component.text('''
+            Text('''
               @keyframes marquee-left {
                 from { transform: translateX(0); }
                 to { transform: translateX(-50%); }
@@ -71,17 +70,15 @@ class DMarquee extends StatelessComponent {
           ],
         ),
         // Animated container with duplicated content
-        div(
-          classes:
+        Div(
+          className:
               'flex shrink-0 $gap animate-marquee ${pauseOnHover ? "hover:pause" : ""}',
-          styles: Styles(raw: {
-            'animation': '$_animationName ${duration}s linear infinite',
-          }),
-          [
+          style: 'animation: $_animationName ${duration}s linear infinite',
+          children: [
             // First copy
-            div(classes: 'flex shrink-0 $gap', children),
+            Div(className: 'flex shrink-0 $gap', children: children),
             // Second copy for seamless loop
-            div(classes: 'flex shrink-0 $gap', children),
+            Div(className: 'flex shrink-0 $gap', children: children),
           ],
         ),
       ],
@@ -102,9 +99,9 @@ class DMarqueeItem extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex-shrink-0 ${classes ?? ""}',
-      [child],
+    return Div(
+      className: 'flex-shrink-0 ${classes ?? ""}',
+      children: [child],
     );
   }
 }

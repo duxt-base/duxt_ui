@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import 'icon.dart';
 
 /// Carousel item data
@@ -49,29 +50,29 @@ class DCarousel extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     if (items.isEmpty) {
-      return div(classes: 'relative', []);
+      return Div(className: 'relative', children: []);
     }
 
-    return div(
+    return Div(
       id: _carouselId,
-      classes: 'relative overflow-hidden group ${classes ?? ""}',
+      className: 'relative overflow-hidden group ${classes ?? ""}',
       attributes: {'data-carousel': 'true', 'data-index': '$initialIndex'},
-      [
+      children: [
         // Slides container
-        div(
-          classes: 'flex transition-transform duration-300 ease-in-out',
+        Div(
+          className: 'flex transition-transform duration-300 ease-in-out',
           attributes: {'data-slides': 'true'},
-          styles: Styles(raw: {'transform': 'translateX(-${initialIndex * 100}%)'}),
-          [
+          style: 'transform: translateX(-${initialIndex * 100}%)',
+          children: [
             for (var i = 0; i < items.length; i++)
-              div(
-                classes: 'w-full flex-shrink-0',
-                [
+              Div(
+                className: 'w-full flex-shrink-0',
+                children: [
                   if (items[i].image != null)
-                    img(
+                    Img(
                       src: items[i].image!,
                       alt: items[i].alt ?? 'Slide ${i + 1}',
-                      classes: 'w-full h-full object-cover',
+                      className: 'w-full h-full object-cover',
                     )
                   else if (items[i].content != null)
                     items[i].content!,
@@ -82,44 +83,44 @@ class DCarousel extends StatelessComponent {
 
         // Previous button
         if (showArrows && items.length > 1)
-          button(
-            type: ButtonType.button,
-            classes:
+          Button(
+            type: 'button',
+            className:
                 'absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white dark:hover:bg-zinc-800',
             attributes: {'data-action': 'prev', 'aria-label': 'Previous slide'},
-            [
+            children: [
               DIcon(name: DIconNames.chevronLeft, size: DIconSize.sm),
             ],
           ),
 
         // Next button
         if (showArrows && items.length > 1)
-          button(
-            type: ButtonType.button,
-            classes:
+          Button(
+            type: 'button',
+            className:
                 'absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white dark:hover:bg-zinc-800',
             attributes: {'data-action': 'next', 'aria-label': 'Next slide'},
-            [
+            children: [
               DIcon(name: DIconNames.chevronRight, size: DIconSize.sm),
             ],
           ),
 
         // Dot indicators
         if (showDots && items.length > 1)
-          div(
-            classes: 'absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2',
+          Div(
+            className: 'absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2',
             attributes: {'data-dots': 'true'},
-            [
+            children: [
               for (var i = 0; i < items.length; i++)
-                button(
-                  type: ButtonType.button,
-                  classes:
+                Button(
+                  type: 'button',
+                  className:
                       'w-2 h-2 rounded-full transition-colors ${i == initialIndex ? "bg-white" : "bg-white/50 hover:bg-white/75"}',
                   attributes: {
                     'data-goto': '$i',
                     'aria-label': 'Go to slide ${i + 1}'
                   },
-                  [],
+                  children: [],
                 ),
             ],
           ),

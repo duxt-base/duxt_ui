@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
@@ -24,28 +24,28 @@ class DCollapsible extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return details(
-      classes: cx([
+    return Details(
+      className: cx([
         'w-full group',
         disabled ? 'pointer-events-none opacity-50' : null,
       ]),
       attributes: {
         if (defaultOpen) 'open': 'true',
       },
-      [
+      children: [
         // Trigger wrapped in summary
-        summary(
-          classes: cx([
+        Summary(
+          className: cx([
             'list-none',
             '[&::-webkit-details-marker]:hidden',
             disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           ]),
-          [trigger],
+          children: [trigger],
         ),
         // Content
-        div(
-          classes: 'overflow-hidden',
-          children,
+        Div(
+          className: 'overflow-hidden',
+          children: children,
         ),
       ],
     );
@@ -68,8 +68,8 @@ class DCollapsibleTrigger extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'flex items-center justify-between',
         'px-4 py-3',
         'font-medium',
@@ -79,17 +79,17 @@ class DCollapsibleTrigger extends StatelessComponent {
         'rounded-lg',
         'select-none',
       ]),
-      [
-        div(classes: 'flex items-center gap-2', [
+      children: [
+        Div(className: 'flex items-center gap-2', children: [
           if (icon != null) icon!,
-          span([Component.text(label)]),
+          Span(children: [Text(label)]),
         ]),
-        span(
-          classes: cx([
+        Span(
+          className: cx([
             'transform transition-transform duration-200',
             'group-open:rotate-180', // Rotates when details is open
           ]),
-          [Component.text('\u25BC')],
+          children: [Text('\u25BC')],
         ),
       ],
     );
@@ -107,12 +107,12 @@ class DCollapsibleContent extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'px-4 py-3',
         DTextColors.defaultText,
       ]),
-      children,
+      children: children,
     );
   }
 }

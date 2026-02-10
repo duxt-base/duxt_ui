@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/colors.dart';
 import '../avatar.dart';
 
@@ -69,9 +69,9 @@ class DAvatarGroupEnhanced extends StatelessComponent {
     for (var i = 0; i < displayAvatars.length; i++) {
       final avatar = displayAvatars[reverse ? displayAvatars.length - 1 - i : i];
       avatarWidgets.add(
-        div(
-          classes: 'rounded-full $ringWidth $ringColor',
-          [avatar],
+        Div(
+          className: 'rounded-full $ringWidth $ringColor',
+          children: [avatar],
         ),
       );
     }
@@ -79,17 +79,17 @@ class DAvatarGroupEnhanced extends StatelessComponent {
     // Add overflow indicator if there are more avatars
     if (remaining > 0) {
       avatarWidgets.add(
-        div(
-          classes:
+        Div(
+          className:
               '$_sizeClasses rounded-full ${DBgColors.muted} flex items-center justify-center font-medium ${DTextColors.muted} $ringWidth $ringColor',
-          [Component.text('+$remaining')],
+          children: [Text('+$remaining')],
         ),
       );
     }
 
-    return div(
-      classes: 'inline-flex items-center $spacing',
-      avatarWidgets,
+    return Div(
+      className: 'inline-flex items-center $spacing',
+      children: avatarWidgets,
     );
   }
 }
@@ -134,19 +134,19 @@ class DAvatarStack extends StatelessComponent {
     final displayAvatars = avatars.take(max).toList();
     final remaining = avatars.length - max;
 
-    return div(
-      classes: 'inline-flex flex-col -space-y-2',
-      [
+    return Div(
+      className: 'inline-flex flex-col -space-y-2',
+      children: [
         for (final avatar in displayAvatars)
-          div(
-            classes: 'rounded-full ring-2 ring-white dark:ring-gray-900',
-            [avatar],
+          Div(
+            className: 'rounded-full ring-2 ring-white dark:ring-gray-900',
+            children: [avatar],
           ),
         if (remaining > 0)
-          div(
-            classes:
+          Div(
+            className:
                 '$_sizeClasses rounded-full ${DBgColors.muted} flex items-center justify-center font-medium ${DTextColors.muted} ring-2 ring-white dark:ring-gray-900',
-            [Component.text('+$remaining')],
+            children: [Text('+$remaining')],
           ),
       ],
     );

@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show events;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -234,10 +235,10 @@ class _UTreeState extends State<DTree> {
 
   @override
   Component build(BuildContext context) {
-    return ul(
-      classes: 'tree-root',
+    return Ul(
+      className: 'tree-root',
       attributes: {'role': 'tree'},
-      [
+      children: [
         for (final node in component.nodes) _buildNode(node, 0),
       ],
     );
@@ -248,17 +249,17 @@ class _UTreeState extends State<DTree> {
     final isSelected = _isSelected(node.id);
     final hasChildren = node.hasChildren;
 
-    return li(
-      classes: 'tree-item',
+    return Li(
+      className: 'tree-item',
       attributes: {
         'role': 'treeitem',
         if (hasChildren) 'aria-expanded': '$isExpanded',
         'aria-selected': '$isSelected',
       },
-      [
+      children: [
         // Node row
-        div(
-          classes: cx([
+        Div(
+          className: cx([
             'flex items-center gap-1 rounded-md cursor-pointer transition-colors',
             _itemPadding,
             if (isSelected) _selectedColor,
@@ -266,45 +267,45 @@ class _UTreeState extends State<DTree> {
               'hover:bg-gray-100 dark:hover:bg-gray-800',
             if (node.disabled) 'opacity-50 cursor-not-allowed',
           ]),
-          styles: Styles(raw: {'paddingLeft': '${depth * 20 + 4}px'}),
+          style: 'padding-left: ${depth * 20 + 4}px',
           events: events(onClick: () {
             if (!node.disabled) {
               _selectNode(node);
             }
           }),
-          [
+          children: [
             // Expand/collapse button
             if (hasChildren)
-              button(
-                type: ButtonType.button,
-                classes:
+              Button(
+                type: 'button',
+                className:
                     'shrink-0 p-0.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors',
                 events: {'click': (event) {
                   event.stopPropagation();
                   _toggleExpand(node);
                 }},
-                [
-                  i(
-                    classes: cx([
+                children: [
+                  I(
+                    className: cx([
                       isExpanded
                           ? component.expandIcon
                           : component.collapseIcon,
                       _iconSize,
                       'text-gray-500 dark:text-gray-400',
                     ]),
-                    [],
+                    children: [],
                   ),
                 ],
               )
             else
               // Spacer for alignment
-              span(classes: '${_iconSize} shrink-0', []),
+              Span(className: '${_iconSize} shrink-0', children: []),
 
             // Checkbox (if enabled)
             if (component.showCheckboxes)
-              input(
-                type: InputType.checkbox,
-                classes: cx([
+              Input(
+                type: 'checkbox',
+                className: cx([
                   'rounded border-gray-300 dark:border-gray-600 shrink-0',
                   'text-${defaultColorMapping[component.color]}-500',
                   'focus:ring-${defaultColorMapping[component.color]}-500',
@@ -320,8 +321,8 @@ class _UTreeState extends State<DTree> {
               ),
 
             // Icon
-            i(
-              classes: cx([
+            I(
+              className: cx([
                 node.icon ??
                     (hasChildren
                         ? (isExpanded
@@ -335,31 +336,31 @@ class _UTreeState extends State<DTree> {
                 else
                   'text-gray-500 dark:text-gray-400',
               ]),
-              [],
+              children: [],
             ),
 
             // Label
-            span(
-              classes: cx([
+            Span(
+              className: cx([
                 _textSize,
                 'truncate',
                 if (isSelected) 'font-medium',
               ]),
-              [Component.text(node.label)],
+              children: [Text(node.label)],
             ),
           ],
         ),
 
         // Children (if expanded)
         if (hasChildren && isExpanded)
-          ul(
-            classes: cx([
+          Ul(
+            className: cx([
               'tree-children',
               if (component.showLines)
                 'ml-3 border-l border-gray-200 dark:border-gray-700',
             ]),
             attributes: {'role': 'group'},
-            [
+            children: [
               for (final child in node.children) _buildNode(child, depth + 1),
             ],
           ),

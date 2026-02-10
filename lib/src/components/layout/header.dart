@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Header style variants
 enum DHeaderVariant { solid, transparent, blur }
@@ -46,33 +46,32 @@ class DHeader extends StatelessComponent {
 
     // If left/center/right slots are provided, use structured layout
     if (left != null || center != null || right != null) {
-      return Component.element(
-        tag: 'header',
-        classes:
+      return Header(
+        className:
             '$stickyClasses $_variantClasses $borderClasses ${classes ?? ""}'
                 .trim(),
         children: [
-          div(
-            classes: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
-            [
-              div(
-                classes: 'flex h-16 items-center justify-between',
-                [
+          Div(
+            className: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
+            children: [
+              Div(
+                className: 'flex h-16 items-center justify-between',
+                children: [
                   // Left slot
-                  div(
-                    classes: 'flex items-center gap-4',
-                    [if (left != null) left!],
+                  Div(
+                    className: 'flex items-center gap-4',
+                    children: [if (left != null) left!],
                   ),
                   // Center slot
                   if (center != null)
-                    div(
-                      classes: 'hidden md:flex flex-1 justify-center',
-                      [center!],
+                    Div(
+                      className: 'hidden md:flex flex-1 justify-center',
+                      children: [center!],
                     ),
                   // Right slot
-                  div(
-                    classes: 'flex items-center gap-4',
-                    [if (right != null) right!],
+                  Div(
+                    className: 'flex items-center gap-4',
+                    children: [if (right != null) right!],
                   ),
                 ],
               ),
@@ -83,17 +82,16 @@ class DHeader extends StatelessComponent {
     }
 
     // Simple header with children
-    return Component.element(
-      tag: 'header',
-      classes: '$stickyClasses $_variantClasses $borderClasses ${classes ?? ""}'
+    return Header(
+      className: '$stickyClasses $_variantClasses $borderClasses ${classes ?? ""}'
           .trim(),
       children: [
-        div(
-          classes: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
-          [
-            div(
-              classes: 'flex h-16 items-center',
-              children,
+        Div(
+          className: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
+          children: [
+            Div(
+              className: 'flex h-16 items-center',
+              children: children,
             ),
           ],
         ),
@@ -121,32 +119,32 @@ class DPageHeader extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes:
+    return Div(
+      className:
           'pb-5 border-b border-gray-200 dark:border-gray-800 ${classes ?? ""}'
               .trim(),
-      [
-        div(
-          classes: 'sm:flex sm:items-center sm:justify-between',
-          [
-            div([
+      children: [
+        Div(
+          className: 'sm:flex sm:items-center sm:justify-between',
+          children: [
+            Div(children: [
               if (title != null)
-                h1(
-                  classes:
+                H1(
+                  className:
                       'text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl',
-                  [Component.text(title!)],
+                  children: [Text(title!)],
                 ),
               if (description != null)
-                p(
-                  classes: 'mt-2 text-sm text-gray-500 dark:text-gray-400',
-                  [Component.text(description!)],
+                P(
+                  className: 'mt-2 text-sm text-gray-500 dark:text-gray-400',
+                  children: [Text(description!)],
                 ),
               ...children,
             ]),
             if (actions != null)
-              div(
-                classes: 'mt-4 sm:mt-0 sm:ml-4',
-                [actions!],
+              Div(
+                className: 'mt-4 sm:mt-0 sm:ml-4',
+                children: [actions!],
               ),
           ],
         ),

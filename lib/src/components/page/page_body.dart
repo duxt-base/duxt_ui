@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageBody component - Main content section with optional TOC
 ///
@@ -27,27 +27,27 @@ class DPageBody extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex flex-col lg:flex-row lg:gap-8 ${classes ?? ""}',
-      [
+    return Div(
+      className: 'flex flex-col lg:flex-row lg:gap-8 ${classes ?? ""}',
+      children: [
         // Main prose content
-        div(
-          classes: 'flex-1 min-w-0 ${proseClasses ?? ""}',
-          [
-            div(
-              classes: 'prose prose-gray dark:prose-invert max-w-none',
-              prose,
+        Div(
+          className: 'flex-1 min-w-0 ${proseClasses ?? ""}',
+          children: [
+            Div(
+              className: 'prose prose-gray dark:prose-invert max-w-none',
+              children: prose,
             ),
           ],
         ),
         // Table of contents (if provided)
         if (toc != null)
-          div(
-            classes: 'hidden lg:block lg:w-48 xl:w-56 shrink-0',
-            [
-              div(
-                classes: 'sticky top-16',
-                [toc!],
+          Div(
+            className: 'hidden lg:block lg:w-48 xl:w-56 shrink-0',
+            children: [
+              Div(
+                className: 'sticky top-16',
+                children: [toc!],
               ),
             ],
           ),

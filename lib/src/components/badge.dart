@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Badge variants
 enum DBadgeVariant { solid, outline, soft, subtle }
@@ -150,14 +150,14 @@ class DBadge extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return span(
-      classes: '$_baseClasses $_sizeClasses $_variantClasses'.trim(),
-      [
+    return Span(
+      className: '$_baseClasses $_sizeClasses $_variantClasses'.trim(),
+      children: [
         if (leadingIcon != null)
-          span(classes: 'shrink-0 $_iconSizeClasses', [leadingIcon!]),
-        span(classes: 'truncate', [Component.text(label)]),
+          Span(className: 'shrink-0 $_iconSizeClasses', children: [leadingIcon!]),
+        Span(className: 'truncate', children: [Text(label)]),
         if (trailingIcon != null)
-          span(classes: 'shrink-0 $_iconSizeClasses', [trailingIcon!]),
+          Span(className: 'shrink-0 $_iconSizeClasses', children: [trailingIcon!]),
       ],
     );
   }

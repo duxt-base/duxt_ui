@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Spinner sizes
 enum DSpinnerSize { xs, sm, md, lg }
@@ -30,10 +30,10 @@ class DSpinner extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes:
+    return Div(
+      className:
           'animate-spin $_sizeClasses ${color ?? "border-cyan-600"} border-t-transparent rounded-full',
-      [],
+      children: [],
     );
   }
 }
@@ -51,23 +51,23 @@ class DLoading extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final content = div(
-      classes: 'flex flex-col items-center justify-center gap-3',
-      [
+    final content = Div(
+      className: 'flex flex-col items-center justify-center gap-3',
+      children: [
         DSpinner(size: DSpinnerSize.lg),
         if (message != null)
-          p(classes: 'text-sm text-gray-600', [Component.text(message!)]),
+          P(className: 'text-sm text-gray-600', children: [Text(message!)]),
       ],
     );
 
     if (overlay) {
-      return div(
-        classes:
+      return Div(
+        className:
             'fixed inset-0 bg-white/80 flex items-center justify-center z-50',
-        [content],
+        children: [content],
       );
     }
 
-    return div(classes: 'py-12', [content]);
+    return Div(className: 'py-12', children: [content]);
   }
 }

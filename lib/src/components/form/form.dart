@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 
 /// Form validation state
@@ -128,9 +128,9 @@ class _UFormState extends State<DForm> {
 
   @override
   Component build(BuildContext context) {
-    return form(
+    return Form(
       id: component.id,
-      classes: cx([
+      className: cx([
         'space-y-4',
         component.disabled ? 'opacity-50 pointer-events-none' : null,
       ]),
@@ -142,12 +142,12 @@ class _UFormState extends State<DForm> {
         'submit': _handleSubmit,
         'reset': (_) => _handleReset(),
       },
-      [
+      children: [
         // Provide form context via wrapper
         _UFormContext(
           state: _state,
           errors: _errors,
-          child: div([...component.children]),
+          child: Div(children: [...component.children]),
         ),
       ],
     );
@@ -202,9 +202,9 @@ class DFormActions extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'flex items-center gap-3 pt-4 $_alignmentClasses',
-      children,
+    return Div(
+      className: 'flex items-center gap-3 pt-4 $_alignmentClasses',
+      children: children,
     );
   }
 }
@@ -232,9 +232,9 @@ class DFormRow extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'grid grid-cols-$columns gap-4',
-      children,
+    return Div(
+      className: 'grid grid-cols-$columns gap-4',
+      children: children,
     );
   }
 }
@@ -254,18 +254,18 @@ class DFormSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'space-y-4', [
+    return Div(className: 'space-y-4', children: [
       if (title != null || description != null)
-        div(classes: 'border-b border-gray-200 dark:border-gray-700 pb-4', [
+        Div(className: 'border-b border-gray-200 dark:border-gray-700 pb-4', children: [
           if (title != null)
-            h3(
-              classes: 'text-lg font-medium text-gray-900 dark:text-white',
-              [Component.text(title!)],
+            H3(
+              className: 'text-lg font-medium text-gray-900 dark:text-white',
+              children: [Text(title!)],
             ),
           if (description != null)
-            p(
-              classes: 'mt-1 text-sm text-gray-500 dark:text-gray-400',
-              [Component.text(description!)],
+            P(
+              className: 'mt-1 text-sm text-gray-500 dark:text-gray-400',
+              children: [Text(description!)],
             ),
         ]),
       ...children,

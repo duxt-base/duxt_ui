@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 import '../utility/icon.dart';
@@ -206,19 +207,19 @@ class _UFileUploadState extends State<DFileUpload> {
     final hasError = component.error != null && component.error!.isNotEmpty;
     final borderColor = hasError ? 'border-red-500' : _colorClasses;
 
-    return div(classes: 'space-y-2', [
+    return Div(className: 'space-y-2', children: [
       if (component.label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(component.label!),
+            children: [
+              Text(component.label!),
               if (component.required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
       // Dropzone
-      div(
-        classes: cx([
+      Div(
+        className: cx([
           'relative',
           'border-2',
           'border-dashed',
@@ -251,13 +252,13 @@ class _UFileUploadState extends State<DFileUpload> {
             // This would need DOM access via querySelector
           },
         },
-        [
-          div(classes: 'flex flex-col items-center space-y-2', [
+        children: [
+          Div(className: 'flex flex-col items-center space-y-2', children: [
             // Icon
             if (component.icon != null)
-              div(classes: '$_iconSizeClasses text-gray-400', [component.icon!])
+              Div(className: '$_iconSizeClasses text-gray-400', children: [component.icon!])
             else
-              div(classes: 'text-gray-400', [
+              Div(className: 'text-gray-400', children: [
                 DIcon(
                   name: DIconNames.upload,
                   size: _iconSize,
@@ -265,32 +266,32 @@ class _UFileUploadState extends State<DFileUpload> {
                 ),
               ]),
             // Text
-            div(classes: _textSizeClasses, [
-              span(classes: 'text-gray-600 dark:text-gray-400', [
-                Component.text(component.dropzoneText ?? 'Drop files here or '),
+            Div(className: _textSizeClasses, children: [
+              Span(className: 'text-gray-600 dark:text-gray-400', children: [
+                Text(component.dropzoneText ?? 'Drop files here or '),
               ]),
-              span(classes: '$_linkColorClasses font-medium cursor-pointer', [
-                Component.text(component.browseText ?? 'browse'),
+              Span(className: '$_linkColorClasses font-medium cursor-pointer', children: [
+                Text(component.browseText ?? 'browse'),
               ]),
             ]),
             // Constraints hint
             if (component.accept != null || component.maxSize != null)
-              p(classes: 'text-xs text-gray-500 dark:text-gray-400', [
+              P(className: 'text-xs text-gray-500 dark:text-gray-400', children: [
                 if (component.accept != null)
-                  Component.text('Accepted: ${component.accept}'),
+                  Text('Accepted: ${component.accept}'),
                 if (component.accept != null && component.maxSize != null)
-                  Component.text(' | '),
+                  Text(' | '),
                 if (component.maxSize != null)
-                  Component.text(
+                  Text(
                       'Max size: ${(component.maxSize! / (1024 * 1024)).toStringAsFixed(0)} MB'),
               ]),
           ]),
           // Hidden file input
-          input(
-            type: InputType.file,
+          Input(
+            type: 'file',
             name: component.name,
             disabled: component.disabled,
-            classes: 'absolute inset-0 w-full h-full opacity-0 cursor-pointer',
+            className: 'absolute inset-0 w-full h-full opacity-0 cursor-pointer',
             attributes: {
               if (component.accept != null) 'accept': component.accept!,
               if (component.multiple) 'multiple': 'true',
@@ -306,40 +307,40 @@ class _UFileUploadState extends State<DFileUpload> {
       ),
       // File list
       if (_files.isNotEmpty)
-        div(classes: 'space-y-2', [
+        Div(className: 'space-y-2', children: [
           for (var i = 0; i < _files.length; i++)
-            div(
-              classes:
+            Div(
+              className:
                   'flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg',
-              [
-                div(classes: 'flex items-center space-x-3 min-w-0', [
+              children: [
+                Div(className: 'flex items-center space-x-3 min-w-0', children: [
                   // File icon
-                  div(classes: 'flex-shrink-0 text-gray-400', [
+                  Div(className: 'flex-shrink-0 text-gray-400', children: [
                     RawText('''
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                       </svg>
                     '''),
                   ]),
-                  div(classes: 'min-w-0', [
-                    p(
-                        classes:
+                  Div(className: 'min-w-0', children: [
+                    P(
+                        className:
                             'text-sm font-medium text-gray-700 dark:text-gray-200 truncate',
-                        [
-                          Component.text(_files[i].name),
+                        children: [
+                          Text(_files[i].name),
                         ]),
-                    p(classes: 'text-xs text-gray-500 dark:text-gray-400', [
-                      Component.text(_files[i].formattedSize),
+                    P(className: 'text-xs text-gray-500 dark:text-gray-400', children: [
+                      Text(_files[i].formattedSize),
                     ]),
                   ]),
                 ]),
                 // Remove button
-                button(
-                  type: ButtonType.button,
+                Button(
+                  type: 'button',
                   onClick: () => _removeFile(i),
-                  classes:
+                  className:
                       'text-gray-400 hover:text-red-500 focus:outline-none',
-                  [
+                  children: [
                     RawText('''
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -351,13 +352,13 @@ class _UFileUploadState extends State<DFileUpload> {
             ),
         ]),
       if (hasError)
-        p(
-            classes: 'text-sm text-red-600 dark:text-red-400',
-            [Component.text(component.error!)])
+        P(
+            className: 'text-sm text-red-600 dark:text-red-400',
+            children: [Text(component.error!)])
       else if (component.hint != null)
-        p(
-            classes: 'text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(component.hint!)]),
+        P(
+            className: 'text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(component.hint!)]),
     ]);
   }
 }

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI Page component - Main page wrapper with optional aside
 ///
@@ -32,42 +32,42 @@ class DPage extends StatelessComponent {
 
     if (!hasAside) {
       // No aside - simple wrapper
-      return div(
-        classes: 'relative ${classes ?? ""}',
-        children,
+      return Div(
+        className: 'relative ${classes ?? ""}',
+        children: children,
       );
     }
 
     // Grid layout with aside
-    return div(
-      classes: 'grid lg:grid-cols-10 lg:gap-8 ${classes ?? ""}',
-      [
+    return Div(
+      className: 'grid lg:grid-cols-10 lg:gap-8 ${classes ?? ""}',
+      children: [
         // Left aside (if provided)
         if (left != null)
-          aside(
-            classes: 'hidden lg:block lg:col-span-2',
-            [
-              div(
-                classes: 'sticky top-16',
-                [left!],
+          Aside(
+            className: 'hidden lg:block lg:col-span-2',
+            children: [
+              Div(
+                className: 'sticky top-16',
+                children: [left!],
               ),
             ],
           ),
         // Main content area
-        main_(
-          classes: hasAside
+        Main(
+          className: hasAside
               ? 'lg:col-span-${left != null && right != null ? "6" : "8"} min-w-0'
               : 'lg:col-span-10',
-          children,
+          children: children,
         ),
         // Right aside (if provided)
         if (right != null)
-          aside(
-            classes: 'hidden lg:block lg:col-span-2',
-            [
-              div(
-                classes: 'sticky top-16',
-                [right!],
+          Aside(
+            className: 'hidden lg:block lg:col-span-2',
+            children: [
+              Div(
+                className: 'sticky top-16',
+                children: [right!],
               ),
             ],
           ),

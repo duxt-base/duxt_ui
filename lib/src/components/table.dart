@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Table column definition
 class DTableColumn<T> {
@@ -39,50 +39,50 @@ class DTable<T> extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'overflow-x-auto', [
-      table(
-        classes:
+    return Div(className: 'overflow-x-auto', children: [
+      Table(
+        className:
             'min-w-full divide-y divide-gray-200 ${bordered ? "border border-gray-200" : ""}',
-        [
+        children: [
           // Header
-          thead(classes: 'bg-gray-50', [
-            tr([
+          Thead(className: 'bg-gray-50', children: [
+            Tr(children: [
               for (final col in columns)
-                th(
-                  classes:
+                Th(
+                  className:
                       'px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${col.classes ?? ""}',
-                  [Component.text(col.label)],
+                  children: [Text(col.label)],
                 ),
             ]),
           ]),
           // Body
-          tbody(
-            classes: 'bg-white divide-y divide-gray-200',
-            data.isEmpty && emptyState != null
+          Tbody(
+            className: 'bg-white divide-y divide-gray-200',
+            children: data.isEmpty && emptyState != null
                 ? [
-                    tr([
-                      td(
+                    Tr(children: [
+                      Td(
                         attributes: {'colspan': columns.length.toString()},
-                        classes: 'px-4 py-8 text-center',
-                        [emptyState!],
+                        className: 'px-4 py-8 text-center',
+                        children: [emptyState!],
                       ),
                     ]),
                   ]
                 : [
                     for (var i = 0; i < data.length; i++)
-                      tr(
-                        classes:
+                      Tr(
+                        className:
                             '${striped && i.isOdd ? "bg-gray-50" : ""} ${hoverable ? "hover:bg-gray-50" : ""}',
-                        [
+                        children: [
                           for (final col in columns)
-                            td(
-                              classes:
+                            Td(
+                              className:
                                   'px-4 py-3 text-sm text-gray-900 ${col.classes ?? ""}',
-                              [
+                              children: [
                                 if (col.render != null)
                                   col.render!(data[i])
                                 else
-                                  Component.text(_getValue(data[i], col.key)),
+                                  Text(_getValue(data[i], col.key)),
                               ],
                             ),
                         ],

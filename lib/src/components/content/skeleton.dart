@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 
@@ -76,10 +76,12 @@ class DSkeleton extends StatelessComponent {
     if (width != null) styleMap['width'] = width!;
     if (height != null) styleMap['height'] = height!;
 
-    return div(
-      classes: cx([_baseClasses, _shapeClasses, classes]),
-      styles: styleMap.isNotEmpty ? Styles(raw: styleMap) : null,
-      [],
+    final styleStr = styleMap.entries.map((e) => '${e.key}: ${e.value}').join('; ');
+
+    return Div(
+      className: cx([_baseClasses, _shapeClasses, classes]),
+      style: styleStr.isNotEmpty ? styleStr : null,
+      children: [],
     );
   }
 }
@@ -99,9 +101,9 @@ class DSkeletonGroup extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'space-y-${spacing ?? "3"}',
-      [
+    return Div(
+      className: 'space-y-${spacing ?? "3"}',
+      children: [
         for (int i = 0; i < lines; i++)
           DSkeleton.text(
             animate: animate,
@@ -130,9 +132,9 @@ class DSkeletonCard extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden',
-      [
+    return Div(
+      className: 'bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden',
+      children: [
         // Image placeholder
         if (showImage)
           DSkeleton.rectangular(
@@ -142,18 +144,18 @@ class DSkeletonCard extends StatelessComponent {
             classes: 'rounded-none',
           ),
         // Content
-        div(
-          classes: 'p-4 space-y-4',
-          [
+        Div(
+          className: 'p-4 space-y-4',
+          children: [
             // Avatar and title row
             if (showAvatar)
-              div(
-                classes: 'flex items-center gap-3',
-                [
+              Div(
+                className: 'flex items-center gap-3',
+                children: [
                   DSkeleton.circular(animate: animate),
-                  div(
-                    classes: 'flex-1 space-y-2',
-                    [
+                  Div(
+                    className: 'flex-1 space-y-2',
+                    children: [
                       DSkeleton.text(width: '50%', animate: animate),
                       DSkeleton.text(width: '30%', animate: animate),
                     ],

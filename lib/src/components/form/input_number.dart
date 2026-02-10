@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
 
@@ -110,30 +111,30 @@ class DInputNumber extends StatelessComponent {
       disabled ? 'opacity-50 cursor-not-allowed' : null,
     ]);
 
-    return div(classes: 'space-y-1', [
+    return Div(className: 'space-y-1', children: [
       if (label != null)
-        span(
-            classes:
+        Span(
+            className:
                 'block text-sm font-medium text-gray-700 dark:text-gray-200',
-            [
-              Component.text(label!),
+            children: [
+              Text(label!),
               if (required)
-                span(classes: 'text-red-500 ml-1', [Component.text('*')]),
+                Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
-      div(
-        classes: 'relative flex items-stretch',
+      Div(
+        className: 'relative flex items-stretch',
         attributes: {
           'data-input-number': 'true',
           'data-step': step.toString(),
           'data-min': min.isFinite ? min.toString() : '',
           'data-max': max.isFinite ? max.toString() : '',
         },
-        [
+        children: [
           // Decrement button
-          button(
-            type: ButtonType.button,
+          Button(
+            type: 'button',
             disabled: disabled,
-            classes: cx([
+            className: cx([
               buttonBaseClasses,
               'rounded-l-lg',
               'border',
@@ -143,18 +144,18 @@ class DInputNumber extends StatelessComponent {
               'dark:bg-zinc-800',
             ]),
             attributes: {'data-action': 'decrement'},
-            [
-              span(classes: 'sr-only', [Component.text('Decrement')]),
-              span(classes: 'text-lg font-medium', [Component.text('−')]),
+            children: [
+              Span(className: 'sr-only', children: [Text('Decrement')]),
+              Span(className: 'text-lg font-medium', children: [Text('\u2212')]),
             ],
           ),
           // Input
-          input(
-            type: InputType.number,
+          Input(
+            type: 'number',
             name: name,
             value: value.toString(),
             disabled: disabled,
-            classes: cx([
+            className: cx([
               'block',
               'w-full',
               'text-center',
@@ -171,8 +172,8 @@ class DInputNumber extends StatelessComponent {
               '[&::-webkit-outer-spin-button]:appearance-none',
               '[&::-webkit-inner-spin-button]:appearance-none',
             ]),
+            placeholder: placeholder,
             attributes: {
-              if (placeholder != null) 'placeholder': placeholder!,
               if (min.isFinite) 'min': min.toString(),
               if (max.isFinite) 'max': max.toString(),
               'step': step.toString(),
@@ -180,10 +181,10 @@ class DInputNumber extends StatelessComponent {
             },
           ),
           // Increment button
-          button(
-            type: ButtonType.button,
+          Button(
+            type: 'button',
             disabled: disabled,
-            classes: cx([
+            className: cx([
               buttonBaseClasses,
               'rounded-r-lg',
               'border',
@@ -193,19 +194,19 @@ class DInputNumber extends StatelessComponent {
               'dark:bg-zinc-800',
             ]),
             attributes: {'data-action': 'increment'},
-            [
-              span(classes: 'sr-only', [Component.text('Increment')]),
-              span(classes: 'text-lg font-medium', [Component.text('+')]),
+            children: [
+              Span(className: 'sr-only', children: [Text('Increment')]),
+              Span(className: 'text-lg font-medium', children: [Text('+')]),
             ],
           ),
         ],
       ),
       if (hasError)
-        p(classes: 'text-sm text-red-600 dark:text-red-400',
-            [Component.text(error!)])
+        P(className: 'text-sm text-red-600 dark:text-red-400',
+            children: [Text(error!)])
       else if (hint != null)
-        p(classes: 'text-sm text-gray-500 dark:text-gray-400',
-            [Component.text(hint!)]),
+        P(className: 'text-sm text-gray-500 dark:text-gray-400',
+            children: [Text(hint!)]),
       // Global input number handler
       RawText('''<script>
 if (!window._inputNumberInit) {

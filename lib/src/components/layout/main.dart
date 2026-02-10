@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI Main component - main content wrapper
 class DMain extends StatelessComponent {
@@ -20,9 +21,8 @@ class DMain extends StatelessComponent {
     final paddingClasses = padded ? 'py-8 sm:py-12 lg:py-16' : '';
     final centerClasses = centered ? 'flex flex-col items-center' : '';
 
-    return Component.element(
-      tag: 'main',
-      classes: 'flex-1 min-h-0 $paddingClasses $centerClasses ${classes ?? ""}'
+    return Main(
+      className: 'flex-1 min-h-0 $paddingClasses $centerClasses ${classes ?? ""}'
           .trim(),
       children: children,
     );
@@ -48,10 +48,9 @@ class DSection extends StatelessComponent {
   Component build(BuildContext context) {
     final paddingClasses = padded ? 'py-12 sm:py-16 lg:py-20' : '';
 
-    return Component.element(
-      tag: 'section',
+    return Section(
       id: id,
-      classes: '$paddingClasses ${classes ?? ""}'.trim(),
+      className: '$paddingClasses ${classes ?? ""}'.trim(),
       children: children,
     );
   }
@@ -74,9 +73,8 @@ class DAside extends StatelessComponent {
   Component build(BuildContext context) {
     final stickyClasses = sticky ? 'sticky top-20' : '';
 
-    return Component.element(
-      tag: 'aside',
-      classes: '$stickyClasses ${classes ?? ""}'.trim(),
+    return Aside(
+      className: '$stickyClasses ${classes ?? ""}'.trim(),
       children: children,
     );
   }

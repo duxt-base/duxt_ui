@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
@@ -80,15 +80,15 @@ class DAccordion extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'divide-y',
         DDivideColors.defaultDivide,
         'rounded-lg',
         'ring-1',
         DRingColors.defaultRing,
       ]),
-      [
+      children: [
         for (int i = 0; i < items.length; i++) _buildItem(items[i], i),
       ],
     );
@@ -100,8 +100,8 @@ class DAccordion extends StatelessComponent {
     final isFirst = index == 0;
     final isLast = index == items.length - 1;
 
-    return details(
-      classes: cx([
+    return Details(
+      className: cx([
         'group',
         isFirst ? 'rounded-t-lg' : null,
         isLast ? 'rounded-b-lg' : null,
@@ -110,10 +110,10 @@ class DAccordion extends StatelessComponent {
         if (isOpen) 'open': 'true',
         'name': 'accordion_$hashCode', // Groups accordions to close others when one opens
       },
-      [
+      children: [
         // Summary (clickable header)
-        summary(
-          classes: cx([
+        Summary(
+          className: cx([
             'flex items-center justify-between',
             _paddingClasses,
             _sizeClasses,
@@ -128,40 +128,40 @@ class DAccordion extends StatelessComponent {
             'group-open:rounded-b-none',
             isLast ? 'group-[[open]]:rounded-b-none rounded-b-lg' : null,
           ]),
-          [
-            div(classes: 'flex items-center gap-2', [
+          children: [
+            Div(className: 'flex items-center gap-2', children: [
               if (item.icon != null) item.icon!,
-              div([
-                span([Component.text(item.label)]),
+              Div(children: [
+                Span(children: [Text(item.label)]),
                 if (item.description != null)
-                  p(
-                      classes: cx(
+                  P(
+                      className: cx(
                           ['font-normal', DTextColors.muted, 'text-xs mt-0.5']),
-                      [
-                        Component.text(item.description!),
+                      children: [
+                        Text(item.description!),
                       ]),
               ]),
             ]),
             // Chevron icon - rotates when open
-            span(
-              classes: cx([
+            Span(
+              className: cx([
                 'transform transition-transform duration-200',
                 'group-open:rotate-180',
               ]),
-              [Component.text('\u25BC')], // Down arrow
+              children: [Text('\u25BC')], // Down arrow
             ),
           ],
         ),
         // Content
-        div(
-          classes: cx([
+        Div(
+          className: cx([
             _paddingClasses,
             'pt-0',
             DTextColors.defaultText,
             _sizeClasses,
             isLast ? 'rounded-b-lg' : null,
           ]),
-          [item.content],
+          children: [item.content],
         ),
       ],
     );

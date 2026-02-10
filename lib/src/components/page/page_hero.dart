@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageHero component - Full-width hero section
 ///
@@ -66,67 +66,67 @@ class DPageHero extends StatelessComponent {
         'bg-gradient-to-b from-primary-50 to-white dark:from-gray-900 dark:to-gray-950';
     final bgClasses = gradient ? (gradientClasses ?? defaultGradient) : '';
 
-    return section(
-      classes: 'relative py-16 sm:py-24 lg:py-32 $bgClasses ${classes ?? ""}',
-      [
+    return Section(
+      className: 'relative py-16 sm:py-24 lg:py-32 $bgClasses ${classes ?? ""}',
+      children: [
         // Optional gradient overlay
         if (gradient)
-          div(
-            classes: 'absolute inset-0 overflow-hidden',
-            [
-              div(
-                classes:
+          Div(
+            className: 'absolute inset-0 overflow-hidden',
+            children: [
+              Div(
+                className:
                     'absolute -top-40 -right-32 w-80 h-80 bg-primary-400/20 rounded-full blur-3xl',
-                [],
+                children: [],
               ),
-              div(
-                classes:
+              Div(
+                className:
                     'absolute -bottom-40 -left-32 w-80 h-80 bg-primary-600/20 rounded-full blur-3xl',
-                [],
+                children: [],
               ),
             ],
           ),
         // Content container
-        div(
-          classes: 'relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
-          [
-            div(
-              classes:
+        Div(
+          className: 'relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
+          children: [
+            Div(
+              className:
                   'flex flex-col $_alignClasses max-w-4xl ${align == DPageHeaderAlign.center ? "mx-auto" : ""}',
-              [
+              children: [
                 // Custom children (if provided)
                 if (children.isNotEmpty)
                   ...children
                 else ...[
                   // Icon (if provided)
-                  if (icon != null) div(classes: 'mb-8', [icon!]),
+                  if (icon != null) Div(className: 'mb-8', children: [icon!]),
                   // Headline/eyebrow
                   if (headline != null)
-                    span(
-                      classes:
+                    Span(
+                      className:
                           'inline-flex items-center rounded-full bg-primary-50 dark:bg-primary-900/30 px-4 py-1.5 text-sm font-medium text-primary-600 dark:text-primary-400 ring-1 ring-inset ring-primary-500/20 mb-6',
-                      [Component.text(headline!)],
+                      children: [Text(headline!)],
                     ),
                   // Title
                   if (title != null)
-                    h1(
-                      classes:
+                    H1(
+                      className:
                           'text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white tracking-tight',
-                      [Component.text(title!)],
+                      children: [Text(title!)],
                     ),
                   // Description
                   if (description != null)
-                    p(
-                      classes:
+                    P(
+                      className:
                           'mt-6 text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl',
-                      [Component.text(description!)],
+                      children: [Text(description!)],
                     ),
                   // Links/actions
                   if (links.isNotEmpty)
-                    div(
-                      classes:
+                    Div(
+                      className:
                           'mt-10 flex flex-wrap gap-4 ${align == DPageHeaderAlign.center ? "justify-center" : ""}',
-                      links,
+                      children: links,
                     ),
                 ],
               ],

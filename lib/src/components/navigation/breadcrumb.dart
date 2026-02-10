@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Breadcrumb separator style
 enum DBreadcrumbSeparator { slash, chevron, arrow, dot }
@@ -39,45 +39,44 @@ class DBreadcrumb extends StatelessComponent {
       final isLast = i == items.length - 1;
 
       breadcrumbItems.add(
-        li(
-          classes: 'flex items-center',
-          [
+        Li(
+          className: 'flex items-center',
+          children: [
             if (isLast)
-              span(
-                classes: 'text-sm font-medium text-gray-500 dark:text-gray-400',
-                [
+              Span(
+                className: 'text-sm font-medium text-gray-500 dark:text-gray-400',
+                children: [
                   if (item.icon != null) item.icon!,
-                  Component.text(item.label),
+                  Text(item.label),
                 ],
               )
             else
-              a(
+              A(
                 href: item.href ?? '#',
-                classes:
+                className:
                     'text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors',
-                [
+                children: [
                   if (item.icon != null) item.icon!,
-                  Component.text(item.label),
+                  Text(item.label),
                 ],
               ),
             if (!isLast)
-              span(
-                classes: 'mx-2 text-gray-400 dark:text-gray-600 select-none',
-                [Component.text(_separatorChar)],
+              Span(
+                className: 'mx-2 text-gray-400 dark:text-gray-600 select-none',
+                children: [Text(_separatorChar)],
               ),
           ],
         ),
       );
     }
 
-    return Component.element(
-      tag: 'nav',
+    return Nav(
       attributes: {'aria-label': 'Breadcrumb'},
-      classes: classes ?? '',
+      className: classes ?? '',
       children: [
-        ol(
-          classes: 'flex items-center gap-2 text-sm',
-          breadcrumbItems,
+        Ol(
+          className: 'flex items-center gap-2 text-sm',
+          children: breadcrumbItems,
         ),
       ],
     );
@@ -101,21 +100,21 @@ class DBreadcrumbItem extends StatelessComponent {
   Component build(BuildContext context) {
     // This is mainly used as a data holder, but can render standalone
     if (href != null) {
-      return a(
+      return A(
         href: href!,
-        classes:
+        className:
             'text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors',
-        [
+        children: [
           if (icon != null) icon!,
-          Component.text(label),
+          Text(label),
         ],
       );
     }
-    return span(
-      classes: 'text-sm font-medium text-gray-500 dark:text-gray-400',
-      [
+    return Span(
+      className: 'text-sm font-medium text-gray-500 dark:text-gray-400',
+      children: [
         if (icon != null) icon!,
-        Component.text(label),
+        Text(label),
       ],
     );
   }

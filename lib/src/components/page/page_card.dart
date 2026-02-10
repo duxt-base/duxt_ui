@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI PageCard component - Card with title and description
 ///
@@ -54,40 +54,40 @@ class DPageCard extends StatelessComponent {
     final cardContent = [
       // Icon and badge row
       if (icon != null || badge != null)
-        div(
-          classes: 'flex items-start justify-between mb-4',
-          [
+        Div(
+          className: 'flex items-start justify-between mb-4',
+          children: [
             if (icon != null)
-              div(
-                classes:
+              Div(
+                className:
                     'flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-900/30 text-primary-500 dark:text-primary-400',
-                [icon!],
+                children: [icon!],
               )
             else
-              div([]),
+              Div(children: []),
             if (badge != null) badge!,
           ],
         ),
       // Title
       if (title != null)
-        h3(
-          classes:
+        H3(
+          className:
               'text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors',
-          [Component.text(title!)],
+          children: [Text(title!)],
         ),
       // Description
       if (description != null)
-        p(
-          classes: 'mt-2 text-sm text-gray-600 dark:text-gray-400',
-          [Component.text(description!)],
+        P(
+          className: 'mt-2 text-sm text-gray-600 dark:text-gray-400',
+          children: [Text(description!)],
         ),
       // Custom content
-      if (children.isNotEmpty) div(classes: 'mt-4', children),
+      if (children.isNotEmpty) Div(className: 'mt-4', children: children),
       // Footer
       if (footer != null)
-        div(
-          classes: 'mt-4 pt-4 border-t border-gray-100 dark:border-gray-800',
-          [footer!],
+        Div(
+          className: 'mt-4 pt-4 border-t border-gray-100 dark:border-gray-800',
+          children: [footer!],
         ),
     ];
 
@@ -96,24 +96,24 @@ class DPageCard extends StatelessComponent {
 
     // If there's a link, wrap in anchor
     if (to != null) {
-      return a(
+      return A(
         href: to!,
-        classes: 'block $cardClasses',
-        [
+        className: 'block $cardClasses',
+        children: [
           // Link overlay for accessibility
-          span(
-            classes: 'absolute inset-0 z-10',
+          Span(
+            className: 'absolute inset-0 z-10',
             attributes: {'aria-hidden': 'true'},
-            [],
+            children: [],
           ),
           ...cardContent,
         ],
       );
     }
 
-    return div(
-      classes: cardClasses,
-      cardContent,
+    return Div(
+      className: cardClasses,
+      children: cardContent,
     );
   }
 }

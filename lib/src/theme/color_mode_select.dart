@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
 import 'provider.dart';
 
@@ -76,14 +76,14 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
 
   @override
   Component build(BuildContext context) {
-    return div(
-      classes: 'relative inline-block ${component.classes ?? ""}',
-      [
+    return Div(
+      className: 'relative inline-block ${component.classes ?? ""}',
+      children: [
         // Trigger button
-        button(
-          type: ButtonType.button,
+        Button(
+          type: 'button',
           onClick: _toggleDropdown,
-          classes: [
+          className: [
             'inline-flex items-center justify-between gap-2 px-3 py-2',
             'bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-600',
             'rounded-lg shadow-sm min-w-[140px]',
@@ -96,17 +96,17 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
             'aria-haspopup': 'listbox',
             'aria-expanded': _isOpen ? 'true' : 'false',
           },
-          [
+          children: [
             // Current selection
-            span(
-              classes: 'flex items-center gap-2',
-              [
+            Span(
+              className: 'flex items-center gap-2',
+              children: [
                 DIcon(
                   name: _getModeIcon(_currentMode),
                   size: DIconSize.sm,
                   color: 'text-gray-500 dark:text-gray-400',
                 ),
-                Component.text(_getModeLabel(_currentMode)),
+                Text(_getModeLabel(_currentMode)),
               ],
             ),
             // Dropdown arrow
@@ -123,8 +123,8 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
 
         // Dropdown menu
         if (_isOpen)
-          div(
-            classes: [
+          Div(
+            className: [
               'absolute z-10 mt-1 w-full',
               'bg-white dark:bg-zinc-800',
               'border border-gray-200 dark:border-gray-700',
@@ -132,7 +132,7 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
               'py-1',
             ].join(' '),
             attributes: {'role': 'listbox'},
-            [
+            children: [
               for (final mode in DThemeMode.values) _buildOption(mode),
             ],
           ),
@@ -143,10 +143,10 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
   Component _buildOption(DThemeMode mode) {
     final isSelected = mode == _currentMode;
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: () => _selectMode(mode),
-      classes: [
+      className: [
         'w-full flex items-center gap-2 px-3 py-2 text-sm',
         'transition-colors',
         if (isSelected)
@@ -158,7 +158,7 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
         'role': 'option',
         'aria-selected': isSelected ? 'true' : 'false',
       },
-      [
+      children: [
         DIcon(
           name: _getModeIcon(mode),
           size: DIconSize.sm,
@@ -166,11 +166,11 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
               ? 'text-cyan-500'
               : 'text-gray-400 dark:text-gray-500',
         ),
-        Component.text(_getModeLabel(mode)),
+        Text(_getModeLabel(mode)),
         if (isSelected)
-          span(
-            classes: 'ml-auto',
-            [
+          Span(
+            className: 'ml-auto',
+            children: [
               DIcon(
                 name: DIconNames.check,
                 size: DIconSize.sm,

@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardSidebar component
 ///
@@ -119,43 +119,43 @@ class _UDashboardSidebarState extends State<DDashboardSidebar> {
   Component build(BuildContext context) {
     // Mobile overlay
     if (component.mobileOpen) {
-      return div(classes: 'fixed inset-0 z-50 lg:hidden', [
+      return Div(className: 'fixed inset-0 z-50 lg:hidden', children: [
         // Backdrop
-        div(
-          classes: 'fixed inset-0 bg-black/50',
+        Div(
+          className: 'fixed inset-0 bg-black/50',
           events: component.onMobileClose != null
               ? {'click': (_) => component.onMobileClose!()}
               : {},
-          [],
+          children: [],
         ),
         // Sidebar
-        aside(
-          classes:
+        Aside(
+          className:
               'fixed inset-y-0 ${component.side == DSidebarSide.left ? "left-0" : "right-0"} w-64 flex flex-col $_backgroundClasses $_borderClasses shadow-xl transition-transform duration-300',
-          [
+          children: [
             // Header
             if (component.header != null)
-              div(classes: 'flex-shrink-0', [component.header!]),
+              Div(className: 'flex-shrink-0', children: [component.header!]),
             // Content
-            div(classes: 'flex-1 overflow-y-auto', component.children),
+            Div(className: 'flex-1 overflow-y-auto', children: component.children),
             // Footer
             if (component.footer != null)
-              div(classes: 'flex-shrink-0', [component.footer!]),
+              Div(className: 'flex-shrink-0', children: [component.footer!]),
           ],
         ),
       ]);
     }
 
     // Desktop sidebar
-    return aside(
-      classes:
+    return Aside(
+      className:
           'hidden lg:flex flex-col $_widthClasses $_backgroundClasses $_borderClasses transition-all duration-300 ${component.classes ?? ""}',
-      [
+      children: [
         // Header
         if (component.header != null)
-          div(classes: 'flex-shrink-0', [component.header!]),
+          Div(className: 'flex-shrink-0', children: [component.header!]),
         // Content
-        div(classes: 'flex-1 overflow-y-auto py-4', [
+        Div(className: 'flex-1 overflow-y-auto py-4', children: [
           // Provide collapse context to children
           for (final child in component.children)
             _SidebarCollapseProvider(
@@ -165,7 +165,7 @@ class _UDashboardSidebarState extends State<DDashboardSidebar> {
         ]),
         // Footer
         if (component.footer != null)
-          div(classes: 'flex-shrink-0', [component.footer!]),
+          Div(className: 'flex-shrink-0', children: [component.footer!]),
       ],
     );
   }
@@ -236,41 +236,41 @@ class DSidebarItem extends StatelessComponent {
     final disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : '';
 
     if (collapsed) {
-      return button(
-        type: ButtonType.button,
+      return Button(
+        type: 'button',
         disabled: disabled,
         onClick: disabled ? null : onClick,
-        classes:
+        className:
             'w-full flex items-center justify-center p-3 rounded-lg transition-colors $activeClasses $disabledClasses',
         attributes: {'title': label},
-        [
+        children: [
           if (icon != null) icon!,
           if (badge != null)
-            span(
-              classes:
+            Span(
+              className:
                   'absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full',
-              [Component.text(badge!)],
+              children: [Text(badge!)],
             ),
         ],
       );
     }
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: disabled,
       onClick: disabled ? null : onClick,
-      classes:
+      className:
           'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors $activeClasses $disabledClasses',
-      [
+      children: [
         if (icon != null) icon!,
-        span(
-            classes: 'flex-1 text-left text-sm font-medium',
-            [Component.text(label)]),
+        Span(
+            className: 'flex-1 text-left text-sm font-medium',
+            children: [Text(label)]),
         if (badge != null)
-          span(
-            classes:
+          Span(
+            className:
                 'inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full',
-            [Component.text(badge!)],
+            children: [Text(badge!)],
           ),
       ],
     );
@@ -301,12 +301,12 @@ class DSidebarSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(classes: 'px-3 py-2', [
+    return Div(className: 'px-3 py-2', children: [
       if (label != null && (!collapsed || showLabelCollapsed))
-        div(
-          classes:
+        Div(
+          className:
               'px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider',
-          [Component.text(label!)],
+          children: [Text(label!)],
         ),
       ...children,
     ]);

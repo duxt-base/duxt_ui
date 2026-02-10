@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import 'toast.dart';
@@ -64,10 +64,10 @@ class _UToasterState extends State<DToaster> {
 
   @override
   Component build(BuildContext context) {
-    if (component.toasts.isEmpty) return div([]);
+    if (component.toasts.isEmpty) return Div(children: []);
 
-    return div(
-      classes: cx([
+    return Div(
+      className: cx([
         'fixed z-50',
         _positionClasses,
         'flex',
@@ -75,11 +75,11 @@ class _UToasterState extends State<DToaster> {
         'gap-3',
         'pointer-events-none',
       ]),
-      [
+      children: [
         for (final toast in component.toasts)
-          div(
-            classes: 'pointer-events-auto',
-            [
+          Div(
+            className: 'pointer-events-auto',
+            children: [
               DToast(
                 id: toast.id,
                 title: toast.title,

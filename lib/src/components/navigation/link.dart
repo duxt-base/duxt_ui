@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// Link color variants
 enum DLinkColor { primary, neutral, inherit }
@@ -58,22 +58,22 @@ class DLink extends StatelessComponent {
     final disabledClasses =
         disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
 
-    return a(
+    return A(
       href: href,
       target: external ? Target.blank : null,
       attributes: external ? {'rel': 'noopener noreferrer'} : null,
-      classes:
+      className:
           '$baseClasses $_colorClasses $underlineClasses $disabledClasses ${classes ?? ""}'
               .trim(),
-      [
+      children: [
         if (icon != null) icon!,
-        if (label != null) Component.text(label!),
+        if (label != null) Text(label!),
         ...children,
         if (trailingIcon != null) trailingIcon!,
         if (external && trailingIcon == null)
-          span(
-            classes: 'text-xs',
-            [Component.text('\u2197')], // External link arrow
+          Span(
+            className: 'text-xs',
+            children: [Text('\u2197')], // External link arrow
           ),
       ],
     );
@@ -107,12 +107,12 @@ class DNavLink extends StatelessComponent {
         ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-zinc-800'
         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50';
 
-    return a(
+    return A(
       href: href,
-      classes: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
-      [
+      className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+      children: [
         if (icon != null) icon!,
-        Component.text(label),
+        Text(label),
       ],
     );
   }
@@ -137,19 +137,19 @@ class DSocialLink extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return a(
+    return A(
       href: href,
       target: Target.blank,
-      classes:
+      className:
           'inline-flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors ${classes ?? ""}'
               .trim(),
       attributes: {
         'rel': 'noopener noreferrer',
         if (ariaLabel != null) 'aria-label': ariaLabel!,
       },
-      [
+      children: [
         icon,
-        if (label != null) span(classes: 'sr-only', [Component.text(label!)]),
+        if (label != null) Span(className: 'sr-only', children: [Text(label!)]),
       ],
     );
   }

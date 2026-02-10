@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 /// DuxtUI DashboardPanel component
 ///
@@ -73,32 +73,32 @@ class _UDashboardPanelState extends State<DDashboardPanel> {
   @override
   Component build(BuildContext context) {
     if (!component.resizable) {
-      return div(
-        classes: '$_baseClasses ${component.classes ?? ""}',
-        component.children,
+      return Div(
+        className: '$_baseClasses ${component.classes ?? ""}',
+        children: component.children,
       );
     }
 
-    return div(
-      classes: 'relative $_baseClasses ${component.classes ?? ""}',
-      styles: _width != null ? Styles(raw: {'width': '${_width}px'}) : null,
-      [
+    return Div(
+      className: 'relative $_baseClasses ${component.classes ?? ""}',
+      style: _width != null ? 'width: ${_width}px' : null,
+      children: [
         // Content
         ...component.children,
         // Resize handle
-        div(
-          classes: _resizeHandleClasses,
+        Div(
+          className: _resizeHandleClasses,
           events: {
             'mousedown': (event) {
               setState(() => _isResizing = true);
             },
           },
-          [],
+          children: [],
         ),
         // Resize overlay (when resizing)
         if (_isResizing)
-          div(
-            classes: 'fixed inset-0 z-50 cursor-col-resize',
+          Div(
+            className: 'fixed inset-0 z-50 cursor-col-resize',
             events: {
               'mousemove': (event) {
                 // Note: In a real implementation, this would calculate
@@ -108,7 +108,7 @@ class _UDashboardPanelState extends State<DDashboardPanel> {
                 setState(() => _isResizing = false);
               },
             },
-            [],
+            children: [],
           ),
       ],
     );

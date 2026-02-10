@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 
@@ -93,9 +93,9 @@ class DToast extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div(
+    return Div(
       id: id,
-      classes: cx([
+      className: cx([
         'flex items-start gap-3',
         'p-4',
         'rounded-lg',
@@ -103,47 +103,47 @@ class DToast extends StatelessComponent {
         'min-w-[300px] max-w-md',
         _variantClasses,
       ]),
-      [
+      children: [
         // Icon
         if (icon != null)
-          div(classes: 'flex-shrink-0 text-lg', [icon!])
+          Div(className: 'flex-shrink-0 text-lg', children: [icon!])
         else
-          div(classes: 'flex-shrink-0 text-lg', [Component.text(_defaultIcon)]),
+          Div(className: 'flex-shrink-0 text-lg', children: [Text(_defaultIcon)]),
         // Content
-        div(
-          classes: 'flex-1 min-w-0',
-          [
+        Div(
+          className: 'flex-1 min-w-0',
+          children: [
             if (title != null)
-              p(
-                classes: 'text-sm font-semibold',
-                [Component.text(title!)],
+              P(
+                className: 'text-sm font-semibold',
+                children: [Text(title!)],
               ),
             if (description != null)
-              p(
-                classes: cx([
+              P(
+                className: cx([
                   'text-sm',
                   title != null ? 'mt-1 opacity-90' : null,
                 ]),
-                [Component.text(description!)],
+                children: [Text(description!)],
               ),
           ],
         ),
         // Action
-        if (action != null) div(classes: 'flex-shrink-0', [action!]),
+        if (action != null) Div(className: 'flex-shrink-0', children: [action!]),
         // Close button
         if (closable && onClose != null)
-          button(
-            type: ButtonType.button,
+          Button(
+            type: 'button',
             onClick: onClose,
-            classes: cx([
+            className: cx([
               'flex-shrink-0',
               'p-1 -m-1',
               'rounded',
               'transition-colors',
               _closeButtonClasses,
             ]),
-            [
-              span(classes: 'text-lg leading-none', [Component.text('\u00D7')])
+            children: [
+              Span(className: 'text-lg leading-none', children: [Text('\u00D7')])
             ], // Times symbol
           ),
       ],
