@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.2
+
+- Complete duxt_html conversion: all remaining `svg()` calls converted to `Svg()` from duxt_html
+- No bare `import 'package:jaspr/dom.dart'` imports remain — all use selective `show` for jaspr-native types only
+- Zero warnings, zero errors in `dart analyze lib/`
+
+## 0.3.1
+
+- Refactor internals to use `duxt_html` as foundation layer (`duxt_ui -> duxt_html -> jaspr`)
+- All ~87 component files now use duxt_html PascalCase components instead of raw Jaspr DOM functions
+- Added `duxt_html: ^1.0.0` dependency
+- No public API changes - all component signatures remain identical
+
 ## 0.3.0
 
 **BREAKING CHANGE:** Interactive components now work without `@client` annotation.

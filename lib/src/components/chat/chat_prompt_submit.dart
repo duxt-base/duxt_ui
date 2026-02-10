@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import '../spinner.dart';
 
 /// Submit button size
@@ -65,32 +66,32 @@ class DChatPromptSubmit extends StatelessComponent {
     final colorClasses = bgColor ?? 'bg-cyan-600 hover:bg-cyan-700';
 
     // Default send icon (arrow up)
-    final defaultIcon = svg(
-      classes: _iconSize,
+    final defaultIcon = Svg(
+      className: _iconSize,
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         // Arrow up path
         RawText('<path d="M12 19V5M5 12l7-7 7 7"/>'),
       ],
     );
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       disabled: isDisabled,
       onClick: isDisabled ? null : onSubmit,
-      classes: '$_sizeClasses rounded-lg $colorClasses text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+      className: '$_sizeClasses rounded-lg $colorClasses text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
       attributes: {
         if (tooltip != null) 'title': tooltip!,
         'aria-label': tooltip ?? 'Send message',
       },
-      [
+      children: [
         if (loading)
           DSpinner(size: _spinnerSize, color: 'border-white')
         else

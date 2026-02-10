@@ -1,5 +1,6 @@
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
+import 'package:jaspr/jaspr.dart' hide Text;
+import 'package:jaspr/dom.dart' show RawText;
+import 'package:duxt_html/duxt_html.dart';
 import 'chat_message.dart';
 import 'chat_messages.dart';
 import 'chat_prompt.dart';
@@ -72,27 +73,27 @@ class _UChatPaletteState extends State<DChatPalette> {
   @override
   Component build(BuildContext context) {
     if (!component.open) {
-      return div([]);
+      return Div(children: []);
     }
 
     final width = component.width ?? 'w-96';
     final height = component.height ?? 'h-[600px]';
 
-    return div(
-      classes: 'fixed $_positionClasses $width $height z-50',
-      [
+    return Div(
+      className: 'fixed $_positionClasses $width $height z-50',
+      children: [
         // Main container
-        div(
-          classes:
+        Div(
+          className:
               'flex flex-col h-full bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden',
-          [
+          children: [
             // Header
             _buildHeader(),
 
             // Messages area
-            div(
-              classes: 'flex-1 overflow-hidden flex flex-col',
-              [
+            Div(
+              className: 'flex-1 overflow-hidden flex flex-col',
+              children: [
                 DChatMessages(
                   messages: component.messages,
                   autoScrollToBottom: true,
@@ -114,41 +115,41 @@ class _UChatPaletteState extends State<DChatPalette> {
       return component.headerSlot!;
     }
 
-    return div(
-      classes:
+    return Div(
+      className:
           'flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-900',
-      [
+      children: [
         // Title
         if (component.title != null)
-          h3(
-            classes: 'text-base font-semibold text-gray-900 dark:text-gray-100',
-            [Component.text(component.title!)],
+          H3(
+            className: 'text-base font-semibold text-gray-900 dark:text-gray-100',
+            children: [Text(component.title!)],
           )
         else
-          div([]),
+          Div(children: []),
 
         // Close button
         if (component.onClose != null)
-          button(
-            type: ButtonType.button,
+          Button(
+            type: 'button',
             onClick: component.onClose,
-            classes:
+            className:
                 'p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors',
             attributes: {
               'aria-label': 'Close chat',
             },
-            [
-              svg(
-                classes: 'w-5 h-5',
+            children: [
+              Svg(
+                className: 'w-5 h-5',
+                viewBox: '0 0 24 24',
                 attributes: {
-                  'viewBox': '0 0 24 24',
                   'fill': 'none',
                   'stroke': 'currentColor',
                   'stroke-width': '2',
                   'stroke-linecap': 'round',
                   'stroke-linejoin': 'round',
                 },
-                [
+                children: [
                   RawText('<path d="M18 6L6 18M6 6l12 12"/>'),
                 ],
               ),
@@ -159,9 +160,9 @@ class _UChatPaletteState extends State<DChatPalette> {
   }
 
   Component _buildPrompt() {
-    return div(
-      classes: 'border-t border-gray-200 dark:border-gray-700',
-      [
+    return Div(
+      className: 'border-t border-gray-200 dark:border-gray-700',
+      children: [
         DChatPrompt(
           placeholder: component.placeholder ?? 'Type a message...',
           value: _inputValue,
@@ -202,47 +203,47 @@ class DChatPaletteTrigger extends StatelessComponent {
     final colorClasses = bgColor ?? 'bg-cyan-600 hover:bg-cyan-700';
 
     // Default chat icon
-    final chatIcon = svg(
-      classes: 'w-6 h-6',
+    final chatIcon = Svg(
+      className: 'w-6 h-6',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
       ],
     );
 
     // Close icon
-    final closeIcon = svg(
-      classes: 'w-6 h-6',
+    final closeIcon = Svg(
+      className: 'w-6 h-6',
+      viewBox: '0 0 24 24',
       attributes: {
-        'viewBox': '0 0 24 24',
         'fill': 'none',
         'stroke': 'currentColor',
         'stroke-width': '2',
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round',
       },
-      [
+      children: [
         RawText('<path d="M18 6L6 18M6 6l12 12"/>'),
       ],
     );
 
-    return button(
-      type: ButtonType.button,
+    return Button(
+      type: 'button',
       onClick: onToggle,
-      classes:
+      className:
           'fixed bottom-4 right-4 p-4 rounded-full $colorClasses text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 z-40',
       attributes: {
         if (tooltip != null) 'title': tooltip!,
         'aria-label': tooltip ?? (isOpen ? 'Close chat' : 'Open chat'),
       },
-      [
+      children: [
         icon ?? (isOpen ? closeIcon : chatIcon),
       ],
     );
