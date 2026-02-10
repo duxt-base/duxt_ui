@@ -74,14 +74,16 @@ class DIcon extends StatelessComponent {
       if (classes != null) classes!,
     ].join(' ');
 
-    // If the icon is in the duxt_icons cache, render inline SVG
-    final cached = duxt_icons.IconResolver.instance.get(name);
-    if (cached != null) {
-      return duxt_icons.Icon(
-        name,
-        size: _sizePixels,
-        className: iconClasses,
-      );
+    // If the icon has a valid prefix:name format and is cached, render inline SVG
+    if (name.contains(':')) {
+      final cached = duxt_icons.IconResolver.instance.get(name);
+      if (cached != null) {
+        return duxt_icons.Icon(
+          name,
+          size: _sizePixels,
+          className: iconClasses,
+        );
+      }
     }
 
     // Fallback: use Iconify web component for icons not preloaded
