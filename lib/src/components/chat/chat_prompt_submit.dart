@@ -1,6 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
 import '../spinner.dart';
 
 /// Submit button size
@@ -49,6 +49,17 @@ class DChatPromptSubmit extends StatelessComponent {
     }
   }
 
+  double get _sizePixels {
+    switch (size) {
+      case DChatPromptSubmitSize.sm:
+        return 16;
+      case DChatPromptSubmitSize.md:
+        return 20;
+      case DChatPromptSubmitSize.lg:
+        return 24;
+    }
+  }
+
   DSpinnerSize get _spinnerSize {
     switch (size) {
       case DChatPromptSubmitSize.sm:
@@ -66,20 +77,10 @@ class DChatPromptSubmit extends StatelessComponent {
     final colorClasses = bgColor ?? 'bg-cyan-600 hover:bg-cyan-700';
 
     // Default send icon (arrow up)
-    final defaultIcon = Svg(
+    final defaultIcon = duxt_icons.Icon(
+      'lucide:arrow-up',
+      size: _sizePixels,
       className: _iconSize,
-      viewBox: '0 0 24 24',
-      attributes: {
-        'fill': 'none',
-        'stroke': 'currentColor',
-        'stroke-width': '2',
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round',
-      },
-      children: [
-        // Arrow up path
-        RawText('<path d="M12 19V5M5 12l7-7 7 7"/>'),
-      ],
     );
 
     return Button(

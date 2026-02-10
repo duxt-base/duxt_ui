@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
 
 /// Icon sizes
 enum DIconSize { xs, sm, md, lg, xl }
@@ -7,6 +8,9 @@ enum DIconSize { xs, sm, md, lg, xl }
 /// DuxtUI Icon component - Iconify icon wrapper
 ///
 /// Renders inline icons using Iconify icon names.
+/// When the icon has been preloaded via [duxt_icons.IconResolver], renders
+/// as inline SVG (SSR-friendly, no client JS). Otherwise falls back to the
+/// `<iconify-icon>` web component.
 /// Supports size variants.
 class DIcon extends StatelessComponent {
   /// The icon name in Iconify format (e.g., 'heroicons:sun', 'mdi:home')
@@ -28,6 +32,22 @@ class DIcon extends StatelessComponent {
     this.classes,
     this.color,
   });
+
+  /// Maps [DIconSize] to pixel values.
+  double get _sizePixels {
+    switch (size) {
+      case DIconSize.xs:
+        return 16;
+      case DIconSize.sm:
+        return 20;
+      case DIconSize.md:
+        return 24;
+      case DIconSize.lg:
+        return 32;
+      case DIconSize.xl:
+        return 40;
+    }
+  }
 
   String get _sizeClasses {
     switch (size) {
@@ -54,8 +74,17 @@ class DIcon extends StatelessComponent {
       if (classes != null) classes!,
     ].join(' ');
 
-    // Use Iconify's icon element pattern
-    // This relies on Iconify's web component or CSS approach
+    // If the icon is in the duxt_icons cache, render inline SVG
+    final cached = duxt_icons.IconResolver.instance.get(name);
+    if (cached != null) {
+      return duxt_icons.Icon(
+        name,
+        size: _sizePixels,
+        className: iconClasses,
+      );
+    }
+
+    // Fallback: use Iconify web component for icons not preloaded
     return Span(
       className: iconClasses,
       attributes: {
@@ -63,7 +92,6 @@ class DIcon extends StatelessComponent {
         'aria-hidden': 'true',
       },
       children: [
-        // Render iconify-icon custom element
         Component.element(
           tag: 'iconify-icon',
           attributes: {
