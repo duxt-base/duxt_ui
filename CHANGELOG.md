@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.4
+
+- Add `className`, `id`, `attributes`, and `events` to all 87 components
+- New `twMerge` utility for smart Tailwind class conflict resolution (bg, text, border, rounded, padding, margin, etc.)
+- New `mergeAttributes` utility for combining HTML attribute maps
+- `className` overrides use intelligent merging - conflicting Tailwind utilities are replaced, non-conflicting are appended
+- Components with internal attributes (DModal, DDropdown, DPopover, etc.) preserve them via `mergeAttributes`
+- Renamed `classes` to `className` across all components for consistency
+- Exported `twMerge` and `mergeAttributes` from `package:duxt_ui/duxt_ui.dart`
+
+## 0.3.3
+
+- Guard DIcon against non-prefixed icon names
+- Use duxt_icons for inline SVG rendering
+
 ## 0.3.2
 
 - Complete duxt_html conversion: all remaining `svg()` calls converted to `Svg()` from duxt_html
