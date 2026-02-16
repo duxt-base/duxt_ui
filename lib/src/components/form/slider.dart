@@ -38,7 +38,6 @@ class DSlider extends StatefulComponent {
   final String? className;
   final String? id;
   final Map<String, String>? attributes;
-  final Map<String, EventCallback>? events;
 
   const DSlider({
     super.key,
@@ -56,7 +55,6 @@ class DSlider extends StatefulComponent {
     this.className,
     this.id,
     this.attributes,
-    this.events,
   });
 
   @override
@@ -162,7 +160,6 @@ class _DSliderState extends State<DSlider> {
             final target = event.target as dynamic;
             _handleInput(target.value as String);
           },
-          ...?component.events,
         },
       ),
       if (component.hint != null)
