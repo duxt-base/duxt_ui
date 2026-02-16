@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageBody component - Main content section with optional TOC
 ///
@@ -12,23 +13,38 @@ class DPageBody extends StatelessComponent {
   final Component? toc;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Additional CSS classes for the prose section
   final String? proseClasses;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageBody({
     super.key,
     this.prose = const [],
     this.toc,
-    this.classes,
+    this.className,
     this.proseClasses,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'flex flex-col lg:flex-row lg:gap-8 ${classes ?? ""}',
+      id: id,
+      className: twMerge('flex flex-col lg:flex-row lg:gap-8', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Main prose content
         Div(

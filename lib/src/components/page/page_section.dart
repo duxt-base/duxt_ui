@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageSection component - Section with optional background
 ///
@@ -30,7 +31,7 @@ class DPageSection extends StatelessComponent {
   final String? backgroundClasses;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Optional icon component
   final Component? icon;
@@ -40,6 +41,12 @@ class DPageSection extends StatelessComponent {
 
   /// Custom slot for section header
   final Component? headerSlot;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageSection({
     super.key,
@@ -51,10 +58,12 @@ class DPageSection extends StatelessComponent {
     this.children = const [],
     this.background = false,
     this.backgroundClasses,
-    this.classes,
+    this.className,
     this.icon,
     this.links = const [],
     this.headerSlot,
+    this.attributes,
+    this.events,
   });
 
   String get _alignClasses {
@@ -78,7 +87,9 @@ class DPageSection extends StatelessComponent {
 
     return Section(
       id: id,
-      className: 'py-12 sm:py-16 lg:py-20 $bgClasses ${classes ?? ""}',
+      className: twMerge('py-12 sm:py-16 lg:py-20 $bgClasses', className),
+      attributes: attributes,
+      events: events,
       children: [
         Div(
           className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',

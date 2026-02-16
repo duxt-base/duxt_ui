@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'chat_message.dart';
 import 'chat_messages.dart';
 import 'chat_prompt.dart';
@@ -23,6 +24,10 @@ class DChatPalette extends StatefulComponent {
   final ValueChanged<String>? onSend;
   final Component? headerSlot;
   final Component? emptyState;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatPalette({
     super.key,
@@ -38,6 +43,10 @@ class DChatPalette extends StatefulComponent {
     this.onSend,
     this.headerSlot,
     this.emptyState,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -80,7 +89,10 @@ class _UChatPaletteState extends State<DChatPalette> {
     final height = component.height ?? 'h-[600px]';
 
     return Div(
-      className: 'fixed $_positionClasses $width $height z-50',
+      id: component.id,
+      attributes: component.attributes,
+      events: component.events,
+      className: twMerge('fixed $_positionClasses $width $height z-50', component.className),
       children: [
         // Main container
         Div(
@@ -188,6 +200,10 @@ class DChatPaletteTrigger extends StatelessComponent {
   final String? tooltip;
   final Component? icon;
   final String? bgColor;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatPaletteTrigger({
     super.key,
@@ -196,6 +212,10 @@ class DChatPaletteTrigger extends StatelessComponent {
     this.tooltip,
     this.icon,
     this.bgColor,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -234,15 +254,21 @@ class DChatPaletteTrigger extends StatelessComponent {
       ],
     );
 
+    final baseAttributes = {
+      if (tooltip != null) 'title': tooltip!,
+      'aria-label': tooltip ?? (isOpen ? 'Close chat' : 'Open chat'),
+    };
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return Button(
       type: 'button',
+      id: id,
       onClick: onToggle,
-      className:
+      events: events,
+      className: twMerge(
           'fixed bottom-4 right-4 p-4 rounded-full $colorClasses text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 z-40',
-      attributes: {
-        if (tooltip != null) 'title': tooltip!,
-        'aria-label': tooltip ?? (isOpen ? 'Close chat' : 'Open chat'),
-      },
+          className),
+      attributes: mergedAttributes,
       children: [
         icon ?? (isOpen ? closeIcon : chatIcon),
       ],

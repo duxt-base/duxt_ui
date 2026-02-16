@@ -3,6 +3,7 @@ import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 import '../utility/icon.dart';
 
 /// File upload sizes
@@ -45,6 +46,10 @@ class DFileUpload extends StatefulComponent {
   final String? dropzoneText;
   final String? browseText;
   final ValueChanged<List<DUploadedFile>>? onChange;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DFileUpload({
     super.key,
@@ -64,6 +69,10 @@ class DFileUpload extends StatefulComponent {
     this.dropzoneText,
     this.browseText,
     this.onChange,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -290,17 +299,19 @@ class _UFileUploadState extends State<DFileUpload> {
           Input(
             type: 'file',
             name: component.name,
+            id: component.id,
             disabled: component.disabled,
-            className: 'absolute inset-0 w-full h-full opacity-0 cursor-pointer',
-            attributes: {
+            className: twMerge('absolute inset-0 w-full h-full opacity-0 cursor-pointer', component.className),
+            attributes: mergeAttributes({
               if (component.accept != null) 'accept': component.accept!,
               if (component.multiple) 'multiple': 'true',
-            },
+            }, component.attributes),
             events: {
               'change': (event) {
                 final target = event.target as dynamic;
                 _handleFiles(target.files);
               },
+              ...?component.events,
             },
           ),
         ],

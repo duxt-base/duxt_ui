@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Badge variants
 enum DBadgeVariant { solid, outline, soft, subtle }
@@ -18,6 +19,10 @@ class DBadge extends StatelessComponent {
   final DBadgeVariant variant;
   final DBadgeColor color;
   final DBadgeSize size;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBadge({
     super.key,
@@ -27,6 +32,10 @@ class DBadge extends StatelessComponent {
     this.variant = DBadgeVariant.soft,
     this.color = DBadgeColor.primary,
     this.size = DBadgeSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _baseClasses => 'font-medium inline-flex items-center';
@@ -151,7 +160,10 @@ class DBadge extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Span(
-      className: '$_baseClasses $_sizeClasses $_variantClasses'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$_baseClasses $_sizeClasses $_variantClasses', className),
       children: [
         if (leadingIcon != null)
           Span(className: 'shrink-0 $_iconSizeClasses', children: [leadingIcon!]),

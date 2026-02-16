@@ -3,6 +3,7 @@ import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Error severity levels
 enum DErrorSeverity { warning, error, fatal }
@@ -20,6 +21,10 @@ class DError extends StatelessComponent {
   final DErrorSeverity severity;
   final bool padded;
   final VoidCallback? onRetry;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DError({
     super.key,
@@ -34,6 +39,10 @@ class DError extends StatelessComponent {
     this.severity = DErrorSeverity.error,
     this.padded = true,
     this.onRetry,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _severityColorClasses {
@@ -133,10 +142,13 @@ class DError extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'flex flex-col items-center justify-center text-center',
         _paddingClasses,
-      ]),
+      ]), className),
       children: [
         // Icon
         if (iconComponent != null)
@@ -219,8 +231,19 @@ class DError extends StatelessComponent {
 /// Preset 404 error state
 class DError404 extends StatelessComponent {
   final Component? action;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
-  const DError404({super.key, this.action});
+  const DError404({
+    super.key,
+    this.action,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -231,6 +254,10 @@ class DError404 extends StatelessComponent {
           'The page you are looking for does not exist or has been moved.',
       errorCode: '404',
       action: action,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
@@ -239,8 +266,20 @@ class DError404 extends StatelessComponent {
 class DError500 extends StatelessComponent {
   final VoidCallback? onRetry;
   final Component? action;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
-  const DError500({super.key, this.onRetry, this.action});
+  const DError500({
+    super.key,
+    this.onRetry,
+    this.action,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -252,6 +291,10 @@ class DError500 extends StatelessComponent {
       severity: DErrorSeverity.fatal,
       onRetry: onRetry,
       action: action,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
@@ -259,8 +302,19 @@ class DError500 extends StatelessComponent {
 /// Preset network error state
 class DErrorNetwork extends StatelessComponent {
   final VoidCallback? onRetry;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
-  const DErrorNetwork({super.key, this.onRetry});
+  const DErrorNetwork({
+    super.key,
+    this.onRetry,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -270,6 +324,10 @@ class DErrorNetwork extends StatelessComponent {
       description:
           'Unable to connect. Please check your internet connection and try again.',
       onRetry: onRetry,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }

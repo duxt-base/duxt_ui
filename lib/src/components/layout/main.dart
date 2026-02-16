@@ -1,17 +1,24 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI Main component - main content wrapper
 class DMain extends StatelessComponent {
   final List<Component> children;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
   final bool padded;
   final bool centered;
 
   const DMain({
     super.key,
     this.children = const [],
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
     this.padded = true,
     this.centered = false,
   });
@@ -22,8 +29,10 @@ class DMain extends StatelessComponent {
     final centerClasses = centered ? 'flex flex-col items-center' : '';
 
     return Main(
-      className: 'flex-1 min-h-0 $paddingClasses $centerClasses ${classes ?? ""}'
-          .trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('flex-1 min-h-0 $paddingClasses $centerClasses', className),
       children: children,
     );
   }
@@ -32,15 +41,19 @@ class DMain extends StatelessComponent {
 /// DuxtUI Section component - semantic section wrapper
 class DSection extends StatelessComponent {
   final List<Component> children;
-  final String? classes;
+  final String? className;
   final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
   final bool padded;
 
   const DSection({
     super.key,
     this.children = const [],
-    this.classes,
+    this.className,
     this.id,
+    this.attributes,
+    this.events,
     this.padded = true,
   });
 
@@ -50,7 +63,9 @@ class DSection extends StatelessComponent {
 
     return Section(
       id: id,
-      className: '$paddingClasses ${classes ?? ""}'.trim(),
+      attributes: attributes,
+      events: events,
+      className: twMerge(paddingClasses, className),
       children: children,
     );
   }
@@ -59,13 +74,19 @@ class DSection extends StatelessComponent {
 /// DuxtUI Aside component - sidebar wrapper
 class DAside extends StatelessComponent {
   final List<Component> children;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
   final bool sticky;
 
   const DAside({
     super.key,
     this.children = const [],
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
     this.sticky = false,
   });
 
@@ -74,7 +95,10 @@ class DAside extends StatelessComponent {
     final stickyClasses = sticky ? 'sticky top-20' : '';
 
     return Aside(
-      className: '$stickyClasses ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(stickyClasses, className),
       children: children,
     );
   }

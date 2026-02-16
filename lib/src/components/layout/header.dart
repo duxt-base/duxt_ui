@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Header style variants
 enum DHeaderVariant { solid, transparent, blur }
@@ -13,7 +14,10 @@ class DHeader extends StatelessComponent {
   final DHeaderVariant variant;
   final bool sticky;
   final bool bordered;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DHeader({
     super.key,
@@ -24,7 +28,10 @@ class DHeader extends StatelessComponent {
     this.variant = DHeaderVariant.blur,
     this.sticky = true,
     this.bordered = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _variantClasses {
@@ -47,9 +54,10 @@ class DHeader extends StatelessComponent {
     // If left/center/right slots are provided, use structured layout
     if (left != null || center != null || right != null) {
       return Header(
-        className:
-            '$stickyClasses $_variantClasses $borderClasses ${classes ?? ""}'
-                .trim(),
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('$stickyClasses $_variantClasses $borderClasses', className),
         children: [
           Div(
             className: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
@@ -83,8 +91,10 @@ class DHeader extends StatelessComponent {
 
     // Simple header with children
     return Header(
-      className: '$stickyClasses $_variantClasses $borderClasses ${classes ?? ""}'
-          .trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$stickyClasses $_variantClasses $borderClasses', className),
       children: [
         Div(
           className: 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8',
@@ -106,7 +116,10 @@ class DPageHeader extends StatelessComponent {
   final String? description;
   final Component? actions;
   final List<Component> children;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DPageHeader({
     super.key,
@@ -114,15 +127,19 @@ class DPageHeader extends StatelessComponent {
     this.description,
     this.actions,
     this.children = const [],
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className:
-          'pb-5 border-b border-gray-200 dark:border-gray-800 ${classes ?? ""}'
-              .trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('pb-5 border-b border-gray-200 dark:border-gray-800', className),
       children: [
         Div(
           className: 'sm:flex sm:items-center sm:justify-between',

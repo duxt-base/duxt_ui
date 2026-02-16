@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'icon.dart';
 
 /// Stepper orientation
@@ -42,7 +43,16 @@ class DStepper extends StatelessComponent {
   final ValueChanged<int>? onStepClick;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DStepper({
     super.key,
@@ -51,7 +61,10 @@ class DStepper extends StatelessComponent {
     this.orientation = DStepperOrientation.horizontal,
     this.clickable = false,
     this.onStepClick,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   DStepStatus _getStepStatus(int index) {
@@ -90,10 +103,12 @@ class DStepper extends StatelessComponent {
     final isHorizontal = orientation == DStepperOrientation.horizontal;
 
     return Div(
-      className: [
-        if (isHorizontal) 'flex items-center' else 'flex flex-col',
-        classes ?? '',
-      ].join(' '),
+      id: id,
+      className: twMerge(
+        isHorizontal ? 'flex items-center' : 'flex flex-col',
+        className),
+      attributes: attributes,
+      events: events,
       children: [
         for (var i = 0; i < steps.length; i++) ...[
           _buildStep(i, steps[i], isHorizontal),

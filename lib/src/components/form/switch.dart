@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Switch sizes
 enum DSwitchSize { xs, sm, md, lg, xl }
@@ -24,6 +25,10 @@ class DSwitch extends StatelessComponent {
   final String? error;
   final String? hint;
   final ValueChanged<bool>? onChange;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSwitch({
     super.key,
@@ -42,6 +47,10 @@ class DSwitch extends StatelessComponent {
     this.error,
     this.hint,
     this.onChange,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _trackSizeClasses {
@@ -132,12 +141,15 @@ class DSwitch extends StatelessComponent {
         Input(
           type: 'checkbox',
           name: name,
-          id: name != null ? 'switch-$name' : null,
+          id: id ?? (name != null ? 'switch-$name' : null),
           disabled: disabled,
-          className: 'sr-only peer',
-          attributes: {
+          className: twMerge('sr-only peer', className),
+          attributes: mergeAttributes({
             if (checked) 'checked': 'true',
             if (required) 'required': 'true',
+          }, attributes),
+          events: {
+            ...?events,
           },
         ),
         // Switch track

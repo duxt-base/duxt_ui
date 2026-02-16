@@ -89,6 +89,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  duxt_html:
+    dependency: "direct main"
+    description:
+      name: duxt_html
+      sha256: e4bdd85b83f4ec2090c2176edbb814c9c0a859857e36288e8b1dce962281f540
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  duxt_icons:
+    dependency: "direct main"
+    description:
+      name: duxt_icons
+      sha256: f7419e8fa9748a692d7b0db0831c5d1fbc9879f5d770115491a6d4a05a77df34
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   file:
     dependency: transitive
     description:

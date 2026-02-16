@@ -3,6 +3,7 @@ import 'package:jaspr/dom.dart' show svg, circle;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Progress animation types
 enum DProgressAnimation { none, pulse, indeterminate }
@@ -39,6 +40,18 @@ class DProgress extends StatelessComponent {
   /// Custom indicator (fill) color class
   final String? indicatorColor;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DProgress({
     super.key,
     this.value = 0,
@@ -51,6 +64,10 @@ class DProgress extends StatelessComponent {
     this.indeterminate = false,
     this.trackColor,
     this.indicatorColor,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   double get _percentage => (value / max * 100).clamp(0, 100);
@@ -125,7 +142,10 @@ class DProgress extends StatelessComponent {
 
     if (showLabel || label != null) {
       return Div(
-        className: 'w-full',
+        id: id,
+        className: twMerge('w-full', className),
+        attributes: attributes,
+        events: events,
         children: [
           if (showLabel || label != null)
             Div(
@@ -147,6 +167,16 @@ class DProgress extends StatelessComponent {
       );
     }
 
+    // Wrap with id/className/attributes/events when no label wrapper
+    if (id != null || className != null || attributes != null || events != null) {
+      return Div(
+        id: id,
+        className: twMerge('w-full', className),
+        attributes: attributes,
+        events: events,
+        children: [progressBar],
+      );
+    }
     return progressBar;
   }
 }
@@ -177,6 +207,18 @@ class DProgressCircular extends StatelessComponent {
   /// Whether the progress is indeterminate
   final bool indeterminate;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DProgressCircular({
     super.key,
     this.value = 0,
@@ -187,6 +229,10 @@ class DProgressCircular extends StatelessComponent {
     this.showLabel = true,
     this.label,
     this.indeterminate = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   double get _percentage => (value / max * 100).clamp(0, 100);
@@ -249,7 +295,10 @@ class DProgressCircular extends StatelessComponent {
     final dashOffset = circumference - (_percentage / 100 * circumference);
 
     return Div(
-      className: 'relative inline-flex items-center justify-center $_sizeClass',
+      id: id,
+      className: twMerge('relative inline-flex items-center justify-center $_sizeClass', className),
+      attributes: attributes,
+      events: events,
       children: [
         // SVG using Jaspr's native SVG components
         svg(
@@ -319,6 +368,18 @@ class DProgressSteps extends StatelessComponent {
   /// Size
   final DSize size;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DProgressSteps({
     super.key,
     required this.currentStep,
@@ -326,6 +387,10 @@ class DProgressSteps extends StatelessComponent {
     this.labels,
     this.color = DColor.primary,
     this.size = DSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _heightClass {
@@ -351,7 +416,10 @@ class DProgressSteps extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'w-full',
+      id: id,
+      className: twMerge('w-full', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Progress segments
         Div(

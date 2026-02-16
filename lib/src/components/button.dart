@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Button variants
 enum DButtonVariant { solid, outline, soft, subtle, ghost, link }
@@ -24,6 +25,10 @@ class DButton extends StatelessComponent {
   final bool square;
   final VoidCallback? onClick;
   final List<Component> children;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DButton({
     super.key,
@@ -39,6 +44,10 @@ class DButton extends StatelessComponent {
     this.square = false,
     this.onClick,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   // Backward compatibility
@@ -228,8 +237,11 @@ class DButton extends StatelessComponent {
       type: 'button',
       disabled: disabled || loading,
       onClick: disabled || loading ? null : onClick,
-      className:
-          '$_baseClasses $_sizeClasses $_colorClasses $blockClasses'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(
+          '$_baseClasses $_sizeClasses $_colorClasses $blockClasses', className),
       children: [
         if (loading)
           Span(
@@ -252,20 +264,32 @@ class DButtonGroup extends StatelessComponent {
   final List<Component> children;
   final DButtonSize size;
   final String orientation; // 'horizontal' | 'vertical'
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DButtonGroup({
     super.key,
     required this.children,
     this.size = DButtonSize.md,
     this.orientation = 'horizontal',
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     final isVertical = orientation == 'vertical';
     return Div(
-      className:
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(
           'inline-flex ${isVertical ? "flex-col" : ""} -space-${isVertical ? "y" : "x"}-px',
+          className),
       children: children,
     );
   }

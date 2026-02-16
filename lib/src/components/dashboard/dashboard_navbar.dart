@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardNavbar component
 ///
@@ -7,7 +8,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Typically placed at the top of a dashboard panel.
 class DDashboardNavbar extends StatelessComponent {
   /// Custom CSS classes to apply to the navbar
-  final String? classes;
+  final String? className;
 
   /// Content for the left side of the navbar
   final Component? leading;
@@ -30,9 +31,18 @@ class DDashboardNavbar extends StatelessComponent {
   /// Child components (rendered in the center if center is not provided)
   final List<Component> children;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardNavbar({
     super.key,
-    this.classes,
+    this.className,
     this.leading,
     this.title,
     this.center,
@@ -40,6 +50,9 @@ class DDashboardNavbar extends StatelessComponent {
     this.bordered = true,
     this.background = DNavbarBackground.white,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _backgroundClasses {
@@ -60,8 +73,12 @@ class DDashboardNavbar extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Nav(
-      className:
-          'h-16 flex items-center justify-between px-4 $_backgroundClasses $_borderClasses ${classes ?? ""}',
+      id: id,
+      className: twMerge(
+          'h-16 flex items-center justify-between px-4 $_backgroundClasses $_borderClasses',
+          className),
+      attributes: attributes,
+      events: events,
       children: [
         // Left section
         Div(className: 'flex items-center gap-4', children: [

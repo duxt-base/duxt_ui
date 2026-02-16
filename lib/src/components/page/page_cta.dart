@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageCTA component - Call-to-action section
 ///
@@ -15,7 +16,7 @@ class DPageCTA extends StatelessComponent {
   final List<Component> links;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Enable gradient background
   final bool gradient;
@@ -35,18 +36,30 @@ class DPageCTA extends StatelessComponent {
   /// Content alignment
   final DPageCTAAlign align;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPageCTA({
     super.key,
     this.title,
     this.description,
     this.links = const [],
-    this.classes,
+    this.className,
     this.gradient = false,
     this.gradientClasses,
     this.card = false,
     this.cardClasses,
     this.icon,
     this.align = DPageCTAAlign.center,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _alignClasses {
@@ -76,7 +89,10 @@ class DPageCTA extends StatelessComponent {
         gradient ? 'text-white/90' : 'text-gray-600 dark:text-gray-300';
 
     return Section(
-      className: 'py-12 sm:py-16 lg:py-20 ${classes ?? ""}',
+      id: id,
+      className: twMerge('py-12 sm:py-16 lg:py-20', className),
+      attributes: attributes,
+      events: events,
       children: [
         Div(
           className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',

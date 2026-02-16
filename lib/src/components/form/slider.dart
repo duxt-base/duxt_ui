@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Slider sizes with serialization support for @client
 enum DSliderSize {
@@ -34,6 +35,10 @@ class DSlider extends StatefulComponent {
   final bool disabled;
   final bool showValue;
   final String? hint;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSlider({
     super.key,
@@ -48,6 +53,10 @@ class DSlider extends StatefulComponent {
     this.disabled = false,
     this.showValue = false,
     this.hint,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -139,19 +148,21 @@ class _DSliderState extends State<DSlider> {
       Input(
         type: 'range',
         name: component.name,
+        id: component.id,
         value: _value.toString(),
         disabled: component.disabled,
-        className: baseClasses,
-        attributes: {
+        className: twMerge(baseClasses, component.className),
+        attributes: mergeAttributes({
           'min': component.min.toString(),
           'max': component.max.toString(),
           'step': component.step.toString(),
-        },
+        }, component.attributes),
         events: {
           'input': (event) {
             final target = event.target as dynamic;
             _handleInput(target.value as String);
           },
+          ...?component.events,
         },
       ),
       if (component.hint != null)

@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Tab orientation
 enum DTabsOrientation { horizontal, vertical }
@@ -30,15 +31,23 @@ class DTabs extends StatelessComponent {
   final List<DTabItem> items;
   final String? defaultValue;
   final DTabsOrientation orientation;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DTabs({
     super.key,
     required this.items,
     this.defaultValue,
     this.orientation = DTabsOrientation.horizontal,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
-  String get _tabsId => 'tabs_$hashCode';
+  String get _tabsId => id ?? 'tabs_$hashCode';
 
   @override
   Component build(BuildContext context) {
@@ -75,40 +84,52 @@ class DTabs extends StatelessComponent {
     ''';
 
     if (isVertical) {
-      return Div(id: _tabsId, className: 'flex gap-4', children: [
-        // Tab list (vertical)
+      return Div(
+        id: _tabsId,
+        attributes: attributes,
+        events: events,
+        className: twMerge('flex gap-4', className),
+        children: [
+          // Tab list (vertical)
+          Div(
+            className: 'flex flex-col gap-1',
+            attributes: {'role': 'tablist', 'aria-orientation': 'vertical'},
+            children: [
+              for (final item in items) _buildTab(item, isVertical, initialValue),
+            ],
+          ),
+          // Tab panels
+          Div(className: 'flex-1', children: [
+            for (final item in items) _buildPanel(item, initialValue),
+          ]),
+          // Inline script for interactivity
+          RawText('<script>$tabScript</script>'),
+        ],
+      );
+    }
+
+    return Div(
+      id: _tabsId,
+      attributes: attributes,
+      events: events,
+      className: className,
+      children: [
+        // Tab list (horizontal)
         Div(
-          className: 'flex flex-col gap-1',
-          attributes: {'role': 'tablist', 'aria-orientation': 'vertical'},
+          className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
+          attributes: {'role': 'tablist'},
           children: [
             for (final item in items) _buildTab(item, isVertical, initialValue),
           ],
         ),
         // Tab panels
-        Div(className: 'flex-1', children: [
+        Div(className: 'mt-4', children: [
           for (final item in items) _buildPanel(item, initialValue),
         ]),
         // Inline script for interactivity
         RawText('<script>$tabScript</script>'),
-      ]);
-    }
-
-    return Div(id: _tabsId, children: [
-      // Tab list (horizontal)
-      Div(
-        className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
-        attributes: {'role': 'tablist'},
-        children: [
-          for (final item in items) _buildTab(item, isVertical, initialValue),
-        ],
-      ),
-      // Tab panels
-      Div(className: 'mt-4', children: [
-        for (final item in items) _buildPanel(item, initialValue),
-      ]),
-      // Inline script for interactivity
-      RawText('<script>$tabScript</script>'),
-    ]);
+      ],
+    );
   }
 
   Component _buildTab(DTabItem item, bool isVertical, String activeValue) {
@@ -169,6 +190,10 @@ class DControlledTabs extends StatelessComponent {
   final DTabsOrientation orientation;
   final bool unmountOnHide;
   final ValueChanged<String>? onSelect;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DControlledTabs({
     super.key,
@@ -177,6 +202,10 @@ class DControlledTabs extends StatelessComponent {
     this.orientation = DTabsOrientation.horizontal,
     this.unmountOnHide = true,
     this.onSelect,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -184,14 +213,43 @@ class DControlledTabs extends StatelessComponent {
     final isVertical = orientation == DTabsOrientation.vertical;
 
     if (isVertical) {
-      return Div(className: 'flex gap-4', children: [
+      return Div(
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('flex gap-4', className),
+        children: [
+          Div(
+            className: 'flex flex-col gap-1',
+            children: [
+              for (final item in items) _buildTab(item, isVertical),
+            ],
+          ),
+          Div(className: 'flex-1', children: [
+            for (final item in items)
+              if (!unmountOnHide || item.value == selected)
+                Div(
+                  className: item.value == selected ? '' : 'hidden',
+                  children: [if (item.content != null) item.content!],
+                ),
+          ]),
+        ],
+      );
+    }
+
+    return Div(
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: className,
+      children: [
         Div(
-          className: 'flex flex-col gap-1',
+          className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
           children: [
             for (final item in items) _buildTab(item, isVertical),
           ],
         ),
-        Div(className: 'flex-1', children: [
+        Div(className: 'mt-4', children: [
           for (final item in items)
             if (!unmountOnHide || item.value == selected)
               Div(
@@ -199,25 +257,8 @@ class DControlledTabs extends StatelessComponent {
                 children: [if (item.content != null) item.content!],
               ),
         ]),
-      ]);
-    }
-
-    return Div(children: [
-      Div(
-        className: 'flex border-b border-gray-200 dark:border-gray-800 gap-1',
-        children: [
-          for (final item in items) _buildTab(item, isVertical),
-        ],
-      ),
-      Div(className: 'mt-4', children: [
-        for (final item in items)
-          if (!unmountOnHide || item.value == selected)
-            Div(
-              className: item.value == selected ? '' : 'hidden',
-              children: [if (item.content != null) item.content!],
-            ),
-      ]),
-    ]);
+      ],
+    );
   }
 
   Component _buildTab(DTabItem item, bool isVertical) {

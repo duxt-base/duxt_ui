@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Checkbox sizes
 enum DCheckboxSize { xs, sm, md, lg, xl }
@@ -21,6 +22,10 @@ class DCheckbox extends StatelessComponent {
   final String? error;
   final String? hint;
   final ValueChanged<bool>? onChange;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCheckbox({
     super.key,
@@ -36,6 +41,10 @@ class DCheckbox extends StatelessComponent {
     this.error,
     this.hint,
     this.onChange,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -91,14 +100,16 @@ class DCheckbox extends StatelessComponent {
           Input(
             type: 'checkbox',
             name: name,
+            id: id,
             disabled: disabled,
-            className:
+            className: twMerge(
                 '$_sizeClasses $_colorClasses rounded border-2 $borderColor bg-white dark:bg-zinc-900 cursor-pointer focus:ring-2 focus:ring-offset-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""}',
-            attributes: {
+                className),
+            attributes: mergeAttributes({
               if (checked) 'checked': 'true',
               if (indeterminate) 'indeterminate': 'true',
               if (required) 'required': 'true',
-            },
+            }, attributes),
             events: {
               'change': (event) {
                 if (onChange != null) {
@@ -106,6 +117,7 @@ class DCheckbox extends StatelessComponent {
                   onChange!(!checked);
                 }
               },
+              ...?events,
             },
           ),
         ]),

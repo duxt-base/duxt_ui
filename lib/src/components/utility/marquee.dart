@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Marquee direction
 enum DMarqueeDirection { left, right }
@@ -25,7 +26,16 @@ class DMarquee extends StatelessComponent {
   final String gap;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DMarquee({
     super.key,
@@ -34,7 +44,10 @@ class DMarquee extends StatelessComponent {
     this.duration = 20,
     this.pauseOnHover = true,
     this.gap = 'gap-8',
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _animationName {
@@ -46,7 +59,10 @@ class DMarquee extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'flex overflow-hidden ${classes ?? ""}',
+      id: id,
+      className: twMerge('flex overflow-hidden', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Style tag for keyframes animation
         StyleElement(
@@ -89,18 +105,33 @@ class DMarquee extends StatelessComponent {
 /// Helper component for marquee items
 class DMarqueeItem extends StatelessComponent {
   final Component child;
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DMarqueeItem({
     super.key,
     required this.child,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'flex-shrink-0 ${classes ?? ""}',
+      id: id,
+      className: twMerge('flex-shrink-0', className),
+      attributes: attributes,
+      events: events,
       children: [child],
     );
   }

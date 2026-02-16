@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardSearch component
 ///
@@ -8,7 +9,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Commonly used in dashboard navbars or toolbars.
 class DDashboardSearch extends StatefulComponent {
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
 
   /// Placeholder text
   final String placeholder;
@@ -43,9 +44,18 @@ class DDashboardSearch extends StatefulComponent {
   /// Whether to expand on focus
   final bool expandOnFocus;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardSearch({
     super.key,
-    this.classes,
+    this.className,
     this.placeholder = 'Search...',
     this.value,
     this.showShortcut = true,
@@ -57,6 +67,9 @@ class DDashboardSearch extends StatefulComponent {
     this.onFocus,
     this.icon,
     this.expandOnFocus = false,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -136,8 +149,12 @@ class _UDashboardSearchState extends State<DDashboardSearch> {
         : 'border-gray-200 dark:border-gray-700';
 
     return Div(
-      className:
-          'relative $_widthClasses transition-all duration-200 ${component.classes ?? ""}',
+      id: component.id,
+      className: twMerge(
+          'relative $_widthClasses transition-all duration-200',
+          component.className),
+      attributes: component.attributes,
+      events: component.events,
       children: [
         // Search icon
         Div(
@@ -208,7 +225,7 @@ enum DSearchSize { sm, md, lg }
 /// Compact search button that expands to full search
 class DDashboardSearchButton extends StatelessComponent {
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
 
   /// Click callback (typically opens a search modal)
   final VoidCallback? onClick;
@@ -216,11 +233,23 @@ class DDashboardSearchButton extends StatelessComponent {
   /// Keyboard shortcut to display
   final String shortcut;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardSearchButton({
     super.key,
-    this.classes,
+    this.className,
     this.onClick,
     this.shortcut = 'K',
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   Component get _searchIcon {
@@ -246,8 +275,12 @@ class DDashboardSearchButton extends StatelessComponent {
     return Button(
       type: 'button',
       onClick: onClick,
-      className:
-          'flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-900 text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 transition-colors ${classes ?? ""}',
+      id: id,
+      className: twMerge(
+          'flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-900 text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 transition-colors',
+          className),
+      attributes: attributes,
+      events: events,
       children: [
         _searchIcon,
         Span(className: 'text-sm', children: [Text('Search...')]),

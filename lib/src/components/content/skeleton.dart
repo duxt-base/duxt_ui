@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Skeleton variants matching common UI patterns
 enum DSkeletonVariant { text, circular, rectangular }
@@ -12,7 +13,10 @@ class DSkeleton extends StatelessComponent {
   final String? width;
   final String? height;
   final bool animate;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSkeleton({
     super.key,
@@ -20,7 +24,10 @@ class DSkeleton extends StatelessComponent {
     this.width,
     this.height,
     this.animate = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   /// Creates a text line skeleton
@@ -28,7 +35,10 @@ class DSkeleton extends StatelessComponent {
     super.key,
     this.width,
     this.animate = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   })  : variant = DSkeletonVariant.text,
         height = null;
 
@@ -37,7 +47,10 @@ class DSkeleton extends StatelessComponent {
     super.key,
     String? size,
     this.animate = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   })  : variant = DSkeletonVariant.circular,
         width = size ?? '2.5rem',
         height = size ?? '2.5rem';
@@ -48,7 +61,10 @@ class DSkeleton extends StatelessComponent {
     this.width,
     this.height,
     this.animate = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   }) : variant = DSkeletonVariant.rectangular;
 
   String get _baseClasses {
@@ -79,7 +95,10 @@ class DSkeleton extends StatelessComponent {
     final styleStr = styleMap.entries.map((e) => '${e.key}: ${e.value}').join('; ');
 
     return Div(
-      className: cx([_baseClasses, _shapeClasses, classes]),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([_baseClasses, _shapeClasses]), className),
       style: styleStr.isNotEmpty ? styleStr : null,
       children: [],
     );
@@ -91,18 +110,29 @@ class DSkeletonGroup extends StatelessComponent {
   final int lines;
   final String? spacing;
   final bool animate;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSkeletonGroup({
     super.key,
     this.lines = 3,
     this.spacing,
     this.animate = true,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'space-y-${spacing ?? "3"}',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('space-y-${spacing ?? "3"}', className),
       children: [
         for (int i = 0; i < lines; i++)
           DSkeleton.text(
@@ -121,6 +151,10 @@ class DSkeletonCard extends StatelessComponent {
   final bool showAvatar;
   final int textLines;
   final bool animate;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSkeletonCard({
     super.key,
@@ -128,12 +162,19 @@ class DSkeletonCard extends StatelessComponent {
     this.showAvatar = false,
     this.textLines = 3,
     this.animate = true,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden', className),
       children: [
         // Image placeholder
         if (showImage)
@@ -141,7 +182,7 @@ class DSkeletonCard extends StatelessComponent {
             width: '100%',
             height: '12rem',
             animate: animate,
-            classes: 'rounded-none',
+            className: 'rounded-none',
           ),
         // Content
         Div(

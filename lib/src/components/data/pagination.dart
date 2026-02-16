@@ -1,8 +1,9 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Pagination variants
 enum DPaginationVariant { solid, outline, soft, subtle, ghost }
@@ -39,6 +40,18 @@ class DPagination extends StatelessComponent {
   /// Whether pagination is disabled
   final bool disabled;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   /// Custom previous button text/icon
   final String prevLabel;
 
@@ -63,6 +76,10 @@ class DPagination extends StatelessComponent {
     this.color = DColor.primary,
     this.size = DSize.sm,
     this.disabled = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
     this.prevLabel = 'i-lucide-chevron-left',
     this.nextLabel = 'i-lucide-chevron-right',
     this.firstLabel = 'i-lucide-chevrons-left',
@@ -205,7 +222,7 @@ class DPagination extends StatelessComponent {
             if (currentPage <= 1) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage <= 1 ? {'disabled': 'true'} : null,
-          events: events(onClick: () => _handlePageChange(1)),
+          events: dom.events(onClick: () => _handlePageChange(1)),
           children: [I(className: '$firstLabel $_iconSize', children: [])],
         ),
       );
@@ -221,7 +238,7 @@ class DPagination extends StatelessComponent {
             if (currentPage <= 1) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage <= 1 ? {'disabled': 'true'} : null,
-          events: events(onClick: () => _handlePageChange(currentPage - 1)),
+          events: dom.events(onClick: () => _handlePageChange(currentPage - 1)),
           children: [I(className: '$prevLabel $_iconSize', children: [])],
         ),
       );
@@ -244,7 +261,7 @@ class DPagination extends StatelessComponent {
           Button(
             type: 'button',
             className: _buttonClasses(isActive),
-            events: events(onClick: () => _handlePageChange(page)),
+            events: dom.events(onClick: () => _handlePageChange(page)),
             children: [Text('$page')],
           ),
         );
@@ -261,7 +278,7 @@ class DPagination extends StatelessComponent {
             if (currentPage >= totalPages) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage >= totalPages ? {'disabled': 'true'} : null,
-          events: events(onClick: () => _handlePageChange(currentPage + 1)),
+          events: dom.events(onClick: () => _handlePageChange(currentPage + 1)),
           children: [I(className: '$nextLabel $_iconSize', children: [])],
         ),
       );
@@ -277,14 +294,17 @@ class DPagination extends StatelessComponent {
             if (currentPage >= totalPages) 'opacity-50 cursor-not-allowed',
           ]),
           attributes: currentPage >= totalPages ? {'disabled': 'true'} : null,
-          events: events(onClick: () => _handlePageChange(totalPages)),
+          events: dom.events(onClick: () => _handlePageChange(totalPages)),
           children: [I(className: '$lastLabel $_iconSize', children: [])],
         ),
       );
     }
 
     return Nav(
-      className: 'inline-flex items-center gap-1',
+      id: id,
+      className: twMerge('inline-flex items-center gap-1', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         Ul(className: 'flex items-center gap-1', children: [
           for (final child in children) Li(children: [child]),
@@ -311,6 +331,18 @@ class DPaginationSimple extends StatelessComponent {
   /// Whether pagination is disabled
   final bool disabled;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPaginationSimple({
     super.key,
     required this.currentPage,
@@ -318,12 +350,19 @@ class DPaginationSimple extends StatelessComponent {
     this.onPageChange,
     this.size = DSize.sm,
     this.disabled = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'inline-flex items-center gap-2',
+      id: id,
+      className: twMerge('inline-flex items-center gap-2', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         Button(
           type: 'button',
@@ -336,7 +375,7 @@ class DPaginationSimple extends StatelessComponent {
           ]),
           attributes:
               currentPage <= 1 || disabled ? {'disabled': 'true'} : null,
-          events: events(onClick: () {
+          events: dom.events(onClick: () {
             if (!disabled && onPageChange != null && currentPage > 1) {
               onPageChange!(currentPage - 1);
             }
@@ -360,7 +399,7 @@ class DPaginationSimple extends StatelessComponent {
           attributes: currentPage >= totalPages || disabled
               ? {'disabled': 'true'}
               : null,
-          events: events(onClick: () {
+          events: dom.events(onClick: () {
             if (!disabled && onPageChange != null && currentPage < totalPages) {
               onPageChange!(currentPage + 1);
             }

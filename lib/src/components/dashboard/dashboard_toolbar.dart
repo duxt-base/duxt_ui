@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardToolbar component
 ///
@@ -7,7 +8,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Typically used for page-level actions, filters, or secondary navigation.
 class DDashboardToolbar extends StatelessComponent {
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
 
   /// Content for the left side
   final Component? leading;
@@ -27,15 +28,27 @@ class DDashboardToolbar extends StatelessComponent {
   /// Child components (rendered in the center)
   final List<Component> children;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardToolbar({
     super.key,
-    this.classes,
+    this.className,
     this.leading,
     this.trailing,
     this.bordered = true,
     this.background = DToolbarBackground.white,
     this.height = DToolbarHeight.md,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _heightClasses {
@@ -67,7 +80,10 @@ class DDashboardToolbar extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: '$_heightClasses flex items-center gap-2 px-4 $_backgroundClasses $_borderClasses ${classes ?? ""}',
+      id: id,
+      className: twMerge('$_heightClasses flex items-center gap-2 px-4 $_backgroundClasses $_borderClasses', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Left section
         if (leading != null)
@@ -91,12 +107,20 @@ enum DToolbarHeight { sm, md, lg }
 
 /// Toolbar separator
 class DToolbarSeparator extends StatelessComponent {
-  const DToolbarSeparator({super.key});
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
+
+  const DToolbarSeparator({super.key, this.className, this.id, this.attributes, this.events});
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'w-px h-6 bg-gray-200 dark:bg-zinc-700',
+      id: id,
+      className: twMerge('w-px h-6 bg-gray-200 dark:bg-zinc-700', className),
+      attributes: attributes,
+      events: events,
       children: [],
     );
   }
@@ -104,10 +128,15 @@ class DToolbarSeparator extends StatelessComponent {
 
 /// Toolbar spacer (pushes items to opposite sides)
 class DToolbarSpacer extends StatelessComponent {
-  const DToolbarSpacer({super.key});
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
+
+  const DToolbarSpacer({super.key, this.className, this.id, this.attributes, this.events});
 
   @override
   Component build(BuildContext context) {
-    return Div(className: 'flex-1', children: []);
+    return Div(id: id, className: twMerge('flex-1', className), attributes: attributes, events: events, children: []);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
+import '../../theme/tw_merge.dart';
 import '../spinner.dart';
 
 /// Submit button size
@@ -15,6 +16,10 @@ class DChatPromptSubmit extends StatelessComponent {
   final VoidCallback? onSubmit;
   final Component? icon;
   final String? bgColor;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatPromptSubmit({
     super.key,
@@ -25,6 +30,10 @@ class DChatPromptSubmit extends StatelessComponent {
     this.onSubmit,
     this.icon,
     this.bgColor,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -83,15 +92,20 @@ class DChatPromptSubmit extends StatelessComponent {
       className: _iconSize,
     );
 
+    final baseAttributes = {
+      if (tooltip != null) 'title': tooltip!,
+      'aria-label': tooltip ?? 'Send message',
+    };
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return Button(
       type: 'button',
+      id: id,
       disabled: isDisabled,
       onClick: isDisabled ? null : onSubmit,
-      className: '$_sizeClasses rounded-lg $colorClasses text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
-      attributes: {
-        if (tooltip != null) 'title': tooltip!,
-        'aria-label': tooltip ?? 'Send message',
-      },
+      events: events,
+      className: twMerge('$_sizeClasses rounded-lg $colorClasses text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed', className),
+      attributes: mergedAttributes,
       children: [
         if (loading)
           DSpinner(size: _spinnerSize, color: 'border-white')

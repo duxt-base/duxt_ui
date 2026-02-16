@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Banner color variants
 enum DBannerColor { primary, secondary, success, info, warning, error }
@@ -24,6 +25,10 @@ class DBanner extends StatelessComponent {
   final bool closable;
   final VoidCallback? onClose;
   final bool sticky;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBanner({
     super.key,
@@ -37,6 +42,10 @@ class DBanner extends StatelessComponent {
     this.closable = true,
     this.onClose,
     this.sticky = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _colorName {
@@ -105,12 +114,15 @@ class DBanner extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'w-full',
         'px-4 py-3',
         _variantClasses,
         _positionClasses,
-      ]),
+      ]), className),
       children: [
         Div(
           className: 'flex items-center justify-center gap-4 max-w-7xl mx-auto',
@@ -176,12 +188,20 @@ class DBannerAction extends StatelessComponent {
   final String label;
   final VoidCallback? onClick;
   final String? href;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBannerAction({
     super.key,
     required this.label,
     this.onClick,
     this.href,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -189,14 +209,20 @@ class DBannerAction extends StatelessComponent {
     if (href != null) {
       return A(
         href: href!,
-        className: 'whitespace-nowrap',
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('whitespace-nowrap', className),
         children: [Text(label)],
       );
     }
     return Button(
       type: 'button',
+      id: id,
+      attributes: attributes,
+      events: events,
       onClick: onClick,
-      className: 'whitespace-nowrap',
+      className: twMerge('whitespace-nowrap', className),
       children: [Text(label)],
     );
   }
@@ -208,6 +234,10 @@ class DBannerAnnouncement extends StatelessComponent {
   final String? linkText;
   final String? linkHref;
   final VoidCallback? onClose;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBannerAnnouncement({
     super.key,
@@ -215,6 +245,10 @@ class DBannerAnnouncement extends StatelessComponent {
     this.linkText,
     this.linkHref,
     this.onClose,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -225,6 +259,10 @@ class DBannerAnnouncement extends StatelessComponent {
       variant: DBannerVariant.solid,
       closable: onClose != null,
       onClose: onClose,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
       actions: linkText != null
           ? [DBannerAction(label: linkText!, href: linkHref)]
           : [],
@@ -236,11 +274,19 @@ class DBannerAnnouncement extends StatelessComponent {
 class DBannerMaintenance extends StatelessComponent {
   final String? message;
   final VoidCallback? onClose;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBannerMaintenance({
     super.key,
     this.message,
     this.onClose,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -254,6 +300,10 @@ class DBannerMaintenance extends StatelessComponent {
       variant: DBannerVariant.soft,
       closable: onClose != null,
       onClose: onClose,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
@@ -263,12 +313,20 @@ class DBannerCookieConsent extends StatelessComponent {
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
   final String? privacyPolicyHref;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DBannerCookieConsent({
     super.key,
     this.onAccept,
     this.onDecline,
     this.privacyPolicyHref,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -280,6 +338,10 @@ class DBannerCookieConsent extends StatelessComponent {
       position: DBannerPosition.bottom,
       sticky: true,
       closable: false,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
       actions: [
         if (privacyPolicyHref != null)
           DBannerAction(label: 'Learn more', href: privacyPolicyHref),

@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Context menu item
 class DContextMenuItem {
@@ -38,12 +39,28 @@ class DContextMenu extends StatefulComponent {
   final VoidCallback? onOpen;
   final VoidCallback? onClose;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DContextMenu({
     super.key,
     required this.child,
     required this.items,
     this.onOpen,
     this.onClose,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -144,7 +161,10 @@ class _UContextMenuState extends State<DContextMenu> {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'relative inline-block',
+      id: component.id,
+      className: twMerge('relative inline-block', component.className),
+      attributes: component.attributes,
+      events: component.events,
       children: [
         // Child with context menu event
         Div(
@@ -182,6 +202,18 @@ class DContextMenuControlled extends StatelessComponent {
   final List<DContextMenuItem> items;
   final VoidCallback? onClose;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DContextMenuControlled({
     super.key,
     required this.open,
@@ -189,6 +221,10 @@ class DContextMenuControlled extends StatelessComponent {
     required this.y,
     required this.items,
     this.onClose,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   Component _buildMenuItem(DContextMenuItem item, VoidCallback close) {
@@ -233,6 +269,10 @@ class DContextMenuControlled extends StatelessComponent {
     if (!open) return Div(children: []);
 
     return Div(
+      id: id,
+      className: className,
+      attributes: attributes,
+      events: this.events,
       children: [
         // Invisible overlay to catch clicks outside
         Div(

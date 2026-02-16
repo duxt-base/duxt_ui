@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Link color variants
 enum DLinkColor { primary, neutral, inherit }
@@ -16,7 +17,10 @@ class DLink extends StatelessComponent {
   final Component? icon;
   final Component? trailingIcon;
   final List<Component> children;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DLink({
     super.key,
@@ -30,7 +34,10 @@ class DLink extends StatelessComponent {
     this.icon,
     this.trailingIcon,
     this.children = const [],
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _colorClasses {
@@ -58,13 +65,18 @@ class DLink extends StatelessComponent {
     final disabledClasses =
         disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
 
+    final baseAttributes = external ? {'rel': 'noopener noreferrer'} : <String, String>{};
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return A(
       href: href,
+      id: id,
       target: external ? Target.blank : null,
-      attributes: external ? {'rel': 'noopener noreferrer'} : null,
-      className:
-          '$baseClasses $_colorClasses $underlineClasses $disabledClasses ${classes ?? ""}'
-              .trim(),
+      attributes: mergedAttributes.isNotEmpty ? mergedAttributes : null,
+      events: events,
+      className: twMerge(
+          '$baseClasses $_colorClasses $underlineClasses $disabledClasses',
+          className),
       children: [
         if (icon != null) icon!,
         if (label != null) Text(label!),
@@ -87,7 +99,10 @@ class DNavLink extends StatelessComponent {
   final bool active;
   final bool exact;
   final Component? icon;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DNavLink({
     super.key,
@@ -96,7 +111,10 @@ class DNavLink extends StatelessComponent {
     this.active = false,
     this.exact = false,
     this.icon,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -109,7 +127,10 @@ class DNavLink extends StatelessComponent {
 
     return A(
       href: href,
-      className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$baseClasses $stateClasses', className),
       children: [
         if (icon != null) icon!,
         Text(label),
@@ -124,7 +145,10 @@ class DSocialLink extends StatelessComponent {
   final Component icon;
   final String? label;
   final String? ariaLabel;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSocialLink({
     super.key,
@@ -132,21 +156,29 @@ class DSocialLink extends StatelessComponent {
     required this.icon,
     this.label,
     this.ariaLabel,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
+    final baseAttributes = {
+      'rel': 'noopener noreferrer',
+      if (ariaLabel != null) 'aria-label': ariaLabel!,
+    };
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return A(
       href: href,
+      id: id,
       target: Target.blank,
-      className:
-          'inline-flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors ${classes ?? ""}'
-              .trim(),
-      attributes: {
-        'rel': 'noopener noreferrer',
-        if (ariaLabel != null) 'aria-label': ariaLabel!,
-      },
+      events: events,
+      className: twMerge(
+          'inline-flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors',
+          className),
+      attributes: mergedAttributes,
       children: [
         icon,
         if (label != null) Span(className: 'sr-only', children: [Text(label!)]),

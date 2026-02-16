@@ -1,8 +1,9 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Chip variants
 enum DChipVariant { solid, soft, outline, subtle }
@@ -40,6 +41,18 @@ class DChip extends StatelessComponent {
   /// Whether to show a dot indicator
   final bool showDot;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DChip({
     super.key,
     required this.label,
@@ -52,6 +65,10 @@ class DChip extends StatelessComponent {
     this.onTrailingClick,
     this.disabled = false,
     this.showDot = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -160,13 +177,15 @@ class DChip extends StatelessComponent {
     if (onClick != null && !disabled) {
       return Button(
         type: 'button',
-        className: baseClasses,
-        events: events(onClick: () => onClick!()),
+        id: id,
+        className: twMerge(baseClasses, className),
+        attributes: attributes,
+        events: this.events ?? dom.events(onClick: () => onClick!()),
         children: children,
       );
     }
 
-    return Span(className: baseClasses, children: children);
+    return Span(id: id, className: twMerge(baseClasses, className), attributes: attributes, events: this.events, children: children);
   }
 }
 
@@ -181,21 +200,40 @@ class DChipGroup extends StatelessComponent {
   /// Whether chips should wrap
   final bool wrap;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DChipGroup({
     super.key,
     required this.chips,
     this.gap = 'gap-1.5',
     this.wrap = true,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      className: twMerge(cx([
         'inline-flex items-center',
         gap,
         if (wrap) 'flex-wrap',
-      ]),
+      ]), className),
+      attributes: attributes,
+      events: events,
       children: chips,
     );
   }

@@ -3,6 +3,7 @@ import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Pin input sizes
 enum DPinInputSize { xs, sm, md, lg, xl }
@@ -27,6 +28,10 @@ class DPinInput extends StatelessComponent {
   final String? hint;
   final String? error;
   final String? name;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DPinInput({
     super.key,
@@ -43,6 +48,10 @@ class DPinInput extends StatelessComponent {
     this.hint,
     this.error,
     this.name,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -128,8 +137,10 @@ class DPinInput extends StatelessComponent {
                 Span(className: 'text-red-500 ml-1', children: [Text('*')]),
             ]),
       Div(
-        className: 'flex items-center $_gapClasses',
-        attributes: {'data-pin-input': 'true'},
+        id: id,
+        className: twMerge('flex items-center $_gapClasses', className),
+        attributes: mergeAttributes({'data-pin-input': 'true'}, attributes),
+        events: events,
         children: [
           for (var i = 0; i < length; i++)
             Input(

@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Modal sizes
 enum DModalSize { xs, sm, md, lg, xl, xxl, xxxl, xxxxl, xxxxxl, full }
@@ -18,6 +19,10 @@ class DModal extends StatelessComponent {
   final bool closeOnOverlay;
   final bool fullscreen;
   final List<Component> children;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DModal({
     super.key,
@@ -30,6 +35,10 @@ class DModal extends StatelessComponent {
     this.closeOnOverlay = true,
     this.fullscreen = false,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -63,8 +72,10 @@ class DModal extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'inline-block',
-      attributes: {'data-modal': 'true'},
+      id: id,
+      attributes: mergeAttributes({'data-modal': 'true'}, attributes),
+      events: events,
+      className: twMerge('inline-block', className),
       children: [
         // Trigger
         Div(
@@ -198,6 +209,10 @@ class DModalControlled extends StatelessComponent {
   final bool fullscreen;
   final VoidCallback? onClose;
   final List<Component> children;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DModalControlled({
     super.key,
@@ -213,6 +228,10 @@ class DModalControlled extends StatelessComponent {
     this.fullscreen = false,
     this.onClose,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -254,7 +273,10 @@ class DModalControlled extends StatelessComponent {
     if (!open) return Div(children: []);
 
     return Div(
-      className: 'fixed inset-0 z-50 overflow-y-auto',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('fixed inset-0 z-50 overflow-y-auto', className),
       children: [
         // Backdrop
         Div(

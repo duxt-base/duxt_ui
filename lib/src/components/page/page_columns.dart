@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageColumns component - Multi-column layout
 ///
@@ -15,7 +16,7 @@ class DPageColumns extends StatelessComponent {
   final String gap;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Whether columns should stack on mobile
   final bool stackOnMobile;
@@ -23,14 +24,26 @@ class DPageColumns extends StatelessComponent {
   /// Reverse order on mobile
   final bool reverseOnMobile;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPageColumns({
     super.key,
     this.children = const [],
     this.columns = 2,
     this.gap = '8',
-    this.classes,
+    this.className,
     this.stackOnMobile = true,
     this.reverseOnMobile = false,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _columnsClasses {
@@ -54,7 +67,10 @@ class DPageColumns extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'grid $_columnsClasses gap-$gap ${reverseOnMobile ? "flex-col-reverse lg:flex-row" : ""} ${classes ?? ""}',
+      id: id,
+      className: twMerge('grid $_columnsClasses gap-$gap ${reverseOnMobile ? "flex-col-reverse lg:flex-row" : ""}', className),
+      attributes: attributes,
+      events: events,
       children: children,
     );
   }
@@ -69,7 +85,7 @@ class DPageColumn extends StatelessComponent {
   final int? span;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Whether content should be sticky
   final bool sticky;
@@ -77,13 +93,25 @@ class DPageColumn extends StatelessComponent {
   /// Top offset for sticky positioning
   final String stickyTop;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPageColumn({
     super.key,
     this.children = const [],
     this.span,
-    this.classes,
+    this.className,
     this.sticky = false,
     this.stickyTop = '16',
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -92,7 +120,10 @@ class DPageColumn extends StatelessComponent {
     final stickyClasses = sticky ? 'lg:sticky lg:top-$stickyTop' : '';
 
     return Div(
-      className: '$spanClasses $stickyClasses ${classes ?? ""}',
+      id: id,
+      className: twMerge('$spanClasses $stickyClasses', className),
+      attributes: attributes,
+      events: events,
       children: children,
     );
   }

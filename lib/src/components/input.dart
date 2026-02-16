@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Input sizes
 enum DInputSize { xs, sm, md, lg, xl }
@@ -29,6 +30,10 @@ class DInput extends StatelessComponent {
   final Component? leadingIcon;
   final Component? trailingIcon;
   final ValueChanged<String>? onInput;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DInput({
     super.key,
@@ -49,6 +54,10 @@ class DInput extends StatelessComponent {
     this.leadingIcon,
     this.trailingIcon,
     this.onInput,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _baseClasses =>
@@ -162,12 +171,15 @@ class DInput extends StatelessComponent {
           disabled: disabled || loading,
           onInput: onInput,
           placeholder: placeholder,
-          className:
+          id: id,
+          className: twMerge(
               '$_baseClasses $_sizeClasses $_variantClasses ${hasLeading ? _leadingPadding : ""} ${hasTrailing ? _trailingPadding : ""}'
                   .trim(),
-          attributes: {
+              className),
+          attributes: mergeAttributes({
             if (readonly) 'readonly': 'true',
-          },
+          }, attributes),
+          events: events,
         ),
         if (hasTrailing)
           Div(
@@ -209,6 +221,10 @@ class DTextarea extends StatelessComponent {
   final bool required;
   final bool autoresize;
   final ValueChanged<String>? onInput;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DTextarea({
     super.key,
@@ -225,6 +241,10 @@ class DTextarea extends StatelessComponent {
     this.required = false,
     this.autoresize = false,
     this.onInput,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _baseClasses =>
@@ -282,10 +302,13 @@ class DTextarea extends StatelessComponent {
       Textarea(
         name: name,
         onInput: onInput,
-        className: '$_baseClasses $_sizeClasses $_variantClasses',
+        id: id,
+        className: twMerge('$_baseClasses $_sizeClasses $_variantClasses', className),
         placeholder: placeholder,
         rows: rows,
         disabled: disabled,
+        attributes: attributes,
+        events: events,
         children: [if (value != null) Text(value!)],
       ),
       if (hasError)

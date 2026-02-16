@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 import '../avatar.dart';
 
 // Re-export DAvatar for convenience (hide DAvatarGroup to avoid conflict)
@@ -31,6 +32,18 @@ class DAvatarGroupEnhanced extends StatelessComponent {
   /// Whether to reverse the stacking order (last avatar on top)
   final bool reverse;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DAvatarGroupEnhanced({
     super.key,
     required this.avatars,
@@ -40,6 +53,10 @@ class DAvatarGroupEnhanced extends StatelessComponent {
     this.ringColor = 'ring-white dark:ring-gray-900',
     this.ringWidth = 'ring-2',
     this.reverse = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -88,7 +105,10 @@ class DAvatarGroupEnhanced extends StatelessComponent {
     }
 
     return Div(
-      className: 'inline-flex items-center $spacing',
+      id: id,
+      className: twMerge('inline-flex items-center $spacing', className),
+      attributes: attributes,
+      events: events,
       children: avatarWidgets,
     );
   }
@@ -105,11 +125,27 @@ class DAvatarStack extends StatelessComponent {
   /// Size of avatars
   final DAvatarSize size;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DAvatarStack({
     super.key,
     required this.avatars,
     this.max = 4,
     this.size = DAvatarSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -135,7 +171,10 @@ class DAvatarStack extends StatelessComponent {
     final remaining = avatars.length - max;
 
     return Div(
-      className: 'inline-flex flex-col -space-y-2',
+      id: id,
+      className: twMerge('inline-flex flex-col -space-y-2', className),
+      attributes: attributes,
+      events: events,
       children: [
         for (final avatar in displayAvatars)
           Div(

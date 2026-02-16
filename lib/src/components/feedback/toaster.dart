@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 import 'toast.dart';
 
 /// Toast position on screen
@@ -19,12 +20,20 @@ class DToaster extends StatefulComponent {
   final DToasterPosition position;
   final List<ToastData> toasts;
   final ValueChanged<String>? onToastClose;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DToaster({
     super.key,
     this.position = DToasterPosition.topRight,
     this.toasts = const [],
     this.onToastClose,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -67,14 +76,17 @@ class _UToasterState extends State<DToaster> {
     if (component.toasts.isEmpty) return Div(children: []);
 
     return Div(
-      className: cx([
+      id: component.id,
+      attributes: component.attributes,
+      events: component.events,
+      className: twMerge(cx([
         'fixed z-50',
         _positionClasses,
         'flex',
         _stackDirection,
         'gap-3',
         'pointer-events-none',
-      ]),
+      ]), component.className),
       children: [
         for (final toast in component.toasts)
           Div(
@@ -203,11 +215,19 @@ class ToastManager {
 class DToasterProvider extends StatefulComponent {
   final Component child;
   final DToasterPosition position;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DToasterProvider({
     super.key,
     required this.child,
     this.position = DToasterPosition.topRight,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -239,6 +259,10 @@ class _UToasterProviderState extends State<DToasterProvider> {
         position: component.position,
         toasts: ToastManager.toasts,
         onToastClose: (id) => ToastManager.dismiss(id),
+        className: component.className,
+        id: component.id,
+        attributes: component.attributes,
+        events: component.events,
       ),
     ]);
   }

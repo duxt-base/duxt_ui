@@ -113,7 +113,7 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
             DIcon(
               name: DIconNames.chevronDown,
               size: DIconSize.xs,
-              classes: [
+              className: [
                 'transition-transform',
                 if (_isOpen) 'rotate-180',
               ].join(' '),

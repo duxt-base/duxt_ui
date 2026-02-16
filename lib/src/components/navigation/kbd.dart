@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Keyboard key size variants
 enum DKbdSize { xs, sm, md }
@@ -9,14 +10,20 @@ class DKbd extends StatelessComponent {
   final String? value;
   final List<String>? keys;
   final DKbdSize size;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DKbd({
     super.key,
     this.value,
     this.keys,
     this.size = DKbdSize.sm,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   }) : assert(value != null || keys != null,
             'Either value or keys must be provided');
 
@@ -59,14 +66,20 @@ class DKbd extends StatelessComponent {
       }
 
       return Span(
-        className: 'inline-flex items-center gap-0.5 ${classes ?? ""}'.trim(),
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('inline-flex items-center gap-0.5', className),
         children: keyComponents,
       );
     }
 
     // Single key
     return Kbd(
-      className: '$baseClasses $_sizeClasses ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$baseClasses $_sizeClasses', className),
       children: [Text(_formatKey(value!))],
     );
   }
@@ -107,13 +120,19 @@ class DKbd extends StatelessComponent {
 class DShortcut extends StatelessComponent {
   final List<String> keys;
   final DKbdSize size;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DShortcut({
     super.key,
     required this.keys,
     this.size = DKbdSize.sm,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -121,7 +140,10 @@ class DShortcut extends StatelessComponent {
     return DKbd(
       keys: keys,
       size: size,
-      classes: classes,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
@@ -132,7 +154,10 @@ class DPlatformShortcut extends StatelessComponent {
   final bool withShift;
   final bool withAlt;
   final DKbdSize size;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DPlatformShortcut({
     super.key,
@@ -140,7 +165,10 @@ class DPlatformShortcut extends StatelessComponent {
     this.withShift = false,
     this.withAlt = false,
     this.size = DKbdSize.sm,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -157,7 +185,10 @@ class DPlatformShortcut extends StatelessComponent {
     return DKbd(
       keys: keys,
       size: size,
-      classes: classes,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }

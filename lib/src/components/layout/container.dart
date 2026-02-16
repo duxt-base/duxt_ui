@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Container max-width variants
 enum DContainerSize { xs, sm, md, lg, xl, xxl, full }
@@ -9,14 +10,20 @@ class DContainer extends StatelessComponent {
   final List<Component> children;
   final DContainerSize size;
   final bool padded;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DContainer({
     super.key,
     this.children = const [],
     this.size = DContainerSize.xl,
     this.padded = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _maxWidthClasses {
@@ -45,7 +52,10 @@ class DContainer extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'mx-auto $_maxWidthClasses $_paddingClasses ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('mx-auto $_maxWidthClasses $_paddingClasses', className),
       children: children,
     );
   }

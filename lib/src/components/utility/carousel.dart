@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'icon.dart';
 
 /// Carousel item data
@@ -34,7 +35,16 @@ class DCarousel extends StatelessComponent {
   final int initialIndex;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DCarousel({
     super.key,
@@ -42,7 +52,10 @@ class DCarousel extends StatelessComponent {
     this.showArrows = true,
     this.showDots = true,
     this.initialIndex = 0,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _carouselId => 'carousel_$hashCode';
@@ -54,9 +67,10 @@ class DCarousel extends StatelessComponent {
     }
 
     return Div(
-      id: _carouselId,
-      className: 'relative overflow-hidden group ${classes ?? ""}',
-      attributes: {'data-carousel': 'true', 'data-index': '$initialIndex'},
+      id: id ?? _carouselId,
+      className: twMerge('relative overflow-hidden group', className),
+      attributes: mergeAttributes({'data-carousel': 'true', 'data-index': '$initialIndex'}, attributes),
+      events: events,
       children: [
         // Slides container
         Div(

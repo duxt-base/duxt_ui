@@ -3,6 +3,7 @@ import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI Empty component - Empty state display
 class DEmpty extends StatelessComponent {
@@ -14,6 +15,10 @@ class DEmpty extends StatelessComponent {
   final List<Component> children;
   final DSize size;
   final bool padded;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DEmpty({
     super.key,
@@ -25,6 +30,10 @@ class DEmpty extends StatelessComponent {
     this.children = const [],
     this.size = DSize.md,
     this.padded = true,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _iconSizeClasses {
@@ -91,10 +100,13 @@ class DEmpty extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'flex flex-col items-center justify-center text-center',
         _paddingClasses,
-      ]),
+      ]), className),
       children: [
         // Icon
         if (iconComponent != null)
@@ -158,8 +170,19 @@ class DEmpty extends StatelessComponent {
 /// Preset empty state for no data
 class DEmptyNoData extends StatelessComponent {
   final Component? action;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
-  const DEmptyNoData({super.key, this.action});
+  const DEmptyNoData({
+    super.key,
+    this.action,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -168,6 +191,10 @@ class DEmptyNoData extends StatelessComponent {
       title: 'No data',
       description: 'There is no data to display at the moment.',
       action: action,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
@@ -176,8 +203,20 @@ class DEmptyNoData extends StatelessComponent {
 class DEmptyNoResults extends StatelessComponent {
   final String? searchTerm;
   final Component? action;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
-  const DEmptyNoResults({super.key, this.searchTerm, this.action});
+  const DEmptyNoResults({
+    super.key,
+    this.searchTerm,
+    this.action,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -188,6 +227,10 @@ class DEmptyNoResults extends StatelessComponent {
           ? 'No results found for "$searchTerm". Try a different search term.'
           : 'No results match your search criteria.',
       action: action,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }

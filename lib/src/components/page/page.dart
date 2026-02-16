@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI Page component - Main page wrapper with optional aside
 ///
@@ -16,14 +17,26 @@ class DPage extends StatelessComponent {
   final Component? right;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPage({
     super.key,
     this.children = const [],
     this.left,
     this.right,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -33,14 +46,20 @@ class DPage extends StatelessComponent {
     if (!hasAside) {
       // No aside - simple wrapper
       return Div(
-        className: 'relative ${classes ?? ""}',
+        id: id,
+        className: twMerge('relative', className),
+        attributes: attributes,
+        events: events,
         children: children,
       );
     }
 
     // Grid layout with aside
     return Div(
-      className: 'grid lg:grid-cols-10 lg:gap-8 ${classes ?? ""}',
+      id: id,
+      className: twMerge('grid lg:grid-cols-10 lg:gap-8', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Left aside (if provided)
         if (left != null)

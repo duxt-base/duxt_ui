@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Avatar sizes
 enum DAvatarSize { xxxs, xxs, xs, sm, md, lg, xl, xxl, xxxl }
@@ -17,6 +18,10 @@ class DAvatar extends StatelessComponent {
   final bool? chipColor;
   final String? chipText;
   final DAvatarChipPosition chipPosition;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DAvatar({
     super.key,
@@ -28,6 +33,10 @@ class DAvatar extends StatelessComponent {
     this.chipColor,
     this.chipText,
     this.chipPosition = DAvatarChipPosition.topRight,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -89,7 +98,10 @@ class DAvatar extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'relative inline-flex',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('relative inline-flex', className),
       children: [
         // Avatar container
         Div(
@@ -145,12 +157,20 @@ class DAvatarGroup extends StatelessComponent {
   final List<DAvatar> avatars;
   final int max;
   final DAvatarSize size;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DAvatarGroup({
     super.key,
     required this.avatars,
     this.max = 4,
     this.size = DAvatarSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -181,17 +201,23 @@ class DAvatarGroup extends StatelessComponent {
     final visible = avatars.take(max).toList();
     final remaining = avatars.length - max;
 
-    return Div(className: 'flex -space-x-2', children: [
-      for (final avatar in visible)
-        Div(
-            className: 'ring-2 ring-white dark:ring-gray-900 rounded-full',
-            children: [avatar]),
-      if (remaining > 0)
-        Div(
-          className:
-              '$_sizeClasses rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center font-medium text-gray-600 dark:text-gray-300 ring-2 ring-white dark:ring-gray-900',
-          children: [Text('+$remaining')],
-        ),
-    ]);
+    return Div(
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('flex -space-x-2', className),
+      children: [
+        for (final avatar in visible)
+          Div(
+              className: 'ring-2 ring-white dark:ring-gray-900 rounded-full',
+              children: [avatar]),
+        if (remaining > 0)
+          Div(
+            className:
+                '$_sizeClasses rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center font-medium text-gray-600 dark:text-gray-300 ring-2 ring-white dark:ring-gray-900',
+            children: [Text('+$remaining')],
+          ),
+      ],
+    );
   }
 }

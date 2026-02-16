@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import '../avatar.dart';
 
 /// Role for chat messages
@@ -33,6 +34,10 @@ class DChatMessage extends StatelessComponent {
   final bool showTimestamp;
   final String? userBgColor;
   final String? assistantBgColor;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatMessage({
     super.key,
@@ -42,6 +47,10 @@ class DChatMessage extends StatelessComponent {
     this.showTimestamp = true,
     this.userBgColor,
     this.assistantBgColor,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String _formatTimestamp(DateTime timestamp) {
@@ -79,7 +88,10 @@ class DChatMessage extends StatelessComponent {
     );
 
     return Div(
-      className: containerClasses,
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(containerClasses, className),
       children: [
         Div(
           className: 'flex items-end gap-2 ${isUser ? "flex-row-reverse" : ""}',

@@ -3,6 +3,7 @@ import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI Collapsible component using native HTML details/summary
 ///
@@ -13,6 +14,10 @@ class DCollapsible extends StatelessComponent {
   final List<Component> children;
   final bool defaultOpen;
   final bool disabled;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCollapsible({
     super.key,
@@ -20,18 +25,27 @@ class DCollapsible extends StatelessComponent {
     required this.children,
     this.defaultOpen = false,
     this.disabled = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
+    final baseAttributes = {
+      if (defaultOpen) 'open': 'true',
+    };
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return Details(
-      className: cx([
+      id: id,
+      events: events,
+      className: twMerge(cx([
         'w-full group',
         disabled ? 'pointer-events-none opacity-50' : null,
-      ]),
-      attributes: {
-        if (defaultOpen) 'open': 'true',
-      },
+      ]), className),
+      attributes: mergedAttributes.isNotEmpty ? mergedAttributes : null,
       children: [
         // Trigger wrapped in summary
         Summary(
@@ -59,17 +73,28 @@ class DCollapsible extends StatelessComponent {
 class DCollapsibleTrigger extends StatelessComponent {
   final String label;
   final Component? icon;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCollapsibleTrigger({
     super.key,
     required this.label,
     this.icon,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'flex items-center justify-between',
         'px-4 py-3',
         'font-medium',
@@ -78,7 +103,7 @@ class DCollapsibleTrigger extends StatelessComponent {
         'transition-colors',
         'rounded-lg',
         'select-none',
-      ]),
+      ]), className),
       children: [
         Div(className: 'flex items-center gap-2', children: [
           if (icon != null) icon!,
@@ -99,19 +124,30 @@ class DCollapsibleTrigger extends StatelessComponent {
 /// Collapsible content wrapper with padding
 class DCollapsibleContent extends StatelessComponent {
   final List<Component> children;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCollapsibleContent({
     super.key,
     required this.children,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'px-4 py-3',
         DTextColors.defaultText,
-      ]),
+      ]), className),
       children: children,
     );
   }

@@ -3,6 +3,7 @@ import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Input number sizes
 enum DInputNumberSize { xs, sm, md, lg, xl }
@@ -24,6 +25,10 @@ class DInputNumber extends StatelessComponent {
   final bool required;
   final String? hint;
   final String? error;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DInputNumber({
     super.key,
@@ -40,6 +45,10 @@ class DInputNumber extends StatelessComponent {
     this.required = false,
     this.hint,
     this.error,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -153,9 +162,10 @@ class DInputNumber extends StatelessComponent {
           Input(
             type: 'number',
             name: name,
+            id: id,
             value: value.toString(),
             disabled: disabled,
-            className: cx([
+            className: twMerge(cx([
               'block',
               'w-full',
               'text-center',
@@ -171,13 +181,16 @@ class DInputNumber extends StatelessComponent {
               '[appearance:textfield]',
               '[&::-webkit-outer-spin-button]:appearance-none',
               '[&::-webkit-inner-spin-button]:appearance-none',
-            ]),
+            ]), className),
             placeholder: placeholder,
-            attributes: {
+            attributes: mergeAttributes({
               if (min.isFinite) 'min': min.toString(),
               if (max.isFinite) 'max': max.toString(),
               'step': step.toString(),
               'data-input': 'true',
+            }, attributes),
+            events: {
+              ...?events,
             },
           ),
           // Increment button

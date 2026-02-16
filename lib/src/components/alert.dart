@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Alert variants
 enum DAlertVariant { solid, outline, soft, subtle }
@@ -18,6 +19,10 @@ class DAlert extends StatelessComponent {
   final VoidCallback? onClose;
   final List<Component> actions;
   final List<Component> children;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DAlert({
     super.key,
@@ -30,6 +35,10 @@ class DAlert extends StatelessComponent {
     this.onClose,
     this.actions = const [],
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _baseClasses => 'relative overflow-hidden rounded-lg p-4';
@@ -126,7 +135,10 @@ class DAlert extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: '$_baseClasses $_variantClasses',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$_baseClasses $_variantClasses', className),
       children: [
         Div(className: 'flex gap-3', children: [
           if (icon != null) Div(className: 'shrink-0 size-5', children: [icon!]),

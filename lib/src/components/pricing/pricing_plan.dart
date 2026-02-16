@@ -1,7 +1,8 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
+import '../../theme/tw_merge.dart';
 
 /// Feature item for pricing plan
 class DPricingFeature {
@@ -67,13 +68,22 @@ class DPricingPlan extends StatelessComponent {
   final bool disabled;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Custom header content
   final Component? header;
 
   /// Custom footer content
   final Component? footer;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPricingPlan({
     super.key,
@@ -92,9 +102,12 @@ class DPricingPlan extends StatelessComponent {
     this.buttonHref,
     this.highlighted = false,
     this.disabled = false,
-    this.classes,
+    this.className,
     this.header,
     this.footer,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -115,11 +128,13 @@ class DPricingPlan extends StatelessComponent {
       'transition-all',
       'duration-200',
       disabled ? 'opacity-60' : 'hover:shadow-lg',
-      classes ?? '',
     ].where((c) => c.isNotEmpty).join(' ');
 
     return Div(
-      className: baseClasses,
+      id: id,
+      className: twMerge(baseClasses, className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Badge
         if (badge != null)
@@ -262,7 +277,7 @@ class DPricingPlan extends StatelessComponent {
       disabled: disabled,
       className: '$buttonClasses$disabledClasses',
       events: !disabled && onButtonClick != null
-          ? events(onClick: () => onButtonClick!())
+          ? dom.events(onClick: () => onButtonClick!())
           : null,
       children: [Text(buttonText)],
     );

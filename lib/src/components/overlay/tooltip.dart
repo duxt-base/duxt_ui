@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Tooltip placement options
 enum DTooltipPlacement {
@@ -21,12 +22,28 @@ class DTooltip extends StatelessComponent {
   final DTooltipPlacement placement;
   final int delayMs;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DTooltip({
     super.key,
     required this.child,
     required this.text,
     this.placement = DTooltipPlacement.top,
     this.delayMs = 0,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _positionClasses {
@@ -72,7 +89,10 @@ class DTooltip extends StatelessComponent {
     final delayStyle = delayMs > 0 ? 'transition-delay: ${delayMs}ms;' : '';
 
     return Div(
-      className: 'relative inline-block group',
+      id: id,
+      className: twMerge('relative inline-block group', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Child element
         child,
@@ -102,12 +122,28 @@ class DTooltipCustom extends StatelessComponent {
   final DTooltipPlacement placement;
   final int delayMs;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DTooltipCustom({
     super.key,
     required this.child,
     required this.content,
     this.placement = DTooltipPlacement.top,
     this.delayMs = 0,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _positionClasses {
@@ -134,7 +170,10 @@ class DTooltipCustom extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'relative inline-block group',
+      id: id,
+      className: twMerge('relative inline-block group', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Child element
         child,

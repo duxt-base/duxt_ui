@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardSidebarCollapse component
 ///
@@ -8,7 +9,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Useful for grouping related navigation items.
 class DDashboardSidebarCollapse extends StatefulComponent {
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
 
   /// Section label
   final String label;
@@ -25,14 +26,26 @@ class DDashboardSidebarCollapse extends StatefulComponent {
   /// Child navigation items
   final List<Component> children;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardSidebarCollapse({
     super.key,
-    this.classes,
+    this.className,
     required this.label,
     this.icon,
     this.initialOpen = false,
     this.sidebarCollapsed = false,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -74,7 +87,7 @@ class _UDashboardSidebarCollapseState extends State<DDashboardSidebarCollapse> {
   Component build(BuildContext context) {
     // When sidebar is collapsed, show as dropdown or tooltip
     if (component.sidebarCollapsed) {
-      return Div(className: 'relative group', children: [
+      return Div(id: component.id, className: twMerge('relative group', component.className), attributes: component.attributes, events: component.events, children: [
         // Icon button
         Button(
           type: 'button',
@@ -105,7 +118,7 @@ class _UDashboardSidebarCollapseState extends State<DDashboardSidebarCollapse> {
     }
 
     // Normal expanded sidebar
-    return Div(className: component.classes ?? '', children: [
+    return Div(id: component.id, className: twMerge('', component.className), attributes: component.attributes, events: component.events, children: [
       // Toggle button
       Button(
         type: 'button',

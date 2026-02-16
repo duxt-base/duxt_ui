@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'pricing_plan.dart';
 
 /// Grid column configuration for pricing plans
@@ -21,7 +22,7 @@ class DPricingPlans extends StatelessComponent {
   final String gap;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Optional title for the section
   final String? title;
@@ -35,16 +36,28 @@ class DPricingPlans extends StatelessComponent {
   /// Billing toggle component (monthly/yearly)
   final Component? billingToggle;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPricingPlans({
     super.key,
     required this.plans,
     this.columns = DPricingPlansColumns.three,
     this.gap = 'gap-8',
-    this.classes,
+    this.className,
     this.title,
     this.description,
     this.centerWhenFewer = true,
     this.billingToggle,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _columnClasses {
@@ -64,7 +77,10 @@ class DPricingPlans extends StatelessComponent {
         title != null || description != null || billingToggle != null;
 
     return Div(
-      className: classes,
+      id: id,
+      className: className,
+      attributes: attributes,
+      events: events,
       children: [
         if (hasHeader) _buildHeader(),
         Div(
@@ -115,6 +131,18 @@ class DBillingToggle extends StatelessComponent {
   /// Change callback
   final void Function(bool isYearly)? onChange;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DBillingToggle({
     super.key,
     required this.isYearly,
@@ -122,20 +150,28 @@ class DBillingToggle extends StatelessComponent {
     this.yearlyLabel = 'Yearly',
     this.yearlySavings,
     this.onChange,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className:
+      id: id,
+      className: twMerge(
           'inline-flex items-center gap-3 p-1 bg-gray-100 dark:bg-zinc-800 rounded-lg',
+          className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Monthly button
         Button(
           type: 'button',
           className:
               'px-4 py-2 text-sm font-medium rounded-md transition-colors ${!isYearly ? "bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}',
-          events: events(onClick: () => onChange?.call(false)),
+          events: dom.events(onClick: () => onChange?.call(false)),
           children: [Text(monthlyLabel)],
         ),
         // Yearly button
@@ -143,7 +179,7 @@ class DBillingToggle extends StatelessComponent {
           type: 'button',
           className:
               'px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${isYearly ? "bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}',
-          events: events(onClick: () => onChange?.call(true)),
+          events: dom.events(onClick: () => onChange?.call(true)),
           children: [
             Text(yearlyLabel),
             if (yearlySavings != null)

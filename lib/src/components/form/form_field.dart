@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Form field sizes
 enum DFormFieldSize { sm, md, lg }
@@ -127,6 +128,10 @@ class DFormField extends StatefulComponent {
   final List<Component> children;
   final bool validateOnBlur;
   final bool validateOnChange;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DFormField({
     super.key,
@@ -141,6 +146,10 @@ class DFormField extends StatefulComponent {
     required this.children,
     this.validateOnBlur = true,
     this.validateOnChange = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -213,10 +222,12 @@ class _UFormFieldState extends State<DFormField> {
     final hasError = displayError != null && displayError.isNotEmpty;
 
     return Div(
-      className: cx([
+      id: component.id,
+      className: twMerge(cx([
         'space-y-1',
         component.disabled ? 'opacity-50' : null,
-      ]),
+      ]), component.className),
+      attributes: component.attributes,
       events: {
         'focusout': (event) {
           final target = event.target as dynamic;
@@ -226,6 +237,7 @@ class _UFormFieldState extends State<DFormField> {
           final target = event.target as dynamic;
           _handleChange(target.value);
         },
+        ...?component.events,
       },
       children: [
         // Label

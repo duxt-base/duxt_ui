@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Alignment options for page header content
 enum DPageHeaderAlign { left, center, right }
@@ -27,13 +28,22 @@ class DPageHeader extends StatelessComponent {
   final List<Component> links;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Custom title component (overrides title string)
   final Component? titleSlot;
 
   /// Custom description component (overrides description string)
   final Component? descriptionSlot;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageHeader({
     super.key,
@@ -43,9 +53,12 @@ class DPageHeader extends StatelessComponent {
     this.align = DPageHeaderAlign.left,
     this.icon,
     this.links = const [],
-    this.classes,
+    this.className,
     this.titleSlot,
     this.descriptionSlot,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _alignClasses {
@@ -73,7 +86,10 @@ class DPageHeader extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Header(
-      className: 'py-8 sm:py-16 lg:py-24 $_alignClasses ${classes ?? ""}',
+      id: id,
+      className: twMerge('py-8 sm:py-16 lg:py-24 $_alignClasses', className),
+      attributes: attributes,
+      events: events,
       children: [
         Div(
           className:

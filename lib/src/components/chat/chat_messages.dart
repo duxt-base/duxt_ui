@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'chat_message.dart';
 
 /// DuxtUI ChatMessages component - displays a scrollable list of chat messages
@@ -11,6 +12,10 @@ class DChatMessages extends StatefulComponent {
   final Component? emptyState;
   final String? userBgColor;
   final String? assistantBgColor;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatMessages({
     super.key,
@@ -21,6 +26,10 @@ class DChatMessages extends StatefulComponent {
     this.emptyState,
     this.userBgColor,
     this.assistantBgColor,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -39,15 +48,22 @@ class _UChatMessagesState extends State<DChatMessages> {
   Component build(BuildContext context) {
     if (component.messages.isEmpty && component.emptyState != null) {
       return Div(
-        className: 'flex-1 flex items-center justify-center p-4',
+        id: component.id,
+        attributes: component.attributes,
+        events: component.events,
+        className: twMerge('flex-1 flex items-center justify-center p-4', component.className),
         children: [component.emptyState!],
       );
     }
 
     if (component.messages.isEmpty) {
       return Div(
-        className:
+        id: component.id,
+        attributes: component.attributes,
+        events: component.events,
+        className: twMerge(
             'flex-1 flex flex-col items-center justify-center p-4 text-gray-400',
+            component.className),
         children: [
           // Empty chat icon
           Div(
@@ -64,9 +80,11 @@ class _UChatMessagesState extends State<DChatMessages> {
     }
 
     return Div(
-      className: 'flex flex-col gap-4 overflow-y-auto p-4 flex-1',
+      id: component.id ?? 'chat-messages-container',
+      attributes: component.attributes,
+      events: component.events,
+      className: twMerge('flex flex-col gap-4 overflow-y-auto p-4 flex-1', component.className),
       style: 'scroll-behavior: smooth; overflow-anchor: auto',
-      id: 'chat-messages-container',
       children: [
         for (final message in component.messages)
           DChatMessage(

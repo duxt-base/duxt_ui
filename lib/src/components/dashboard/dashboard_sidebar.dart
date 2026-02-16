@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardSidebar component
 ///
@@ -7,7 +8,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Supports expanded (w-64), collapsed (w-16), and mobile overlay states.
 class DDashboardSidebar extends StatefulComponent {
   /// Custom CSS classes to apply to the sidebar
-  final String? classes;
+  final String? className;
 
   /// Whether the sidebar is initially collapsed
   final bool initialCollapsed;
@@ -39,9 +40,18 @@ class DDashboardSidebar extends StatefulComponent {
   /// Child components (navigation items)
   final List<Component> children;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardSidebar({
     super.key,
-    this.classes,
+    this.className,
     this.initialCollapsed = false,
     this.mobileOpen = false,
     this.onMobileClose,
@@ -52,6 +62,9 @@ class DDashboardSidebar extends StatefulComponent {
     this.side = DSidebarSide.left,
     this.onCollapseChange,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -148,8 +161,12 @@ class _UDashboardSidebarState extends State<DDashboardSidebar> {
 
     // Desktop sidebar
     return Aside(
-      className:
-          'hidden lg:flex flex-col $_widthClasses $_backgroundClasses $_borderClasses transition-all duration-300 ${component.classes ?? ""}',
+      id: component.id,
+      className: twMerge(
+          'hidden lg:flex flex-col $_widthClasses $_backgroundClasses $_borderClasses transition-all duration-300',
+          component.className),
+      attributes: component.attributes,
+      events: component.events,
       children: [
         // Header
         if (component.header != null)
@@ -216,6 +233,18 @@ class DSidebarItem extends StatelessComponent {
   /// Whether the sidebar is collapsed (icons only)
   final bool collapsed;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DSidebarItem({
     super.key,
     required this.label,
@@ -225,6 +254,10 @@ class DSidebarItem extends StatelessComponent {
     this.onClick,
     this.badge,
     this.collapsed = false,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -240,9 +273,12 @@ class DSidebarItem extends StatelessComponent {
         type: 'button',
         disabled: disabled,
         onClick: disabled ? null : onClick,
-        className:
+        id: id,
+        className: twMerge(
             'w-full flex items-center justify-center p-3 rounded-lg transition-colors $activeClasses $disabledClasses',
-        attributes: {'title': label},
+            className),
+        attributes: mergeAttributes({'title': label}, attributes),
+        events: events,
         children: [
           if (icon != null) icon!,
           if (badge != null)
@@ -259,8 +295,12 @@ class DSidebarItem extends StatelessComponent {
       type: 'button',
       disabled: disabled,
       onClick: disabled ? null : onClick,
-      className:
+      id: id,
+      className: twMerge(
           'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors $activeClasses $disabledClasses',
+          className),
+      attributes: attributes,
+      events: events,
       children: [
         if (icon != null) icon!,
         Span(
@@ -291,17 +331,33 @@ class DSidebarSection extends StatelessComponent {
   /// Child items
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DSidebarSection({
     super.key,
     this.label,
     this.showLabelCollapsed = false,
     this.collapsed = false,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
-    return Div(className: 'px-3 py-2', children: [
+    return Div(id: id, className: twMerge('px-3 py-2', className), attributes: attributes, events: events, children: [
       if (label != null && (!collapsed || showLabelCollapsed))
         Div(
           className:

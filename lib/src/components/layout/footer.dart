@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Footer style variants
 enum DFooterVariant { simple, columns, centered }
@@ -12,7 +13,10 @@ class DFooter extends StatelessComponent {
   final Component? right;
   final DFooterVariant variant;
   final bool bordered;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DFooter({
     super.key,
@@ -22,7 +26,10 @@ class DFooter extends StatelessComponent {
     this.right,
     this.variant = DFooterVariant.simple,
     this.bordered = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -34,7 +41,10 @@ class DFooter extends StatelessComponent {
     // If left/center/right slots are provided, use structured layout
     if (left != null || center != null || right != null) {
       return Footer(
-        className: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('$bgClasses $borderClasses', className),
         children: [
           Div(
             className: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
@@ -62,7 +72,10 @@ class DFooter extends StatelessComponent {
 
     // Simple footer with children
     return Footer(
-      className: '$bgClasses $borderClasses ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$bgClasses $borderClasses', className),
       children: [
         Div(
           className: 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
@@ -77,19 +90,28 @@ class DFooter extends StatelessComponent {
 class DFooterLinks extends StatelessComponent {
   final String? title;
   final List<DFooterLink> links;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DFooterLinks({
     super.key,
     this.title,
     this.links = const [],
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: classes ?? '',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: className ?? '',
       children: [
         if (title != null)
           H3(
@@ -110,25 +132,36 @@ class DFooterLink extends StatelessComponent {
   final String label;
   final String href;
   final bool external;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DFooterLink({
     super.key,
     required this.label,
     required this.href,
     this.external = false,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
+    final baseAttributes = external ? {'rel': 'noopener noreferrer'} : <String, String>{};
+    final mergedAttributes = {...baseAttributes, ...?attributes};
+
     return A(
       href: href,
+      id: id,
       target: external ? Target.blank : null,
-      attributes: external ? {'rel': 'noopener noreferrer'} : null,
-      className:
-          'text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors ${classes ?? ""}'
-              .trim(),
+      attributes: mergedAttributes.isNotEmpty ? mergedAttributes : null,
+      events: events,
+      className: twMerge(
+          'text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors',
+          className),
       children: [
         Text(label),
         if (external)
@@ -145,21 +178,29 @@ class DFooterLink extends StatelessComponent {
 class DCopyright extends StatelessComponent {
   final String text;
   final int? year;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCopyright({
     super.key,
     required this.text,
     this.year,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     final displayYear = year ?? DateTime.now().year;
     return P(
-      className:
-          'text-sm text-gray-500 dark:text-gray-400 ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('text-sm text-gray-500 dark:text-gray-400', className),
       children: [Text('\u00A9 $displayYear $text')],
     );
   }

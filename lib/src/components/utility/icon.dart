@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
+import '../../theme/tw_merge.dart';
 
 /// Icon sizes
 enum DIconSize { xs, sm, md, lg, xl }
@@ -20,17 +21,29 @@ class DIcon extends StatelessComponent {
   final DIconSize size;
 
   /// Custom CSS classes to apply
-  final String? classes;
+  final String? className;
 
   /// Custom color class (e.g., 'text-red-500')
   final String? color;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DIcon({
     super.key,
     required this.name,
     this.size = DIconSize.md,
-    this.classes,
+    this.className,
     this.color,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   /// Maps [DIconSize] to pixel values.
@@ -66,13 +79,12 @@ class DIcon extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    final iconClasses = [
+    final iconClasses = twMerge([
       'inline-block',
       'flex-shrink-0',
       _sizeClasses,
       if (color != null) color!,
-      if (classes != null) classes!,
-    ].join(' ');
+    ].join(' '), className);
 
     // If the icon has a valid prefix:name format and is cached, render inline SVG
     if (name.contains(':')) {
@@ -88,11 +100,13 @@ class DIcon extends StatelessComponent {
 
     // Fallback: use Iconify web component for icons not preloaded
     return Span(
+      id: id,
       className: iconClasses,
-      attributes: {
+      attributes: mergeAttributes({
         'data-icon': name,
         'aria-hidden': 'true',
-      },
+      }, attributes),
+      events: events,
       children: [
         Component.element(
           tag: 'iconify-icon',

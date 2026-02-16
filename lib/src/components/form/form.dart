@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Form validation state
 enum DFormState { initial, validating, valid, invalid }
@@ -36,6 +37,9 @@ class DForm extends StatefulComponent {
   final FormValidateCallback? onValidate;
   final FormSubmitCallback? onSubmit;
   final VoidCallback? onReset;
+  final String? className;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DForm({
     super.key,
@@ -49,6 +53,9 @@ class DForm extends StatefulComponent {
     this.onValidate,
     this.onSubmit,
     this.onReset,
+    this.className,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -130,17 +137,18 @@ class _UFormState extends State<DForm> {
   Component build(BuildContext context) {
     return Form(
       id: component.id,
-      className: cx([
+      className: twMerge(cx([
         'space-y-4',
         component.disabled ? 'opacity-50 pointer-events-none' : null,
-      ]),
-      attributes: {
+      ]), component.className),
+      attributes: mergeAttributes({
         if (component.name != null) 'name': component.name!,
         'novalidate': 'true', // Use custom validation
-      },
+      }, component.attributes),
       events: {
         'submit': _handleSubmit,
         'reset': (_) => _handleReset(),
+        ...?component.events,
       },
       children: [
         // Provide form context via wrapper

@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'checkbox.dart';
 
 /// Checkbox group orientation
@@ -34,6 +35,10 @@ class DCheckboxGroup<T> extends StatelessComponent {
   final String? error;
   final String? hint;
   final ValueChanged<List<T>>? onChange;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DCheckboxGroup({
     super.key,
@@ -49,6 +54,10 @@ class DCheckboxGroup<T> extends StatelessComponent {
     this.error,
     this.hint,
     this.onChange,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _orientationClasses {
@@ -82,7 +91,12 @@ class DCheckboxGroup<T> extends StatelessComponent {
   Component build(BuildContext context) {
     final hasError = error != null && error!.isNotEmpty;
 
-    return Div(className: 'space-y-2', children: [
+    return Div(
+      id: id,
+      className: twMerge('space-y-2', className),
+      attributes: attributes,
+      events: events,
+      children: [
       if (label != null)
         Span(
             className:

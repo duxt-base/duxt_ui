@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'icon.dart';
 
 /// DuxtUI Calendar component - Date picker grid
@@ -30,7 +31,16 @@ class DCalendar extends StatelessComponent {
   final String? name;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DCalendar({
     super.key,
@@ -41,7 +51,10 @@ class DCalendar extends StatelessComponent {
     this.maxDate,
     this.firstDayOfWeek = 1, // Monday default
     this.name,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _calendarId => 'calendar_$hashCode';
@@ -53,10 +66,11 @@ class DCalendar extends StatelessComponent {
     final displayYear = initialYear ?? now.year;
 
     return Div(
-      id: _calendarId,
-      className:
-          'p-4 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-700 ${classes ?? ""}',
-      attributes: {
+      id: id ?? _calendarId,
+      className: twMerge(
+          'p-4 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-gray-700',
+          className),
+      attributes: mergeAttributes({
         'data-calendar': 'true',
         'data-month': '$displayMonth',
         'data-year': '$displayYear',
@@ -64,7 +78,8 @@ class DCalendar extends StatelessComponent {
         if (minDate != null) 'data-min': minDate!,
         if (maxDate != null) 'data-max': maxDate!,
         if (selectedDate != null) 'data-selected': selectedDate!,
-      },
+      }, attributes),
+      events: events,
       children: [
         // Header with month/year navigation
         Div(

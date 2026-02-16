@@ -1,8 +1,9 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Timeline item status
 enum DTimelineStatus { pending, current, completed }
@@ -68,6 +69,18 @@ class DTimeline extends StatelessComponent {
   /// Whether items are clickable
   final void Function(DTimelineItem item, int index)? onItemClick;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DTimeline({
     super.key,
     required this.items,
@@ -76,6 +89,10 @@ class DTimeline extends StatelessComponent {
     this.size = DSize.md,
     this.showConnectors = true,
     this.onItemClick,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _dotSize {
@@ -163,7 +180,10 @@ class DTimeline extends StatelessComponent {
 
   Component _buildVertical(BuildContext context) {
     return Div(
-      className: 'relative',
+      id: id,
+      className: twMerge('relative', className),
+      attributes: attributes,
+      events: events,
       children: [
         for (var i = 0; i < items.length; i++) _buildVerticalItem(items[i], i),
       ],
@@ -256,7 +276,7 @@ class DTimeline extends StatelessComponent {
         type: 'button',
         className:
             'w-full text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 -mx-2 px-2 rounded-lg transition-colors',
-        events: events(onClick: () => onItemClick!(item, index)),
+        events: dom.events(onClick: () => onItemClick!(item, index)),
         children: [itemContent],
       );
     }
@@ -266,7 +286,10 @@ class DTimeline extends StatelessComponent {
 
   Component _buildHorizontal(BuildContext context) {
     return Div(
-      className: 'relative',
+      id: id,
+      className: twMerge('relative', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Items
         Div(
@@ -354,11 +377,27 @@ class DTimelineSimple extends StatelessComponent {
   /// Timeline color
   final DColor color;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DTimelineSimple({
     super.key,
     required this.items,
     this.activeIndex,
     this.color = DColor.primary,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -366,7 +405,10 @@ class DTimelineSimple extends StatelessComponent {
     final baseColor = defaultColorMapping[color] ?? 'green';
 
     return Ul(
-      className: 'relative',
+      id: id,
+      className: twMerge('relative', className),
+      attributes: attributes,
+      events: events,
       children: [
         for (var i = 0; i < items.length; i++)
           Li(

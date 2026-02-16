@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Scroll orientation
 enum DScrollOrientation { vertical, horizontal, both }
@@ -28,7 +29,16 @@ class DScrollArea extends StatelessComponent {
   final DScrollbarVisibility scrollbarVisibility;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DScrollArea({
     super.key,
@@ -37,7 +47,10 @@ class DScrollArea extends StatelessComponent {
     this.maxHeight,
     this.maxWidth,
     this.scrollbarVisibility = DScrollbarVisibility.auto,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _overflowClasses {
@@ -75,12 +88,14 @@ class DScrollArea extends StatelessComponent {
     }
 
     return Div(
-      className: [
+      id: id,
+      className: twMerge([
         _overflowClasses,
         _scrollbarClasses,
         'scroll-smooth',
-        if (classes != null) classes!,
-      ].join(' '),
+      ].join(' '), className),
+      attributes: attributes,
+      events: events,
       style: styles.isNotEmpty ? styles.entries.map((e) => '${e.key}: ${e.value}').join('; ') : null,
       children: [
         // Style tag for scrollbar CSS (works with Tailwind scrollbar plugin)

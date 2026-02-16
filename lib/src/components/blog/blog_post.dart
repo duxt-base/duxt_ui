@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Author information for blog posts
 class DBlogAuthor {
@@ -56,10 +57,19 @@ class DBlogPost extends StatelessComponent {
   final DBlogPostOrientation orientation;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Click handler
   final VoidCallback? onClick;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DBlogPost({
     super.key,
@@ -74,8 +84,11 @@ class DBlogPost extends StatelessComponent {
     this.readingTime,
     this.href,
     this.orientation = DBlogPostOrientation.vertical,
-    this.classes,
+    this.className,
     this.onClick,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -176,13 +189,12 @@ class DBlogPost extends StatelessComponent {
       ],
     );
 
-    final cardClasses = [
+    final cardClasses = twMerge([
       'group',
       'flex',
       isHorizontal ? 'flex-row gap-6' : 'flex-col',
       'cursor-pointer',
-      classes ?? '',
-    ].where((c) => c.isNotEmpty).join(' ');
+    ].join(' '), className);
 
     final cardContent = [
       if (imageComponent != null) imageComponent,
@@ -192,14 +204,19 @@ class DBlogPost extends StatelessComponent {
     if (href != null) {
       return A(
         href: href!,
+        id: id,
         className: cardClasses,
+        attributes: attributes,
+        events: this.events,
         children: cardContent,
       );
     }
 
     return Div(
+      id: id,
       className: cardClasses,
-      events: onClick != null ? events(onClick: onClick!) : null,
+      attributes: attributes,
+      events: this.events ?? (onClick != null ? dom.events(onClick: onClick!) : null),
       children: cardContent,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Grid column configurations
 enum DPageGridColumns { one, two, three, four, five, six }
@@ -18,14 +19,26 @@ class DPageGrid extends StatelessComponent {
   final String gap;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageGrid({
     super.key,
     this.children = const [],
     this.columns = DPageGridColumns.three,
     this.gap = '6',
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _columnsClasses {
@@ -48,7 +61,10 @@ class DPageGrid extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'grid $_columnsClasses gap-$gap ${classes ?? ""}',
+      id: id,
+      className: twMerge('grid $_columnsClasses gap-$gap', className),
+      attributes: attributes,
+      events: events,
       children: children,
     );
   }

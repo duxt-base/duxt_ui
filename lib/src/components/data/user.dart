@@ -1,8 +1,9 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 import '../avatar.dart';
 
 /// User layout orientation
@@ -46,6 +47,18 @@ class DUser extends StatelessComponent {
   /// Additional actions (e.g., buttons/icons)
   final List<Component>? actions;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DUser({
     super.key,
     required this.name,
@@ -60,6 +73,10 @@ class DUser extends StatelessComponent {
     this.online,
     this.status,
     this.actions,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   DAvatarSize get _avatarSize {
@@ -156,13 +173,16 @@ class DUser extends StatelessComponent {
     final isVertical = orientation == DUserOrientation.vertical;
 
     final content = Div(
-      className: cx([
+      id: id,
+      className: twMerge(cx([
         'inline-flex items-center',
         _gap,
         if (isVertical) 'flex-col text-center',
         if (reverse && !isVertical) 'flex-row-reverse',
         if (onClick != null) 'cursor-pointer',
-      ]),
+      ]), className),
+      attributes: attributes,
+      events: events,
       children: [
         avatar,
         info,
@@ -178,7 +198,7 @@ class DUser extends StatelessComponent {
       return Button(
         type: 'button',
         className: 'hover:opacity-80 transition-opacity',
-        events: events(onClick: () => onClick!()),
+        events: dom.events(onClick: () => onClick!()),
         children: [content],
       );
     }
@@ -265,6 +285,18 @@ class DUserCard extends StatelessComponent {
   /// Whether the card is clickable
   final void Function()? onClick;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DUserCard({
     super.key,
     required this.name,
@@ -274,13 +306,21 @@ class DUserCard extends StatelessComponent {
     this.content,
     this.actions,
     this.onClick,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     final cardContent = Div(
-      className:
+      id: id,
+      className: twMerge(
           'p-4 rounded-lg border border-gray-200 dark:border-gray-700 ${DBgColors.defaultBg}',
+          className),
+      attributes: attributes,
+      events: events,
       children: [
         DUser(
           name: name,
@@ -303,7 +343,7 @@ class DUserCard extends StatelessComponent {
       return Button(
         type: 'button',
         className: 'text-left w-full hover:shadow-md transition-shadow',
-        events: events(onClick: () => onClick!()),
+        events: dom.events(onClick: () => onClick!()),
         children: [cardContent],
       );
     }
@@ -335,6 +375,18 @@ class DUserListItem extends StatelessComponent {
   /// Click handler
   final void Function()? onClick;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DUserListItem({
     super.key,
     required this.name,
@@ -344,17 +396,24 @@ class DUserListItem extends StatelessComponent {
     this.trailing,
     this.selected = false,
     this.onClick,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     final content = Div(
-      className: cx([
+      id: id,
+      className: twMerge(cx([
         'flex items-center justify-between gap-3 px-3 py-2 rounded-lg transition-colors',
         if (selected) 'bg-gray-100 dark:bg-zinc-800',
         if (onClick != null && !selected)
           'hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer',
-      ]),
+      ]), className),
+      attributes: attributes,
+      events: events,
       children: [
         DUser(
           name: name,
@@ -371,7 +430,7 @@ class DUserListItem extends StatelessComponent {
       return Button(
         type: 'button',
         className: 'w-full text-left',
-        events: events(onClick: () => onClick!()),
+        events: dom.events(onClick: () => onClick!()),
         children: [content],
       );
     }

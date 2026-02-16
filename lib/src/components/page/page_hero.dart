@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageHero component - Full-width hero section
 ///
@@ -30,10 +31,19 @@ class DPageHero extends StatelessComponent {
   final String? gradientClasses;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Custom content slot (overrides title/description)
   final List<Component> children;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageHero({
     super.key,
@@ -45,8 +55,11 @@ class DPageHero extends StatelessComponent {
     this.links = const [],
     this.gradient = false,
     this.gradientClasses,
-    this.classes,
+    this.className,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _alignClasses {
@@ -67,7 +80,10 @@ class DPageHero extends StatelessComponent {
     final bgClasses = gradient ? (gradientClasses ?? defaultGradient) : '';
 
     return Section(
-      className: 'relative py-16 sm:py-24 lg:py-32 $bgClasses ${classes ?? ""}',
+      id: id,
+      className: twMerge('relative py-16 sm:py-24 lg:py-32 $bgClasses', className),
+      attributes: attributes,
+      events: events,
       children: [
         // Optional gradient overlay
         if (gradient)

@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardSidebarToggle component
 ///
@@ -8,7 +9,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Can be placed in the navbar or sidebar header.
 class DDashboardSidebarToggle extends StatelessComponent {
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
 
   /// Whether the sidebar is currently collapsed
   final bool collapsed;
@@ -28,15 +29,27 @@ class DDashboardSidebarToggle extends StatelessComponent {
   /// Size of the toggle button
   final DToggleSize size;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardSidebarToggle({
     super.key,
-    this.classes,
+    this.className,
     this.collapsed = false,
     this.onToggle,
     this.collapsedIcon,
     this.expandedIcon,
     this.variant = DToggleVariant.ghost,
     this.size = DToggleSize.md,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _variantClasses {
@@ -108,10 +121,12 @@ class DDashboardSidebarToggle extends StatelessComponent {
     return Button(
       type: 'button',
       onClick: onToggle,
-      className: 'rounded-lg transition-colors $_variantClasses $_sizeClasses ${classes ?? ""}',
-      attributes: {
+      id: id,
+      className: twMerge('rounded-lg transition-colors $_variantClasses $_sizeClasses', className),
+      attributes: mergeAttributes({
         'aria-label': collapsed ? 'Expand sidebar' : 'Collapse sidebar',
-      },
+      }, attributes),
+      events: events,
       children: [icon],
     );
   }

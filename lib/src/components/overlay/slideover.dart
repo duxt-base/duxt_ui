@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Slideover slide direction
 enum DSlideoverSide { left, right }
@@ -21,6 +22,18 @@ class DSlideover extends StatelessComponent {
   final bool closeOnOverlay;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DSlideover({
     super.key,
     required this.trigger,
@@ -31,6 +44,10 @@ class DSlideover extends StatelessComponent {
     this.footer,
     this.closeOnOverlay = true,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -69,8 +86,10 @@ class DSlideover extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'inline-block',
-      attributes: {'data-slideover': 'true'},
+      id: id,
+      className: twMerge('inline-block', className),
+      attributes: mergeAttributes({'data-slideover': 'true'}, attributes),
+      events: events,
       children: [
         // Trigger
         Div(
@@ -219,6 +238,18 @@ class DSlideoverControlled extends StatelessComponent {
   final VoidCallback? onClose;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DSlideoverControlled({
     super.key,
     required this.open,
@@ -230,6 +261,10 @@ class DSlideoverControlled extends StatelessComponent {
     this.closeOnOverlay = true,
     this.onClose,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -271,7 +306,10 @@ class DSlideoverControlled extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}',
+      id: id,
+      className: twMerge('fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Backdrop
         Div(

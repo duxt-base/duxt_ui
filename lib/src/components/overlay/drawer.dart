@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Drawer slide direction
 enum DDrawerSide { left, right, top, bottom }
@@ -19,6 +20,18 @@ class DDrawer extends StatelessComponent {
   final bool closeOnOverlay;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDrawer({
     super.key,
     required this.trigger,
@@ -27,6 +40,10 @@ class DDrawer extends StatelessComponent {
     this.title,
     this.closeOnOverlay = true,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -90,8 +107,10 @@ class DDrawer extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'inline-block',
-      attributes: {'data-drawer': 'true'},
+      id: id,
+      className: twMerge('inline-block', className),
+      attributes: mergeAttributes({'data-drawer': 'true'}, attributes),
+      events: events,
       children: [
         // Trigger
         Div(
@@ -234,6 +253,18 @@ class DDrawerControlled extends StatelessComponent {
   final VoidCallback? onClose;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDrawerControlled({
     super.key,
     required this.open,
@@ -243,6 +274,10 @@ class DDrawerControlled extends StatelessComponent {
     this.closeOnOverlay = true,
     this.onClose,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -309,7 +344,10 @@ class DDrawerControlled extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}',
+      id: id,
+      className: twMerge('fixed inset-0 z-50 ${open ? "" : "pointer-events-none"}', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Backdrop
         Div(

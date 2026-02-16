@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageCard component - Card with title and description
 ///
@@ -21,7 +22,7 @@ class DPageCard extends StatelessComponent {
   final List<Component> children;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Whether to show hover ring effect
   final bool hoverRing;
@@ -32,6 +33,15 @@ class DPageCard extends StatelessComponent {
   /// Optional footer content
   final Component? footer;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPageCard({
     super.key,
     this.title,
@@ -39,10 +49,13 @@ class DPageCard extends StatelessComponent {
     this.icon,
     this.to,
     this.children = const [],
-    this.classes,
+    this.className,
     this.hoverRing = true,
     this.badge,
     this.footer,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -91,14 +104,18 @@ class DPageCard extends StatelessComponent {
         ),
     ];
 
-    final cardClasses =
-        'group relative bg-white dark:bg-zinc-900 rounded-xl p-6 ring-1 ring-gray-200 dark:ring-gray-800 $hoverClasses transition-all ${classes ?? ""}';
+    final cardClasses = twMerge(
+        'group relative bg-white dark:bg-zinc-900 rounded-xl p-6 ring-1 ring-gray-200 dark:ring-gray-800 $hoverClasses transition-all',
+        className);
 
     // If there's a link, wrap in anchor
     if (to != null) {
       return A(
         href: to!,
+        id: id,
         className: 'block $cardClasses',
+        attributes: attributes,
+        events: events,
         children: [
           // Link overlay for accessibility
           Span(
@@ -112,7 +129,10 @@ class DPageCard extends StatelessComponent {
     }
 
     return Div(
+      id: id,
       className: cardClasses,
+      attributes: attributes,
+      events: events,
       children: cardContent,
     );
   }

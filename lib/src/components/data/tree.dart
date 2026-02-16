@@ -3,6 +3,7 @@ import 'package:jaspr/dom.dart' show events;
 import 'package:duxt_html/duxt_html.dart';
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Tree node data structure
 class DTreeNode {
@@ -109,6 +110,18 @@ class DTree extends StatefulComponent {
   /// Size
   final DSize size;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DTree({
     super.key,
     required this.nodes,
@@ -124,6 +137,10 @@ class DTree extends StatefulComponent {
     this.collapseIcon = 'i-lucide-chevron-right',
     this.color = DColor.primary,
     this.size = DSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -236,8 +253,10 @@ class _UTreeState extends State<DTree> {
   @override
   Component build(BuildContext context) {
     return Ul(
-      className: 'tree-root',
-      attributes: {'role': 'tree'},
+      id: component.id,
+      className: twMerge('tree-root', component.className),
+      attributes: mergeAttributes({'role': 'tree'}, component.attributes),
+      events: component.events,
       children: [
         for (final node in component.nodes) _buildNode(node, 0),
       ],
@@ -380,11 +399,27 @@ class DFileTree extends StatelessComponent {
   /// Currently selected file ID
   final String? selectedId;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DFileTree({
     super.key,
     required this.nodes,
     this.onSelect,
     this.selectedId,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -397,6 +432,10 @@ class DFileTree extends StatelessComponent {
       leafIcon: 'i-lucide-file-text',
       showLines: true,
       color: DColor.primary,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }

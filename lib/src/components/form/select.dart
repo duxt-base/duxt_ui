@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import '../utility/icon.dart';
 
 /// Select sizes
@@ -50,6 +51,10 @@ class DSelect<T> extends StatelessComponent {
   final DSelectColor color;
   final String? error;
   final String? hint;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSelect({
     super.key,
@@ -66,6 +71,10 @@ class DSelect<T> extends StatelessComponent {
     this.color = DSelectColor.primary,
     this.error,
     this.hint,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -117,13 +126,16 @@ class DSelect<T> extends StatelessComponent {
       Div(className: 'relative', children: [
         Select(
           name: name,
+          id: id,
           disabled: disabled,
-          className:
+          className: twMerge(
               'w-full cursor-pointer rounded-lg border $borderColor $_sizeClasses pr-10 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 appearance-none ${disabled ? "bg-gray-100 dark:bg-zinc-800 cursor-not-allowed opacity-50" : ""}',
-          attributes: {
+              className),
+          attributes: mergeAttributes({
             if (required) 'required': 'true',
             if (multiple) 'multiple': 'true',
-          },
+          }, attributes),
+          events: events,
           children: [
             // Placeholder option
             if (placeholder != null)

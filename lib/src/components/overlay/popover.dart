@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Popover placement options
 enum DPopoverPlacement {
@@ -28,12 +29,28 @@ class DPopover extends StatelessComponent {
   final bool closeOnClickOutside;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPopover({
     super.key,
     required this.trigger,
     this.placement = DPopoverPlacement.bottom,
     this.closeOnClickOutside = true,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _positionClasses {
@@ -68,10 +85,12 @@ class DPopover extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Details(
-      className: 'relative inline-block group',
-      attributes: {
+      id: id,
+      className: twMerge('relative inline-block group', className),
+      attributes: mergeAttributes({
         'data-popover': 'true',
-      },
+      }, attributes),
+      events: events,
       children: [
         // Trigger wrapped in summary - use pointer-events to let summary handle clicks
         Summary(
@@ -112,6 +131,18 @@ class DPopoverControlled extends StatelessComponent {
   final VoidCallback? onClose;
   final List<Component> children;
 
+  /// Additional CSS classes
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPopoverControlled({
     super.key,
     required this.open,
@@ -120,6 +151,10 @@ class DPopoverControlled extends StatelessComponent {
     this.onToggle,
     this.onClose,
     this.children = const [],
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _positionClasses {
@@ -154,7 +189,10 @@ class DPopoverControlled extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'relative inline-block',
+      id: id,
+      className: twMerge('relative inline-block', className),
+      attributes: attributes,
+      events: this.events,
       children: [
         // Trigger
         Div(

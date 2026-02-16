@@ -3,6 +3,7 @@ import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
 import '../../theme/colors.dart';
+import '../../theme/tw_merge.dart';
 
 /// Accordion item configuration
 class DAccordionItem {
@@ -38,6 +39,10 @@ class DAccordion extends StatelessComponent {
   final DColor color;
   final DAccordionVariant variant;
   final DSize size;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DAccordion({
     super.key,
@@ -46,6 +51,10 @@ class DAccordion extends StatelessComponent {
     this.color = DColor.primary,
     this.variant = DAccordionVariant.soft,
     this.size = DSize.md,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _sizeClasses {
@@ -81,13 +90,16 @@ class DAccordion extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: cx([
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'divide-y',
         DDivideColors.defaultDivide,
         'rounded-lg',
         'ring-1',
         DRingColors.defaultRing,
-      ]),
+      ]), className),
       children: [
         for (int i = 0; i < items.length; i++) _buildItem(items[i], i),
       ],

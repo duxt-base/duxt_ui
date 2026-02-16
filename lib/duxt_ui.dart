@@ -119,3 +119,4 @@ export 'src/theme/theme.dart';
 export 'src/theme/colors.dart';
 export 'src/theme/variants.dart' hide DButtonVariant; // Hide - defined in button.dart
 export 'src/theme/provider.dart';
+export 'src/theme/tw_merge.dart';

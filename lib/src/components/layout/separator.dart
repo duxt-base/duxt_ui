@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Separator orientation
 enum DSeparatorOrientation { horizontal, vertical }
@@ -12,14 +13,20 @@ class DSeparator extends StatelessComponent {
   final DSeparatorOrientation orientation;
   final DSeparatorType type;
   final String? label;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DSeparator({
     super.key,
     this.orientation = DSeparatorOrientation.horizontal,
     this.type = DSeparatorType.solid,
     this.label,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _orientationClasses {
@@ -49,7 +56,10 @@ class DSeparator extends StatelessComponent {
     if (label != null && orientation == DSeparatorOrientation.horizontal) {
       // Separator with label
       return Div(
-        className: 'relative flex items-center w-full ${classes ?? ""}'.trim(),
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('relative flex items-center w-full', className),
         children: [
           Div(className: 'flex-grow border-t $baseClasses $_typeClasses', children: []),
           Span(
@@ -64,9 +74,10 @@ class DSeparator extends StatelessComponent {
 
     // Simple separator (hr-like)
     return Div(
-      className:
-          '$_orientationClasses $baseClasses $_typeClasses ${classes ?? ""}'
-              .trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('$_orientationClasses $baseClasses $_typeClasses', className),
       children: [],
     );
   }
@@ -76,13 +87,19 @@ class DSeparator extends StatelessComponent {
 class DHr extends StatelessComponent {
   final DSeparatorType type;
   final String? label;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DHr({
     super.key,
     this.type = DSeparatorType.solid,
     this.label,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -91,25 +108,37 @@ class DHr extends StatelessComponent {
       orientation: DSeparatorOrientation.horizontal,
       type: type,
       label: label,
-      classes: classes,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }
 
 /// Convenience component for vertical divider
 class DDivider extends StatelessComponent {
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DDivider({
     super.key,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return DSeparator(
       orientation: DSeparatorOrientation.vertical,
-      classes: classes,
+      className: className,
+      id: id,
+      attributes: attributes,
+      events: events,
     );
   }
 }

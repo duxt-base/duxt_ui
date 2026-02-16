@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../theme/tw_merge.dart';
 
 /// Dropdown item configuration
 class DDropdownItem {
@@ -42,12 +43,20 @@ class DDropdown extends StatelessComponent {
   final Component trigger;
   final List<DDropdownItem> items;
   final DDropdownPlacement placement;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DDropdown({
     super.key,
     required this.trigger,
     required this.items,
     this.placement = DDropdownPlacement.bottomEnd,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _placementClasses {
@@ -66,10 +75,12 @@ class DDropdown extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Details(
-      className: 'relative inline-block group',
-      attributes: {
+      id: id,
+      events: events,
+      className: twMerge('relative inline-block group', className),
+      attributes: mergeAttributes({
         'data-dropdown': 'true',
-      },
+      }, attributes),
       children: [
         // Trigger wrapped in summary - use pointer-events to let summary handle clicks
         Summary(

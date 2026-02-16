@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:jaspr/dom.dart' show RawText;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 import 'blog_post.dart';
 
 /// Grid column configuration
@@ -20,7 +21,7 @@ class DBlogPosts extends StatelessComponent {
   final String gap;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Optional title for the section
   final String? title;
@@ -31,15 +32,27 @@ class DBlogPosts extends StatelessComponent {
   /// Empty state component when no posts
   final Component? emptyState;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DBlogPosts({
     super.key,
     required this.posts,
     this.columns = DBlogPostsColumns.three,
     this.gap = 'gap-8',
-    this.classes,
+    this.className,
     this.title,
     this.description,
     this.emptyState,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _columnClasses {
@@ -61,7 +74,10 @@ class DBlogPosts extends StatelessComponent {
 
     if (posts.isEmpty && emptyState != null) {
       return Div(
-        className: classes,
+        id: id,
+        className: className,
+        attributes: attributes,
+        events: events,
         children: [
           if (hasHeader) _buildHeader(),
           emptyState!,
@@ -70,7 +86,10 @@ class DBlogPosts extends StatelessComponent {
     }
 
     return Div(
-      className: classes,
+      id: id,
+      className: className,
+      attributes: attributes,
+      events: events,
       children: [
         if (hasHeader) _buildHeader(),
         Div(
@@ -108,18 +127,30 @@ class DBlogPostsEmpty extends StatelessComponent {
   final Component? icon;
   final Component? action;
 
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
+
   const DBlogPostsEmpty({
     super.key,
     this.title,
     this.description,
     this.icon,
     this.action,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'flex flex-col items-center justify-center py-16 text-center',
+      id: id,
+      className: twMerge('flex flex-col items-center justify-center py-16 text-center', className),
+      attributes: attributes,
+      events: events,
       children: [
         if (icon != null)
           Div(className: 'mb-4 text-gray-400', children: [icon!])

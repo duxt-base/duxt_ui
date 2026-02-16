@@ -1,7 +1,8 @@
 import 'package:jaspr/jaspr.dart' hide Text;
-import 'package:jaspr/dom.dart' show events;
+import 'package:jaspr/dom.dart' as dom;
 import 'package:duxt_html/duxt_html.dart';
 import 'package:duxt_icons/duxt_icons.dart' as duxt_icons;
+import '../../theme/tw_merge.dart';
 
 /// A plan column in the pricing table
 class DPricingTablePlan {
@@ -88,7 +89,7 @@ class DPricingTable extends StatelessComponent {
   final List<DPricingTableFeature> features;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Whether to show plan headers as sticky
   final bool stickyHeaders;
@@ -96,20 +97,35 @@ class DPricingTable extends StatelessComponent {
   /// Whether to make table horizontally scrollable on mobile
   final bool scrollable;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPricingTable({
     super.key,
     required this.plans,
     this.categories = const [],
     this.features = const [],
-    this.classes,
+    this.className,
     this.stickyHeaders = true,
     this.scrollable = true,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: '${scrollable ? "overflow-x-auto" : ""} ${classes ?? ""}',
+      id: id,
+      className: twMerge(scrollable ? 'overflow-x-auto' : '', className),
+      attributes: attributes,
+      events: events,
       children: [
         Table(
           className: 'w-full border-collapse',
@@ -332,7 +348,7 @@ class DPricingTable extends StatelessComponent {
             type: 'button',
             className: buttonClasses,
             events: plan.onButtonClick != null
-                ? events(onClick: () => plan.onButtonClick!())
+                ? dom.events(onClick: () => plan.onButtonClick!())
                 : null,
             children: [Text(plan.buttonText)],
           ),

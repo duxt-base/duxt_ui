@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 
 import '../../theme/variants.dart';
+import '../../theme/tw_merge.dart';
 
 /// Toast color variants
 enum DToastColor { primary, secondary, success, info, warning, error }
@@ -20,6 +21,9 @@ class DToast extends StatelessComponent {
   final bool closable;
   final VoidCallback? onClose;
   final String? id;
+  final String? className;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DToast({
     super.key,
@@ -32,6 +36,9 @@ class DToast extends StatelessComponent {
     this.closable = true,
     this.onClose,
     this.id,
+    this.className,
+    this.attributes,
+    this.events,
   });
 
   String get _colorName {
@@ -95,14 +102,16 @@ class DToast extends StatelessComponent {
   Component build(BuildContext context) {
     return Div(
       id: id,
-      className: cx([
+      attributes: attributes,
+      events: events,
+      className: twMerge(cx([
         'flex items-start gap-3',
         'p-4',
         'rounded-lg',
         'shadow-lg',
         'min-w-[300px] max-w-md',
         _variantClasses,
-      ]),
+      ]), className),
       children: [
         // Icon
         if (icon != null)

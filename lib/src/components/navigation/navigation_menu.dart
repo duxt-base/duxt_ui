@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// Navigation menu orientation
 enum DNavigationOrientation { horizontal, vertical }
@@ -11,13 +12,19 @@ enum DNavigationItemVariant { default_, active, disabled }
 class DNavigationMenu extends StatelessComponent {
   final List<DNavigationItem> items;
   final DNavigationOrientation orientation;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DNavigationMenu({
     super.key,
     required this.items,
     this.orientation = DNavigationOrientation.horizontal,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   String get _orientationClasses {
@@ -32,7 +39,10 @@ class DNavigationMenu extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Nav(
-      className: '${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('', className),
       children: [
         Ul(
           className: _orientationClasses,
@@ -53,7 +63,10 @@ class DNavigationItem extends StatelessComponent {
   final bool disabled;
   final VoidCallback? onClick;
   final List<DNavigationItem>? children;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DNavigationItem({
     super.key,
@@ -65,7 +78,10 @@ class DNavigationItem extends StatelessComponent {
     this.disabled = false,
     this.onClick,
     this.children,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -82,12 +98,15 @@ class DNavigationItem extends StatelessComponent {
     // If has children, render as dropdown trigger
     if (children != null && children!.isNotEmpty) {
       return Div(
-        className: 'relative group',
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('relative group', className),
         children: [
           Button(
             type: 'button',
             disabled: disabled,
-            className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+            className: '$baseClasses $stateClasses',
             children: [
               if (icon != null) icon!,
               Text(label),
@@ -113,7 +132,10 @@ class DNavigationItem extends StatelessComponent {
     if (href != null && !disabled) {
       return A(
         href: href!,
-        className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+        id: id,
+        attributes: attributes,
+        events: events,
+        className: twMerge('$baseClasses $stateClasses', className),
         children: [
           if (icon != null) icon!,
           Text(label),
@@ -124,9 +146,12 @@ class DNavigationItem extends StatelessComponent {
 
     return Button(
       type: 'button',
+      id: id,
+      attributes: attributes,
+      events: events,
       disabled: disabled,
       onClick: disabled ? null : onClick,
-      className: '$baseClasses $stateClasses ${classes ?? ""}'.trim(),
+      className: twMerge('$baseClasses $stateClasses', className),
       children: [
         if (icon != null) icon!,
         Text(label),
@@ -139,18 +164,27 @@ class DNavigationItem extends StatelessComponent {
 /// DuxtUI Vertical Navigation component
 class DVerticalNavigation extends StatelessComponent {
   final List<DNavigationGroup> groups;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DVerticalNavigation({
     super.key,
     required this.groups,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Nav(
-      className: 'space-y-4 ${classes ?? ""}'.trim(),
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: twMerge('space-y-4', className),
       children: groups,
     );
   }
@@ -160,19 +194,28 @@ class DVerticalNavigation extends StatelessComponent {
 class DNavigationGroup extends StatelessComponent {
   final String? title;
   final List<DNavigationItem> items;
-  final String? classes;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DNavigationGroup({
     super.key,
     this.title,
     required this.items,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: classes ?? '',
+      id: id,
+      attributes: attributes,
+      events: events,
+      className: className ?? '',
       children: [
         if (title != null)
           H3(

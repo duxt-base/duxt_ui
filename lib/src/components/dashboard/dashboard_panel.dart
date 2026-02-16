@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI DashboardPanel component
 ///
@@ -7,7 +8,7 @@ import 'package:duxt_html/duxt_html.dart';
 /// Used as the main content area in dashboard layouts.
 class DDashboardPanel extends StatefulComponent {
   /// Custom CSS classes to apply to the panel
-  final String? classes;
+  final String? className;
 
   /// Whether the panel is resizable
   final bool resizable;
@@ -30,9 +31,18 @@ class DDashboardPanel extends StatefulComponent {
   /// Child components
   final List<Component> children;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DDashboardPanel({
     super.key,
-    this.classes,
+    this.className,
     this.resizable = false,
     this.resizeDirection = DPanelResizeDirection.right,
     this.initialWidth,
@@ -40,6 +50,9 @@ class DDashboardPanel extends StatefulComponent {
     this.maxWidth = 600,
     this.grow = true,
     this.children = const [],
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -74,13 +87,19 @@ class _UDashboardPanelState extends State<DDashboardPanel> {
   Component build(BuildContext context) {
     if (!component.resizable) {
       return Div(
-        className: '$_baseClasses ${component.classes ?? ""}',
+        id: component.id,
+        className: twMerge(_baseClasses, component.className),
+        attributes: component.attributes,
+        events: component.events,
         children: component.children,
       );
     }
 
     return Div(
-      className: 'relative $_baseClasses ${component.classes ?? ""}',
+      id: component.id,
+      className: twMerge('relative $_baseClasses', component.className),
+      attributes: component.attributes,
+      events: component.events,
       style: _width != null ? 'width: ${_width}px' : null,
       children: [
         // Content

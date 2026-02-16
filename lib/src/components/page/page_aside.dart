@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI PageAside component - Sticky sidebar navigation
 ///
@@ -9,7 +10,7 @@ class DPageAside extends StatelessComponent {
   final List<Component> children;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
 
   /// Top offset for sticky positioning (default: 16 = 4rem)
   final String topOffset;
@@ -20,19 +21,34 @@ class DPageAside extends StatelessComponent {
   /// Optional title for the aside
   final String? title;
 
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
+
   const DPageAside({
     super.key,
     this.children = const [],
-    this.classes,
+    this.className,
     this.topOffset = '16',
     this.hiddenOnMobile = true,
     this.title,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Aside(
-      className: '${hiddenOnMobile ? "hidden lg:block" : ""} ${classes ?? ""}',
+      id: id,
+      className: twMerge('${hiddenOnMobile ? "hidden lg:block" : ""}', className),
+      attributes: attributes,
+      events: events,
       children: [
         Div(
           className: 'sticky top-$topOffset',
@@ -74,7 +90,16 @@ class DPageAsideLink extends StatelessComponent {
   final int level;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageAsideLink({
     super.key,
@@ -82,7 +107,10 @@ class DPageAsideLink extends StatelessComponent {
     required this.href,
     this.active = false,
     this.level = 0,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -94,8 +122,12 @@ class DPageAsideLink extends StatelessComponent {
 
     return A(
       href: href,
-      className:
-          'block py-1.5 pl-3 pr-2 text-sm $paddingLeft $activeClasses transition-colors ${classes ?? ""}',
+      id: id,
+      className: twMerge(
+          'block py-1.5 pl-3 pr-2 text-sm $paddingLeft $activeClasses transition-colors',
+          className),
+      attributes: attributes,
+      events: events,
       children: [Text(label)],
     );
   }
@@ -116,7 +148,16 @@ class DPageAsideGroup extends StatelessComponent {
   final bool defaultExpanded;
 
   /// Additional CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Additional HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Event handlers
+  final Map<String, EventCallback>? events;
 
   const DPageAsideGroup({
     super.key,
@@ -124,13 +165,19 @@ class DPageAsideGroup extends StatelessComponent {
     this.children = const [],
     this.collapsible = false,
     this.defaultExpanded = true,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'mb-6 ${classes ?? ""}',
+      id: id,
+      className: twMerge('mb-6', className),
+      attributes: attributes,
+      events: events,
       children: [
         if (title != null)
           H5(

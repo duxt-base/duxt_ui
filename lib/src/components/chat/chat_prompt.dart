@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/tw_merge.dart';
 
 /// DuxtUI ChatPrompt component - input textarea for chat messages
 class DChatPrompt extends StatefulComponent {
@@ -13,6 +14,10 @@ class DChatPrompt extends StatefulComponent {
   final VoidCallback? onSubmit;
   final Component? leadingSlot;
   final Component? trailingSlot;
+  final String? className;
+  final String? id;
+  final Map<String, String>? attributes;
+  final Map<String, EventCallback>? events;
 
   const DChatPrompt({
     super.key,
@@ -26,6 +31,10 @@ class DChatPrompt extends StatefulComponent {
     this.onSubmit,
     this.leadingSlot,
     this.trailingSlot,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -59,8 +68,12 @@ class _UChatPromptState extends State<DChatPrompt> {
     final isDisabled = component.disabled;
 
     return Div(
-      className:
+      id: component.id,
+      attributes: component.attributes,
+      events: component.events,
+      className: twMerge(
           'flex items-end gap-2 p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900',
+          component.className),
       children: [
         // Leading slot (e.g., attachment button)
         if (component.leadingSlot != null) component.leadingSlot!,
