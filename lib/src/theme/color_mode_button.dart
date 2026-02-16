@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
+import '../theme/tw_merge.dart';
 import 'provider.dart';
 
 /// Button sizes for color mode toggle
@@ -15,7 +16,16 @@ class DColorModeButton extends StatefulComponent {
   final DColorModeButtonSize size;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Custom HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Custom event handlers
+  final Map<String, EventCallback>? events;
 
   /// Callback when theme changes
   final ValueChanged<DThemeMode>? onModeChange;
@@ -23,7 +33,10 @@ class DColorModeButton extends StatefulComponent {
   const DColorModeButton({
     super.key,
     this.size = DColorModeButtonSize.md,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
     this.onModeChange,
   });
 
@@ -91,21 +104,24 @@ class _UColorModeButtonState extends State<DColorModeButton> {
 
   @override
   Component build(BuildContext context) {
+    final baseClasses = [
+      'inline-flex items-center justify-center rounded-lg',
+      'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
+      'hover:bg-gray-100 dark:hover:bg-gray-800',
+      'focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600',
+      'transition-colors',
+      _buttonSizeClasses,
+    ].join(' ');
+
     return Button(
       type: 'button',
+      id: component.id,
       onClick: _toggleMode,
-      className: [
-        'inline-flex items-center justify-center rounded-lg',
-        'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
-        'hover:bg-gray-100 dark:hover:bg-gray-800',
-        'focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600',
-        'transition-colors',
-        _buttonSizeClasses,
-        if (component.classes != null) component.classes!,
-      ].join(' '),
-      attributes: {
+      className: twMerge(baseClasses, component.className),
+      attributes: mergeAttributes({
         'aria-label': _isDark ? 'Switch to light mode' : 'Switch to dark mode',
-      },
+      }, component.attributes),
+      events: component.events,
       children: [
         // Show sun in dark mode (to switch to light), moon in light mode (to switch to dark)
         if (_isDark)

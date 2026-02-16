@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
+import '../theme/tw_merge.dart';
 import 'provider.dart';
 
 /// DuxtUI ColorModeSwitch component - Switch toggle for dark/light mode
@@ -15,13 +16,25 @@ class DColorModeSwitch extends StatefulComponent {
   final ValueChanged<DThemeMode>? onModeChange;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Custom HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Custom event handlers
+  final Map<String, EventCallback>? events;
 
   const DColorModeSwitch({
     super.key,
     this.initialMode = DThemeMode.light,
     this.onModeChange,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -47,21 +60,24 @@ class _UColorModeSwitchState extends State<DColorModeSwitch> {
 
   @override
   Component build(BuildContext context) {
+    final baseClasses = [
+      'relative inline-flex h-8 w-16 items-center rounded-full',
+      'transition-colors duration-200 ease-in-out',
+      'focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2',
+      _isDark ? 'bg-cyan-600' : 'bg-gray-200 dark:bg-zinc-700',
+    ].join(' ');
+
     return Button(
       type: 'button',
+      id: component.id,
       onClick: _toggle,
-      className: [
-        'relative inline-flex h-8 w-16 items-center rounded-full',
-        'transition-colors duration-200 ease-in-out',
-        'focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2',
-        _isDark ? 'bg-cyan-600' : 'bg-gray-200 dark:bg-zinc-700',
-        if (component.classes != null) component.classes!,
-      ].join(' '),
-      attributes: {
+      className: twMerge(baseClasses, component.className),
+      attributes: mergeAttributes({
         'role': 'switch',
         'aria-checked': _isDark ? 'true' : 'false',
         'aria-label': 'Toggle dark mode',
-      },
+      }, component.attributes),
+      events: component.events,
       children: [
         // Switch track with icons
         Span(

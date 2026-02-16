@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
 import '../components/utility/icon.dart';
+import '../theme/tw_merge.dart';
 import 'provider.dart';
 
 /// DuxtUI ColorModeSelect component - Dropdown for theme selection
@@ -15,13 +16,25 @@ class DColorModeSelect extends StatefulComponent {
   final ValueChanged<DThemeMode>? onModeChange;
 
   /// Custom CSS classes
-  final String? classes;
+  final String? className;
+
+  /// HTML id attribute
+  final String? id;
+
+  /// Custom HTML attributes
+  final Map<String, String>? attributes;
+
+  /// Custom event handlers
+  final Map<String, EventCallback>? events;
 
   const DColorModeSelect({
     super.key,
     this.selectedMode = DThemeMode.system,
     this.onModeChange,
-    this.classes,
+    this.className,
+    this.id,
+    this.attributes,
+    this.events,
   });
 
   @override
@@ -77,7 +90,10 @@ class _UColorModeSelectState extends State<DColorModeSelect> {
   @override
   Component build(BuildContext context) {
     return Div(
-      className: 'relative inline-block ${component.classes ?? ""}',
+      id: component.id,
+      attributes: component.attributes,
+      events: component.events,
+      className: twMerge('relative inline-block', component.className),
       children: [
         // Trigger button
         Button(

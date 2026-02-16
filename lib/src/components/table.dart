@@ -7,13 +7,13 @@ class DTableColumn<T> {
   final String key;
   final String label;
   final Component Function(T item)? render;
-  final String? classes;
+  final String? className;
 
   const DTableColumn({
     required this.key,
     required this.label,
     this.render,
-    this.classes,
+    this.className,
   });
 }
 
@@ -64,7 +64,7 @@ class DTable<T> extends StatelessComponent {
                 for (final col in columns)
                   Th(
                     className:
-                        'px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${col.classes ?? ""}',
+                        'px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${col.className ?? ""}',
                     children: [Text(col.label)],
                   ),
               ]),
@@ -91,7 +91,7 @@ class DTable<T> extends StatelessComponent {
                             for (final col in columns)
                               Td(
                                 className:
-                                    'px-4 py-3 text-sm text-gray-900 ${col.classes ?? ""}',
+                                    'px-4 py-3 text-sm text-gray-900 ${col.className ?? ""}',
                                 children: [
                                   if (col.render != null)
                                     col.render!(data[i])
