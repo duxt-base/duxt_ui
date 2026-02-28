@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart' hide Text;
 import 'package:duxt_html/duxt_html.dart';
+import '../../theme/colors.dart';
 import '../../theme/variants.dart';
 import '../../theme/tw_merge.dart';
 
@@ -30,14 +31,15 @@ class DSlider extends StatefulComponent {
   final double max;
   final double step;
   final String? name;
-  final String size; // Use string for serialization: 'xs', 'sm', 'md', 'lg', 'xl'
-  final String color; // Use string: 'primary', 'secondary', etc.
+  final DSliderSize size;
+  final DColor color;
   final bool disabled;
   final bool showValue;
   final String? hint;
   final String? className;
   final String? id;
   final Map<String, String>? attributes;
+  final void Function(double)? onChange;
 
   const DSlider({
     super.key,
@@ -47,14 +49,15 @@ class DSlider extends StatefulComponent {
     this.max = 100,
     this.step = 1,
     this.name,
-    this.size = 'md',
-    this.color = 'primary',
+    this.size = DSliderSize.md,
+    this.color = DColor.primary,
     this.disabled = false,
     this.showValue = false,
     this.hint,
     this.className,
     this.id,
     this.attributes,
+    this.onChange,
   });
 
   @override
@@ -72,34 +75,34 @@ class _DSliderState extends State<DSlider> {
 
   String get _trackHeightClass {
     switch (component.size) {
-      case 'xs':
+      case DSliderSize.xs:
         return 'h-1';
-      case 'sm':
+      case DSliderSize.sm:
         return 'h-1.5';
-      case 'lg':
+      case DSliderSize.lg:
         return 'h-2.5';
-      case 'xl':
+      case DSliderSize.xl:
         return 'h-3';
-      default:
+      case DSliderSize.md:
         return 'h-2';
     }
   }
 
   String get _accentColor {
     switch (component.color) {
-      case 'secondary':
+      case DColor.secondary:
         return 'accent-blue-500';
-      case 'success':
+      case DColor.success:
         return 'accent-green-500';
-      case 'info':
+      case DColor.info:
         return 'accent-blue-500';
-      case 'warning':
+      case DColor.warning:
         return 'accent-yellow-500';
-      case 'error':
+      case DColor.error:
         return 'accent-red-500';
-      case 'neutral':
+      case DColor.neutral:
         return 'accent-slate-500';
-      default:
+      case DColor.primary:
         return 'accent-cyan-500';
     }
   }
@@ -107,6 +110,7 @@ class _DSliderState extends State<DSlider> {
   void _handleInput(String value) {
     final doubleValue = double.tryParse(value) ?? component.min;
     setState(() => _value = doubleValue);
+    component.onChange?.call(doubleValue);
   }
 
   @override

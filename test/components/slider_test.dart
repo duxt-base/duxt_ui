@@ -1,6 +1,4 @@
 import 'package:jaspr_test/jaspr_test.dart';
-import 'package:jaspr/jaspr.dart';
-import 'package:jaspr/dom.dart';
 import 'package:duxt_ui/src/components/form/slider.dart';
 import 'package:duxt_ui/src/theme/colors.dart';
 
