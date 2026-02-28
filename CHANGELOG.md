@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.5
+
+- Fix DSlider: `size` now accepts `DSliderSize` enum, `color` accepts `DColor` enum (was incorrectly typed as `String`)
+- Add `onChange` callback to DSlider for value change events
+- Internal switch statements use exhaustive enum matching
+
 ## 0.3.4
 
 - Add `className`, `id`, `attributes`, and `events` to all 87 components
